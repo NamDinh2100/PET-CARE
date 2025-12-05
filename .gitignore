@@ -1,9 +1,5 @@
 # Dependencies
-/node_modules
+src/node_modules
 
 # Environment variables file
-.env
-
-# Logs
-logs
-*.log
+src/.env
