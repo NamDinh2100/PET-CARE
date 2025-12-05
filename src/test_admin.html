@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCareUS Admin Dashboard</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #2d5bff;
+            --bg-gray: #e0e0e0;
+            --text-dark: #333;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            font-family: 'Roboto', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- 1. HEADER & TOP BAR --- */
+        .top-header {
+            background: white;
+            padding: 10px 30px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .brand-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #4a90e2;
+            text-decoration: none;
+        }
+        .brand-logo i { color: black; transform: rotate(-20deg); }
+
+        .admin-profile {
+            text-align: right;
+            line-height: 1.2;
+        }
+        .admin-name { font-weight: bold; font-size: 0.9rem; }
+        .admin-handle { color: red; font-size: 0.85rem; }
+        .admin-avatar {
+            font-size: 2.5rem;
+            margin-left: 10px;
+            color: black;
+            vertical-align: middle;
+        }
+
+        /* --- 2. SIDEBAR (MENU TRÁI) --- */
+        .sidebar {
+            background: white;
+            min-height: calc(100vh - 70px); /* Trừ đi chiều cao header */
+            padding-top: 20px;
+            border-right: px solid #eee;
+            float: left;
+            box-shadow: #0000001a 2px 0px 8px 0px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            margin: 5px 15px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 10px; /* Bo góc box xanh */
+            cursor: pointer;
+            transition: all 0.3s ease; /* Hiệu ứng Smooth khi đổi trạng thái */
+        }
+
+        .nav-item i {
+            width: 30px;
+            font-size: 1.2rem;
+        }
+
+        .nav-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Class Active: Box màu xanh */
+        .nav-item.active {
+            background-color: var(--primary-blue);
+            color: white;
+            box-shadow: 0 4px 10px rgba(45, 91, 255, 0.3);
+            transform: translateX(5px); /* Nhích nhẹ sang phải cho sinh động */
+        }
+
+        /* --- 3. MAIN CONTENT --- */
+        .main-content {
+            padding: 30px;
+        }
+
+        /* Search Bar */
+        .search-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .search-input {
+            border: 2px solid #000;
+            border-radius: 50px;
+            padding: 5px 20px;
+            width: 300px;
+            outline: none;
+        }
+        .search-icon {
+            font-size: 1.5rem;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        /* Data Card (Khung xám chứa bảng) */
+        .data-card {
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: #ad1d1d; /* Màu nền xám đậm giống ảnh */
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header-title {
+            padding: 15px 20px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            border-bottom: 1px solid #bbb;
+        }
+
+        /* Table Header Row */
+        .table-header-row {
+            background-color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+            font-family: 'Playfair Display', serif; /* Font có chân cho header bảng */
+        }
+        
+        .table-col { flex: 1; }
+        .table-col.action { text-align: right; }
+
+        /* Vùng nội dung bảng (đang trống màu xám) */
+        .table-body-placeholder {
+            flex-grow: 1;
+            background-color: #dcdcdc; 
+        }
+
+        /* --- 4. PAGINATION --- */
+        .pagination-container {
+            padding: 15px 20px;
+        }
+        .page-box {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 26px; /* Căn giữa dọc */
+            text-align: center;
+            border: 2px solid #000;
+            margin-right: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            background: transparent;
+        }
+        .page-box.active {
+            background-color: black;
+            color: white;
+        }
+        .page-next {
+            font-size: 1.2rem;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="top-header">
+        <a href="#" class="brand-logo">
+            <i class="fa-solid fa-paw me-2"></i>PetCareUS
+        </a>
+        <div class="d-flex align-items-center">
+            <div class="admin-profile">
+                <div class="admin-name">ADMIN</div>
+                <div class="admin-handle">@ad_name</div>
+            </div>
+            <i class="fa-solid fa-circle-user admin-avatar"></i>
+            <i class="fa-solid fa-chevron-down ms-2" style="font-size: 0.8rem;"></i>
+        </div>
+    </header>
+
+    <div class="d-flex">
+        <aside class="sidebar">
+            <div class="nav-item active" onclick="setActive(this, 'USER')">
+                <i class="fa-solid fa-user"></i> USER
+            </div>
+            <div class="nav-item" onclick="setActive(this, 'EMPLOYEE')">
+                <i class="fa-solid fa-users"></i> EMPLOYEE
+            </div>
+            <div class="nav-item" onclick="setActive(this, 'MEDICINE')">
+                <i class="fa-solid fa-capsules"></i> MEDICINE
+            </div>
+            <div class="nav-item" onclick="setActive(this, 'APPOINTMENT')">
+                <i class="fa-regular fa-calendar-days"></i> APPOINTMENT
+            </div>
+            <div class="nav-item" onclick="setActive(this, 'SERVICE')">
+                <i class="fa-solid fa-scissors"></i> SERVICE
+            </div>
+            <div class="nav-item" onclick="setActive(this, 'STATISTICAL')">
+                <i class="fa-solid fa-chart-line"></i> STATISTICAL
+            </div>
+        </aside>
+
+        <main class="main-content flex-grow-1">
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="SEARCH...">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            </div>
+
+            <div class="data-card">
+                <div class="card-header-title" id="pageTitle">USER</div>
+                
+                <div class="table-header-row">
+                    <div class="table-col" style="flex: 0.5;">ID</div>
+                    <div class="table-col" style="flex: 1.5;">Name</div>
+                    <div class="table-col" style="flex: 2;">Email</div>
+                    <div class="table-col" style="flex: 1.5;">Phone</div>
+                    <div class="table-col action" style="flex: 0.5;">Action</div>
+                </div>
+
+                <div class="table-body-placeholder">
+                    </div>
+
+                <div class="pagination-container">
+                    <span class="page-box active">1</span>
+                    <span class="page-box">2</span>
+                    <span class="page-box">3</span>
+                    <span class="page-box">4</span>
+                    <span class="page-box">5</span>
+                    <i class="fa-solid fa-chevron-right page-next ms-2"></i>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        function setActive(element, title) {
+            // 1. Xóa class active ở tất cả các nav-item
+            const items = document.querySelectorAll('.nav-item');
+            items.forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // 2. Thêm class active vào element vừa click
+            element.classList.add('active');
+
+            // 3. Cập nhật tiêu đề trang tương ứng (Optional)
+            document.getElementById('pageTitle').innerText = title;
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
