@@ -1,0 +1,5 @@
+# Dependencies
+src/node_modules
+
+# Environment variables file
+src/.env
