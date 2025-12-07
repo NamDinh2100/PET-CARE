@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đổi Mật Khẩu</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&family=Inter:wght=400;500&display=swap" rel="stylesheet">
+
+    <script>
+        // Cấu hình Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blue-primary': '#2167FF',
+                        'gray-medium': '#B1A4A4',
+                        'gray-light': '#D9D9D9',
+                        'error-icon': '#852221',
+                    },
+                    boxShadow: {
+                        'input': '0px 4px 10px rgba(0, 0, 0, 0.25)',
+                    },
+                    fontFamily: {
+                        'abhaya': ['Abhaya Libre', 'serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Styling riêng */
+        .font-abhaya-bold {
+            font-family: 'Abhaya Libre', serif;
+            font-weight: 700;
+        }
+
+        .password-input {
+            /* Styles matching Rectangle 8, 9, 39 */
+            height: 40px;
+            border: 1px solid #000000;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+            border-radius: 20px;
+            padding: 0 16px;
+            font-size: 24px; /* Phù hợp với opacity: 0.4 của text placeholder */
+            line-height: 28px;
+            font-family: 'Abhaya Libre', serif;
+        }
+
+        .submit-button {
+            /* Styles matching Rectangle 37 */
+            height: 41px;
+            border: 2px solid #2167FF;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+            border-radius: 10px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .submit-button:hover {
+            background-color: #2167FF;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+    <!-- USER Container (Change Password Box) -->
+    <div class="flex flex-col w-full max-w-lg md:max-w-xl lg:max-w-2xl bg-white border-[4px] border-gray-medium rounded-2xl mx-auto my-12 shadow-2xl">
+
+        <!-- Rectangle 34 (Header Bar) -->
+        <div class="h-24 bg-gray-light rounded-t-2xl flex items-center justify-between px-6 md:px-12 border-b-[5px] border-gray-medium">
+            <!-- CHANGE PASSWORD (Thay thế USER MANAGEMENT) -->
+            <h1 class="text-3xl sm:text-4xl font-abhaya-bold text-black translate-y-0.5">CHANGE PASSWORD</h1>
+            
+            <!-- Close/Cancel Button -->
+            <button class="w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center text-error-icon rounded-full hover:bg-gray-300 transition duration-150">
+                <!-- Close icon (X) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-8 h-8">
+                    <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm4.3 10.7L12.7 14l3.6 3.3-.7.7-3.6-3.3-3.6 3.3-.7-.7 3.6-3.3-3.6-3.3.7-.7 3.6 3.3 3.6-3.3.7.7z"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Main Content (Form) -->
+        <form class="p-6 md:p-10 flex-grow space-y-8" onsubmit="event.preventDefault(); alert('Password Change Attempted (Mock)!');">
+
+            <!-- Enter your old password -->
+            <div class="relative">
+                <input type="password" placeholder="Enter your old password" class="password-input w-full placeholder:opacity-40 focus:opacity-100 focus:outline-none">
+            </div>
+
+            <!-- Enter your new password -->
+            <div class="relative">
+                <input type="password" placeholder="Enter your new password" class="password-input w-full placeholder:opacity-40 focus:opacity-100 focus:outline-none">
+            </div>
+
+            <!-- Confirm your new password -->
+            <div class="relative">
+                <input type="password" placeholder="Confirm your new password" class="password-input w-full placeholder:opacity-40 focus:opacity-100 focus:outline-none">
+            </div>
+
+            <!-- SUBMIT Button -->
+            <div class="flex justify-center pt-4">
+                <button type="submit" class="submit-button w-[122px] bg-white text-blue-primary font-abhaya-bold text-xl hover:text-white flex items-center justify-center">
+                    SUBMIT
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+</html>

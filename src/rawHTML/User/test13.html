@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xem Hồ Sơ Bệnh Án | PetCareUS</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Iceberg&display=swap" rel="stylesheet">
+
+    <script>
+        // Cấu hình Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blue-primary': '#2167FF',
+                        'gray-medium': '#B1A4A4',
+                        'gray-light': '#D9D9D9',
+                        'error-icon': '#852221', /* Màu icon Hủy/Đóng */
+                        'red-error': '#FF0000',
+                    },
+                    boxShadow: {
+                        'input': '0px 4px 10px rgba(0, 0, 0, 0.25)',
+                    },
+                    fontFamily: {
+                        'abhaya': ['Abhaya Libre', 'serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                        'iceberg': ['Iceberg', 'cursive'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Styling riêng */
+        .font-abhaya-bold {
+            font-family: 'Abhaya Libre', serif;
+            font-weight: 700;
+        }
+
+        .display-box {
+            /* Styles for date/treatment/symptom fields */
+            border: 3px solid #000000;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+            border-radius: 20px;
+            padding: 8px 16px;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+        }
+
+        .diagnosis-box {
+            /* Styles for diagnosis/instruction fields (red border) */
+            border: 3px solid var(--tw-colors-red-error);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+            border-radius: 20px;
+            padding: 8px 16px;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Medicine table container style */
+        .medicine-container {
+            border: 3px solid #000000;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+            border-radius: 20px;
+        }
+
+        /* Tăng khoảng cách cho tiêu đề */
+        .record-title {
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+    <!-- USER Container (Medical Record Box) -->
+    <div class="flex flex-col w-full max-w-6xl bg-white border-[4px] border-gray-medium rounded-2xl mx-auto my-12 shadow-2xl">
+
+        <!-- Rectangle 34 (Header Bar) -->
+        <div class="h-24 bg-gray-light rounded-t-2xl flex items-center justify-between px-6 md:px-12 border-b-[5px] border-gray-medium">
+            <!-- MEDICAL RECORD VIEW -->
+            <h1 class="text-3xl sm:text-4xl font-abhaya-bold text-black record-title translate-y-0.5">MEDICAL RECORD VIEW</h1>
+            
+            <!-- Close/Cancel Button -->
+            <button class="w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center text-error-icon rounded-full hover:bg-gray-300 transition duration-150">
+                <!-- Close icon (X) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-8 h-8">
+                    <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm4.3 10.7L12.7 14l3.6 3.3-.7.7-3.6-3.3-3.6 3.3-.7-.7 3.6-3.3-3.6-3.3.7-.7 3.6 3.3 3.6-3.3.7.7z"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="p-6 md:p-10 flex-grow space-y-8">
+
+            <!-- Basic Information: DATE, TREATMENT, SYMPTOM -->
+            <div class="space-y-6">
+                
+                <!-- DATE : -->
+                <div class="flex flex-col md:flex-row items-start md:items-center">
+                    <label class="w-full md:w-40 text-2xl font-abhaya-bold text-black">DATE :</label>
+                    <div class="display-box bg-white w-full max-w-xs mt-2 md:mt-0">
+                        <span class="text-xl font-inter">2024-11-18</span>
+                    </div>
+                </div>
+
+                <!-- TREATMENT : -->
+                <div class="flex flex-col md:flex-row items-start md:items-center">
+                    <label class="w-full md:w-40 text-2xl font-abhaya-bold text-black">TREATMENT :</label>
+                    <div class="display-box bg-white w-full max-w-lg mt-2 md:mt-0">
+                        <span class="text-xl font-inter">Khám sức khỏe tổng quát và tiêm chủng</span>
+                    </div>
+                </div>
+                
+                <!-- SYMPTOM : -->
+                <div class="flex flex-col md:flex-row items-start md:items-center">
+                    <label class="w-full md:w-40 text-2xl font-abhaya-bold text-black">SYMPTOM :</label>
+                    <div class="display-box bg-white w-full max-w-4xl mt-2 md:mt-0">
+                        <span class="text-xl font-inter">Chó bị tiêu chảy nhẹ sau khi ăn phải thức ăn lạ, không sốt, còn hoạt bát.</span>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- MEDICINE Section -->
+            <div class="pt-8">
+                <h2 class="text-3xl font-abhaya-bold text-black text-center mb-6">MEDICINE</h2>
+                
+                <!-- Rectangle 10 (Medicine Table Container) -->
+                <div class="medicine-container bg-white w-full p-4 md:p-8">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-2 py-3 text-left text-xl font-abhaya-bold uppercase w-1/12">No.</th>
+                                    <th class="px-2 py-3 text-left text-xl font-abhaya-bold uppercase w-5/12">Name</th>
+                                    <th class="px-2 py-3 text-center text-xl font-abhaya-bold uppercase w-2/12">Form</th>
+                                    <th class="px-2 py-3 text-left text-xl font-abhaya-bold uppercase w-4/12">Category</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200 text-lg font-inter">
+                                <!-- Line 5 (Border in header area is not needed with table structure) -->
+                                <tr>
+                                    <td class="px-2 py-3">1.</td>
+                                    <td class="px-2 py-3">Thuốc giảm đau và hạ sốt cho chó</td>
+                                    <td class="px-2 py-3 text-center">Viên</td>
+                                    <td class="px-2 py-3">Thuốc kháng sinh</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-3">2.</td>
+                                    <td class="px-2 py-3">Men tiêu hóa Probiotic</td>
+                                    <td class="px-2 py-3 text-center">Bột</td>
+                                    <td class="px-2 py-3">Thực phẩm chức năng</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-2 py-3">3.</td>
+                                    <td class="px-2 py-3">Thuốc tẩy giun sán (Mốc 3 tháng)</td>
+                                    <td class="px-2 py-3 text-center">Viên</td>
+                                    <td class="px-2 py-3">Ký sinh trùng</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Conclusion: DIANOSIS and INSTRUCTION (Highlighted in Red) -->
+            <div class="space-y-6 pt-10">
+                
+                <!-- DIANOSIS : -->
+                <div class="flex flex-col md:flex-row items-start md:items-center">
+                    <label class="w-full md:w-40 text-2xl font-abhaya-bold text-red-error">DIANOSIS :</label>
+                    <div class="diagnosis-box bg-white w-full max-w-4xl mt-2 md:mt-0">
+                        <span class="text-xl font-inter text-red-error">Viêm đường ruột nhẹ cấp tính (Acute mild enteritis).</span>
+                    </div>
+                </div>
+                
+                <!-- INSTRUCTION: -->
+                <div class="flex flex-col md:flex-row items-start">
+                    <label class="w-full md:w-40 text-2xl font-abhaya-bold text-red-error">INSTRUCTION:</label>
+                    <!-- Rectangle 48 (Instruction Box) -->
+                    <div class="diagnosis-box bg-white w-full max-w-4xl min-h-[92px] mt-2 md:mt-0 items-start">
+                        <ul class="list-disc pl-5 space-y-1 text-xl font-inter text-red-error">
+                            <li>Cho uống thuốc giảm đau 2 lần/ngày sau ăn trong 3 ngày.</li>
+                            <li>Trộn men tiêu hóa vào thức ăn 1 lần/ngày trong 7 ngày.</li>
+                            <li>Theo dõi phân và tái khám sau 7 ngày nếu không cải thiện.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

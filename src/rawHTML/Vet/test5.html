@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Bác Sĩ Thú Y</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Cấu hình Tailwind cho font, màu sắc, viền, và bóng đổ tùy chỉnh
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blue-primary': '#2167FF', // Màu xanh dương cho Update và Profile
+                        'border-gray': '#B1A4A4', // Màu viền chính
+                        'header-gray': '#D9D9D9', // Màu nền Header/Placeholder
+                        'red-error': '#852221', // Màu cho nút đóng/hủy (Cancel icon)
+                        'save-green': '#348D44', // Màu xanh lá cho nút SAVE
+                        'red-danger': '#FF0000', // Màu đỏ cho PET INFO
+                    },
+                    borderWidth: {
+                        '3': '3px',
+                        '5': '5px',
+                    },
+                    boxShadow: {
+                        'custom-sm': '0px 4px 10px rgba(0, 0, 0, 0.25)',
+                        'custom-lg': '0px 4px 20px rgba(0, 0, 0, 0.25)',
+                    },
+                    fontFamily: {
+                        // Sử dụng Inter và Abhaya Libre
+                        sans: ['Inter', 'Abhaya Libre', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        
+        .border-3 { border-width: 3px; }
+        .border-5 { border-width: 5px; }
+
+        /* Đảm bảo các input có viền và bóng đổ đúng chuẩn */
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2167FF;
+            box-shadow: 0 0 0 3px rgba(33, 103, 255, 0.3);
+        }
+
+        /* Styling cho Profile Box (USER) */
+        .profile-box {
+            border-width: 5px;
+            border-color: #B1A4A4;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+            min-height: 600px;
+        }
+
+        /* Custom style cho Placeholder hình đại diện */
+        .profile-placeholder {
+            background-color: #D9D9D9;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen pt-[100px] font-sans">
+
+    <!-- TOP HEADER (LEFT_AD) - Sticky -->
+    <header class="fixed top-0 left-0 w-full h-[100px] bg-white shadow-custom-lg z-50 flex items-center justify-between px-4 md:px-8">
+        <!-- Logo/Brand (Group 1 / PetCareUS) -->
+        <div class="flex items-center space-x-2">
+            <!-- Foot Icon Placeholder -->
+            <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-blue-primary">
+                <path d="M21 2C10.51 2 2 10.51 2 21s8.51 19 19 19 19-8.51 19-19S31.49 2 21 2zm0 34c-8.28 0-15-6.72-15-15S12.72 6 21 6s15 6.72 15 15-6.72 15-15 15zm-2-12c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm-8-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm16 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm-8-5c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z" fill="currentColor"/>
+            </svg>
+            <span class="text-4xl font-extrabold text-blue-primary">PetCareUS</span>
+        </div>
+
+        <!-- User Info and Profile (Right Side) -->
+        <div class="flex items-center space-x-4">
+            <div class="text-right hidden sm:block">
+                <p class="text-base font-bold text-gray-800">Bác Sĩ Thú Y</p>
+                <p class="text-sm font-medium text-red-600">@vet_name</p>
+            </div>
+            
+            <!-- Profile Avatar Placeholder -->
+            <div class="w-16 h-16 bg-header-gray rounded-full profile-placeholder flex items-center justify-center text-xl font-bold text-black overflow-hidden">
+                <!-- Placeholder for Vet's initials or actual image -->
+                BS
+            </div>
+            
+            <!-- Dropdown Icon Placeholder -->
+            <svg class="w-4 h-4 text-black" fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l5 5 5-5"/></svg>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="p-4 md:p-8">
+        
+        <!-- Profile Box Container (USER) -->
+        <div class="w-full max-w-7xl mx-auto bg-white profile-box rounded-2xl p-6 md:p-10 space-y-6">
+
+            <!-- Back Button and Main Title -->
+            <div class="flex items-center space-x-4 border-b-4 border-header-gray pb-4 mb-6">
+                <!-- Arrow Back Placeholder -->
+                <button onclick="console.log('Navigate back')" class="p-2 text-gray-700 hover:bg-gray-200 rounded-full transition">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                </button>
+                <!-- USER MANAGEMENT title (Adjusted for context) -->
+                <h1 class="text-3xl font-bold text-black">THÔNG TIN BÁC SĨ THÚ Y</h1>
+            </div>
+            
+            <!-- Profile Overview Section -->
+            <section class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-10 pb-8 border-b-3 border-gray-300">
+                <!-- Profile Image Area -->
+                <div class="flex flex-col items-center">
+                    <!-- Large Profile Ellipse 1 -->
+                    <div class="w-[150px] h-[150px] bg-header-gray rounded-full profile-placeholder flex items-center justify-center text-5xl font-extrabold text-black mb-4">
+                        BS
+                    </div>
+                    <!-- Veterinian Name -->
+                    <p class="text-3xl font-medium text-black">@veterinarian_name</p>
+                </div>
+                
+                <!-- Information Grid -->
+                <div class="flex-grow grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-6">
+                    <!-- Full Name -->
+                    <div class="space-y-2">
+                        <label class="text-lg font-bold text-black">HỌ TÊN ĐẦY ĐỦ</label>
+                        <input type="text" value="Nguyễn Văn A" class="w-full h-15 px-4 py-3 border-3 border-black shadow-custom-sm rounded-xl text-lg">
+                    </div>
+                    
+                    <!-- Role -->
+                    <div class="space-y-2">
+                        <label class="text-lg font-bold text-black">VAI TRÒ (ROLE)</label>
+                        <select class="w-full h-15 px-4 py-3 border-3 border-black shadow-custom-sm rounded-xl text-lg opacity-80 appearance-none">
+                            <option>Veterinarian</option>
+                            <option>Trợ lý</option>
+                            <option>Quản lý</option>
+                        </select>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="space-y-2">
+                        <label class="text-lg font-bold text-black">EMAIL</label>
+                        <input type="email" value="vet.a@petcareus.com" class="w-full h-15 px-4 py-3 border-3 border-black shadow-custom-sm rounded-xl text-lg">
+                    </div>
+                    
+                    <!-- Phone -->
+                    <div class="space-y-2">
+                        <label class="text-lg font-bold text-black">ĐIỆN THOẠI</label>
+                        <input type="tel" value="(+84) 901 234 567" class="w-full h-15 px-4 py-3 border-3 border-black shadow-custom-sm rounded-xl text-lg">
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Address Section -->
+            <section class="space-y-2">
+                <label class="text-lg font-bold text-black">ĐỊA CHỈ (ADDRESS)</label>
+                <!-- Rectangle 13 -->
+                <input type="text" value="123 Đường ABC, Phường XYZ, Quận 1, TP Hồ Chí Minh" class="w-full h-15 px-4 py-3 border-3 border-black shadow-custom-sm rounded-xl text-lg">
+            </section>
+            
+            <!-- Navigation Tabs (MY PROFILE and implied others) -->
+            <section class="pt-4">
+                <!-- Line 1: Main Tab Bar -->
+                <div class="flex space-x-8 border-b-3 border-black mb-1">
+                    <button class="text-lg font-bold pb-2 text-blue-primary border-b-6 border-blue-primary">
+                        MY PROFILE
+                    </button>
+                    <!-- Thêm các tab khác nếu có: -->
+                    <button onclick="showAppointmentModal()" class="text-lg font-bold pb-2 text-gray-500 hover:text-gray-700 transition">
+                        LỊCH HẸN
+                    </button>
+                    <button class="text-lg font-bold pb-2 text-gray-500 hover:text-gray-700 transition">
+                        BỆNH NHÂN
+                    </button>
+                </div>
+            </section>
+
+            <!-- Placeholder Content for Tab (Current Time Setting) -->
+            <section class="w-full min-h-[100px] bg-header-gray flex flex-col md:flex-row items-start md:items-center justify-between p-4 rounded-xl shadow-custom-sm space-y-3 md:space-y-0">
+                <p class="text-lg font-medium text-gray-700">Cài đặt lịch làm việc và giờ tiếp nhận bệnh nhân.</p>
+                <button onclick="showTimeModal()"
+                        class="flex items-center space-x-2 px-4 py-2 bg-blue-primary text-white font-bold rounded-lg hover:bg-blue-600 transition duration-150">
+                    <span>Cài Đặt Thời Gian</span>
+                    <!-- Chevron Right Placeholder -->
+                    <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </section>
+
+
+            <!-- Action Button (Rectangle 10 / Update) -->
+            <div class="flex justify-end pt-8">
+                <button onclick="showUpdateMessage()"
+                        class="w-full sm:w-40 h-18 py-3 px-6 bg-white border-3 border-blue-primary shadow-custom-sm rounded-xl text-blue-primary text-3xl font-bold hover:bg-blue-50 transition duration-150 active:scale-[.98]">
+                    CẬP NHẬT
+                </button>
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- STATUS MODAL (For CẬP NHẬT/Thông Báo Chung) -->
+    <div id="status-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center z-[100]">
+        <div class="bg-white rounded-xl p-6 shadow-2xl max-w-sm w-full transform transition-all duration-300 scale-95" id="modal-content">
+            <h3 class="text-xl font-bold mb-4 text-blue-primary" id="modal-title">Cập Nhật Thành Công</h3>
+            <p class="text-gray-600 mb-6" id="modal-body">Thông tin hồ sơ của bạn đã được cập nhật.</p>
+            <div class="flex justify-end space-x-3">
+                <button class="px-4 py-2 bg-gray-200 text-gray-700 font-medium rounded-lg hover:bg-gray-300 transition duration-150" onclick="hideStatusModal()">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VET_SETTIME MODAL (For CÀI ĐẶT THỜI GIAN) -->
+    <div id="time-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center z-[110]">
+        <!-- USER Container -->
+        <div class="w-[90%] max-w-[700px] bg-white border-4 border-border-gray rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-95" id="time-modal-content">
+            
+            <!-- Rectangle 34 - Header -->
+            <div class="relative w-full h-[92px] bg-header-gray border-b-5 border-border-gray flex items-center justify-center px-4">
+                <!-- USER MANAGEMENT Title (Renamed for context) -->
+                <h2 class="text-3xl font-bold text-black text-center">CÀI ĐẶT LỊCH LÀM VIỆC</h2>
+                
+                <!-- Cancel Icon -->
+                <button onclick="hideTimeModal()" class="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-gray-400 transition">
+                    <svg class="w-8 h-8 text-red-error" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Body (VET_SETTIME Fields) -->
+            <div class="p-8 space-y-8 flex flex-col items-center">
+                
+                <!-- DATE : -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-center w-full max-w-lg space-y-2 sm:space-y-0 sm:space-x-4">
+                    <label class="text-xl font-bold text-black w-24 flex-shrink-0">NGÀY (DATE):</label>
+                    <!-- Rectangle 8 - Date Input -->
+                    <input type="date" value="2024-10-27" class="w-full h-10 px-4 py-2 border border-black shadow-custom-sm rounded-xl text-lg opacity-70">
+                </div>
+                
+                <!-- TIME : -->
+                <div class="flex flex-col space-y-4 w-full max-w-lg">
+                    <label class="text-xl font-bold text-black w-full">THỜI GIAN (TIME):</label>
+                    
+                    <div class="flex items-center space-x-4 justify-between">
+                        <span class="text-lg font-medium text-black flex-shrink-0">Từ (From):</span>
+                        <!-- Rectangle 9 - From Time Input -->
+                        <input type="time" value="09:00" class="w-full sm:w-[150px] h-10 px-4 py-2 border border-black shadow-custom-sm rounded-xl text-lg">
+                        
+                        <span class="text-lg font-medium text-black flex-shrink-0">Đến (To):</span>
+                        <!-- Rectangle 13 - To Time Input -->
+                        <input type="time" value="17:00" class="w-full sm:w-[150px] h-10 px-4 py-2 border border-black shadow-custom-sm rounded-xl text-lg">
+                    </div>
+                </div>
+
+                <!-- SUBMIT Button -->
+                <button onclick="console.log('Submitted time setting'); hideTimeModal();"
+                        class="mt-8 w-44 h-[47px] bg-white border-2 border-blue-primary shadow-custom-sm rounded-lg text-blue-primary text-xl font-bold hover:bg-blue-50 transition duration-150 active:scale-[.98]">
+                    LƯU
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- DOCTER_APP MODAL (QUẢN LÝ LỊCH HẸN) -->
+    <div id="appointment-modal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden items-center justify-center z-[120]">
+        <!-- USER Container -->
+        <div class="w-[95%] max-w-4xl bg-white border-4 border-border-gray rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-95" id="appointment-modal-content">
+            
+            <!-- Rectangle 34 - Header -->
+            <div class="relative w-full h-[80px] bg-header-gray flex items-center justify-center px-4">
+                <!-- USER MANAGEMENT Title (Renamed for context) -->
+                <h2 class="text-3xl font-bold text-black text-center">TẠO LỊCH HẸN MỚI</h2>
+                
+                <!-- Cancel Icon -->
+                <button onclick="hideAppointmentModal()" class="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-gray-400 transition">
+                    <svg class="w-8 h-8 text-red-error" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Body (DOCTER_APP Fields) -->
+            <div class="p-8 space-y-8">
+                <form class="space-y-6">
+                    <!-- Row 1: CUSTOMER and SERVICE -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- CUSTOMER -->
+                        <div class="space-y-2">
+                            <label class="text-lg font-bold text-black">KHÁCH HÀNG (CUSTOMER)</label>
+                            <!-- Rectangle 9 -->
+                            <input type="text" placeholder="Tìm kiếm hoặc nhập tên khách hàng" class="w-full h-[60px] px-4 py-2 border-3 border-black shadow-custom-sm rounded-xl text-lg">
+                        </div>
+                        
+                        <!-- SERVICE -->
+                        <div class="space-y-2">
+                            <label class="text-lg font-bold text-black">DỊCH VỤ (SERVICE)</label>
+                            <!-- Rectangle 13 -->
+                            <select class="w-full h-[60px] px-4 py-2 border-3 border-black shadow-custom-sm rounded-xl text-lg appearance-none">
+                                <option>Khám tổng quát</option>
+                                <option>Tiêm phòng</option>
+                                <option>Phẫu thuật</option>
+                                <option>Grooming</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 2: TIME and DATE START -->
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <!-- TIME -->
+                        <div class="space-y-2 w-full sm:w-1/3 flex-shrink-0">
+                            <label class="text-lg font-bold text-black">GIỜ (TIME)</label>
+                            <!-- Rectangle 8 -->
+                            <input type="time" value="09:00" class="w-full h-[60px] px-4 py-2 border-3 border-black shadow-custom-sm rounded-xl text-lg">
+                        </div>
+
+                        <!-- DATE START -->
+                        <div class="space-y-2 w-full sm:w-2/3">
+                            <label class="text-lg font-bold text-black">NGÀY BẮT ĐẦU (DATE START)</label>
+                            <!-- Rectangle 40 -->
+                            <input type="date" value="2024-10-28" class="w-full h-[60px] px-4 py-2 border-3 border-black shadow-custom-sm rounded-xl text-lg">
+                        </div>
+                    </div>
+                    
+                    <!-- Row 3: NOTE -->
+                    <div class="space-y-2">
+                        <label class="text-lg font-bold text-black">GHI CHÚ (NOTE)</label>
+                        <!-- Rectangle 42 -->
+                        <textarea placeholder="Thông tin chi tiết về lịch hẹn hoặc yêu cầu đặc biệt..." 
+                                  class="w-full h-[282px] p-4 border-3 border-black shadow-custom-sm rounded-xl text-lg resize-none"></textarea>
+                    </div>
+
+                    <!-- Row 4: Action Buttons (PET INFO and SAVE) -->
+                    <div class="flex justify-between items-center pt-4">
+                        <!-- Rectangle 46 / PET INFO -->
+                        <button type="button" onclick="showPetInfoMessage()"
+                                class="w-48 h-[70px] bg-white border-3 border-red-danger shadow-custom-sm rounded-xl text-red-danger text-2xl font-bold hover:bg-red-50 transition duration-150 active:scale-[.98]">
+                            THÔNG TIN THÚ CƯNG
+                        </button>
+                        
+                        <!-- Rectangle 10 / SAVE -->
+                        <button type="submit" onclick="console.log('Appointment Saved'); hideAppointmentModal(); return false;"
+                                class="w-52 h-[70px] bg-white border-3 border-save-green shadow-custom-sm rounded-xl text-save-green text-4xl font-bold hover:bg-green-50 transition duration-150 active:scale-[.98]">
+                            LƯU
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function showUpdateMessage() {
+            const modal = document.getElementById('status-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            setTimeout(() => {
+                document.getElementById('modal-content').classList.remove('scale-95');
+                document.getElementById('modal-content').classList.add('scale-100');
+            }, 50);
+        }
+
+        function hideStatusModal() {
+            const modal = document.getElementById('status-modal');
+            document.getElementById('modal-content').classList.remove('scale-100');
+            document.getElementById('modal-content').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function showTimeModal() {
+            const modal = document.getElementById('time-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            setTimeout(() => {
+                document.getElementById('time-modal-content').classList.remove('scale-95');
+                document.getElementById('time-modal-content').classList.add('scale-100');
+            }, 50);
+        }
+
+        function hideTimeModal() {
+            const modal = document.getElementById('time-modal');
+            document.getElementById('time-modal-content').classList.remove('scale-100');
+            document.getElementById('time-modal-content').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function showAppointmentModal() {
+            const modal = document.getElementById('appointment-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            setTimeout(() => {
+                document.getElementById('appointment-modal-content').classList.remove('scale-95');
+                document.getElementById('appointment-modal-content').classList.add('scale-100');
+            }, 50);
+        }
+
+        function hideAppointmentModal() {
+            const modal = document.getElementById('appointment-modal');
+            document.getElementById('appointment-modal-content').classList.remove('scale-100');
+            document.getElementById('appointment-modal-content').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function showPetInfoMessage() {
+             const titleElement = document.getElementById('modal-title');
+             const bodyElement = document.getElementById('modal-body');
+             
+             titleElement.textContent = "Chức Năng Thông Tin Thú Cưng";
+             bodyElement.textContent = "Tính năng này sẽ được phát triển tiếp. Bạn cần lưu lịch hẹn trước hoặc mở màn hình quản lý thú cưng để xem/chỉnh sửa thông tin chi tiết.";
+             
+             showUpdateMessage(); // Reusing the status modal for a temporary message
+        }
+    </script>
+</body>
+</html>

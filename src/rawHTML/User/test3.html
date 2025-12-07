@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liên Hệ | PetCareUS</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Tải Lucide Icons cho các biểu tượng liên hệ -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        // Cấu hình Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blue-primary': '#2167FF',
+                        'blue-dark': '#001C57', /* Màu xanh đậm cho footer */
+                        'header-gray': '#D9D9D9',
+                        'red-danger': '#FF0000',
+                    },
+                    boxShadow: {
+                        'custom-sm': '0px 4px 10px rgba(0, 0, 0, 0.25)',
+                        'custom-lg': '0px 4px 20px rgba(0, 0, 0, 0.25)',
+                    },
+                    fontFamily: {
+                        'abhaya': ['Abhaya Libre', 'serif'],
+                        'sans': ['Inter', 'sans-serif'], // Fallback
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Styling riêng cho Abhaya Libre */
+        .font-abhaya-title {
+            font-family: 'Abhaya Libre', serif;
+        }
+
+        /* Tăng cường hiệu ứng bóng đổ cho các khối chính */
+        .content-card {
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Placeholder nội dung */
+        .info-placeholder {
+            background-color: #D9D9D9;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen pt-[100px] md:pt-[120px]">
+    
+    <!-- HEADER_CONTACT -->
+    <header class="fixed top-0 left-0 w-full h-[100px] md:h-[120px] bg-white shadow-custom-sm z-50 flex items-center justify-between px-4 md:px-8">
+        <div class="max-w-[1440px] w-full mx-auto flex items-center justify-between">
+            <!-- Group 1: PetCareUS Logo -->
+            <div class="flex items-center space-x-2">
+                <!-- Foot Icon Placeholder -->
+                <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-blue-primary w-10 h-10 md:w-[64px] md:h-[64px]">
+                    <path d="M21 2C10.51 2 2 10.51 2 21s8.51 19 19 19 19-8.51 19-19S31.49 2 21 2zm0 34c-8.28 0-15-6.72-15-15S12.72 6 21 6s15 6.72 15 15-6.72 15-15 15zm-2-12c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm-8-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm16 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm-8-5c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z" fill="currentColor"/>
+                </svg>
+                <span class="text-3xl md:text-5xl lg:text-6xl font-abhaya-title font-bold text-blue-primary">PetCareUS</span>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex space-x-6 md:space-x-12 items-center text-xl md:text-3xl font-abhaya-title font-normal">
+                <!-- Home -->
+                <a href="#" class="text-black hover:text-gray-700 transition">Trang Chủ</a>
+                <!-- About -->
+                <a href="#" class="text-black hover:text-gray-700 transition">Về Chúng Tôi</a>
+                
+                <!-- Contact -->
+                <a href="#" class="text-blue-primary relative pb-1">
+                    Liên Hệ
+                    <!-- Line 4 -->
+                    <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full h-[4px] bg-blue-primary rounded-full"></div>
+                </a>
+            </nav>
+
+            <!-- User Info and Profile (Right Side) -->
+            <div class="flex items-center space-x-3 md:space-x-4">
+                <div class="text-right hidden sm:block">
+                    <p class="text-base md:text-xl font-abhaya-title text-black">Customer</p>
+                    <p class="text-base md:text-lg font-abhaya-title text-red-danger leading-tight">@cus_name</p>
+                </div>
+                
+                <!-- Ellipse 1 (Profile Avatar Placeholder) -->
+                <div class="w-12 h-12 md:w-16 md:h-16 bg-header-gray rounded-full flex items-center justify-center text-lg md:text-xl font-bold text-black overflow-hidden">
+                    C
+                </div>
+                
+                <!-- Chevron Down -->
+                <svg class="w-3 h-3 md:w-4 md:h-4 text-black" fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l5 5 5-5"/></svg>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="w-full relative">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
+
+            <!-- Section 1: GIỜ LÀM VIỆC & THÔNG TIN CHUNG (Rectangle 36) -->
+            <section class="mt-8 mb-16">
+                <!-- STAFF INFOMATION Title (Đổi thành Giờ Làm Việc) -->
+                <h2 class="text-4xl md:text-5xl font-abhaya-title font-bold text-black mb-8">
+                    GIỜ LÀM VIỆC VÀ CƠ SỞ
+                </h2>
+                
+                <!-- Rectangle 36: Content Card -->
+                <div class="bg-white content-card rounded-[40px] p-6 md:p-10 lg:p-16">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-8 justify-items-center">
+                        
+                        <!-- Info Card 1: Giờ làm việc thường -->
+                        <div class="flex flex-col items-center text-center max-w-xs">
+                            <!-- Placeholder -->
+                            <div class="w-40 h-40 md:w-48 md:h-48 rounded-xl info-placeholder mb-4 flex items-center justify-center text-3xl font-bold text-gray-700">
+                                GP
+                            </div>
+                            <!-- Emp role -->
+                            <p class="text-2xl font-abhaya-title font-normal text-black leading-snug">Giờ làm việc</p>
+                            <!-- Emp name -->
+                            <p class="text-3xl font-abhaya-title font-normal text-black leading-snug font-bold">Thứ 2 - Thứ 6</p>
+                            <p class="text-xl font-abhaya-title font-normal text-gray-600">8:00 - 18:00</p>
+                        </div>
+
+                        <!-- Info Card 2: Giờ làm việc cuối tuần -->
+                        <div class="flex flex-col items-center text-center max-w-xs">
+                            <!-- Placeholder -->
+                            <div class="w-40 h-40 md:w-48 md:h-48 rounded-xl info-placeholder mb-4 flex items-center justify-center text-3xl font-bold text-gray-700">
+                                WE
+                            </div>
+                            <!-- Emp role -->
+                            <p class="text-2xl font-abhaya-title font-normal text-black leading-snug">Cuối tuần</p>
+                            <!-- Emp name -->
+                            <p class="text-3xl font-abhaya-title font-normal text-black leading-snug font-bold">Thứ 7 & Chủ Nhật</p>
+                            <p class="text-xl font-abhaya-title font-normal text-gray-600">9:00 - 17:00</p>
+                        </div>
+
+                        <!-- Info Card 3: Địa điểm chính -->
+                        <div class="flex flex-col items-center text-center max-w-xs">
+                            <!-- Placeholder -->
+                            <div class="w-40 h-40 md:w-48 md:h-48 rounded-xl info-placeholder mb-4 flex items-center justify-center text-3xl font-bold text-gray-700">
+                                LOC
+                            </div>
+                            <!-- Emp role -->
+                            <p class="text-2xl font-abhaya-title font-normal text-black leading-snug">Cơ sở chính</p>
+                            <!-- Emp name -->
+                            <p class="text-3xl font-abhaya-title font-normal text-black leading-snug font-bold">PetCareUS 1</p>
+                            <p class="text-xl font-abhaya-title font-normal text-gray-600">Quận 1, TP. HCM</p>
+                        </div>
+
+                        <!-- Info Card 4: Địa điểm phụ -->
+                        <div class="flex flex-col items-center text-center max-w-xs">
+                            <!-- Placeholder -->
+                            <div class="w-40 h-40 md:w-48 md:h-48 rounded-xl info-placeholder mb-4 flex items-center justify-center text-3xl font-bold text-gray-700">
+                                BRANCH
+                            </div>
+                            <!-- Emp role -->
+                            <p class="text-2xl font-abhaya-title font-normal text-black leading-snug">Chi nhánh</p>
+                            <!-- Emp name -->
+                            <p class="text-3xl font-abhaya-title font-normal text-black leading-snug font-bold">PetCareUS 2</p>
+                            <p class="text-xl font-abhaya-title font-normal text-gray-600">Hà Nội</p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- FOOTER CONTACT (Rectangle 37) -->
+        <footer class="w-full bg-blue-dark py-12 md:py-20 px-4 md:px-8 lg:px-16">
+            <div class="max-w-7xl mx-auto text-white">
+                <!-- CONTACT US Title -->
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-abhaya-title font-bold mb-10">
+                    LIÊN HỆ VỚI CHÚNG TÔI
+                </h2>
+                
+                <div class="space-y-6">
+                    
+                    <!-- Address -->
+                    <div class="flex items-start space-x-6">
+                        <!-- Home Icon -->
+                        <i data-lucide="home" class="w-8 h-8 md:w-10 md:h-10 text-white stroke-[3.5px] mt-1"></i>
+                        <div>
+                            <p class="text-2xl md:text-3xl lg:text-4xl font-abhaya-title font-normal">
+                                <span class="font-bold">Địa chỉ:</span>
+                                123 Đường Thú Cưng, Phường Chăm Sóc, Quận 1, TP. Hồ Chí Minh.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="flex items-start space-x-6">
+                        <!-- Phone Icon -->
+                        <i data-lucide="phone" class="w-8 h-8 md:w-10 md:h-10 text-white stroke-[3.5px] mt-1"></i>
+                        <div>
+                            <p class="text-2xl md:text-3xl lg:text-4xl font-abhaya-title font-normal">
+                                <span class="font-bold">Điện thoại:</span>
+                                (028) 123 4567 - Hotline: 0987 654 321
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="flex items-start space-x-6">
+                        <!-- Mail Icon -->
+                        <i data-lucide="mail" class="w-8 h-8 md:w-10 md:h-10 text-white stroke-[3.5px] mt-1"></i>
+                        <div>
+                            <p class="text-2xl md:text-3xl lg:text-4xl font-abhaya-title font-normal">
+                                <span class="font-bold">Email:</span>
+                                contact@petcareus.com
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Script để render Lucide icons -->
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCareUS - Bảng Điều Khiển Lịch</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pc-blue': '#3B82F6', // Màu xanh dương chính
+                        'pc-dark-blue': '#2563EB', // Màu xanh đậm hơn
+                        'pc-gray': '#E5E7EB', // Màu nền xám nhạt
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Đảm bảo font Inter được tải */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+        /* Custom style cho layout */
+        .sidebar {
+            width: 250px;
+        }
+
+        /* Ẩn thanh cuộn trên các thiết bị nhỏ */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-bottom: 1px solid #ccc;
+            }
+            .main-content-area {
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+
+    <!-- Thanh header -->
+    <header class="flex justify-between items-center p-4 md:px-8 bg-white border-b border-gray-200 shadow-sm">
+        <!-- Logo -->
+        <div class="flex items-center space-x-1">
+            <svg class="w-8 h-8 text-pc-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10m0 0h16m-4 0v-4m4 4H8m-4 0H2m12 0H8m4 4v-4m0 0v-4m0 4h4m-4 0h-4"></path></svg>
+            <span class="text-xl font-bold text-gray-800">PetCare<span class="text-pc-blue">US</span></span>
+        </div>
+        
+        <!-- Thông tin người dùng -->
+        <div class="flex items-center space-x-4">
+            <div class="hidden md:block text-right text-sm leading-tight">
+                <p class="font-medium text-red-600">VETERINARIAN</p>
+                <p class="text-xs text-gray-500">@vet_name</p>
+            </div>
+            <!-- Icon Profile -->
+            <button class="flex items-center justify-center w-10 h-10 bg-gray-200 text-gray-600 rounded-full hover:bg-gray-300 transition duration-150" aria-label="Tài khoản người dùng">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg>
+            </button>
+            <!-- Dropdown Arrow -->
+            <button class="hidden md:block text-gray-600 hover:text-gray-800 transition duration-150" aria-label="Mở menu">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Nội dung chính: Sidebar và Lịch -->
+    <div class="flex flex-col md:flex-row min-h-[calc(100vh-65px)]">
+        
+        <!-- Sidebar (Menu bên trái) -->
+        <nav class="sidebar bg-white border-r border-gray-200 p-4 md:p-6 shadow-md md:shadow-none">
+            <ul class="flex md:block space-x-4 md:space-x-0 md:space-y-2 overflow-x-auto pb-2">
+                <!-- Nút LỊCH TRÌNH (Active) -->
+                <li>
+                    <button id="schedule-btn" class="w-full flex items-center p-3 font-medium text-white bg-pc-blue hover:bg-pc-dark-blue rounded-lg transition duration-150 text-sm md:text-base" onclick="handleNavigation('Lịch trình')">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2m-9 0V3h4v2m-4 0v2h4V5m-4 0H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2h-2m-6 0V3h4v2m-4 0v2h4V5"></path></svg>
+                        LỊCH TRÌNH
+                    </button>
+                </li>
+                <!-- Nút CUỘC HẸN -->
+                <li>
+                    <button id="appointment-btn" class="w-full flex items-center p-3 font-medium text-gray-600 hover:bg-pc-gray rounded-lg transition duration-150 text-sm md:text-base" onclick="handleNavigation('Cuộc hẹn')">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-4 4h.01M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        CUỘC HẸN
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Khu vực nội dung chính (Lịch) -->
+        <main class="flex-1 p-4 md:p-8 main-content-area">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-300">
+                
+                <!-- Header Lịch -->
+                <div class="bg-gray-200 border-b border-gray-300 p-4 flex justify-between items-center">
+                    <h2 class="text-lg md:text-xl font-semibold text-gray-700 uppercase tracking-wider">LỊCH</h2>
+                    <div class="flex items-center space-x-4">
+                        <span id="current-month" class="text-lg font-bold text-gray-800">November - 2025</span>
+                        <!-- Nút Chỉnh sửa -->
+                        <button id="edit-btn" class="flex items-center px-4 py-2 bg-red-500 text-white font-medium rounded-lg shadow hover:bg-red-600 transition duration-150 text-sm" onclick="toggleEditMode()">
+                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                            Chỉnh sửa
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Thanh tiêu đề các ngày trong tuần -->
+                <div class="grid grid-cols-7 text-center font-bold text-gray-600 border-b border-gray-300">
+                    <div class="p-3">Th 2</div>
+                    <div class="p-3">Th 3</div>
+                    <div class="p-3">Th 4</div>
+                    <div class="p-3">Th 5</div>
+                    <div class="p-3">Th 6</div>
+                    <div class="p-3">Th 7</div>
+                    <div class="p-3">CN</div>
+                </div>
+
+                <!-- Khu vực hiển thị Lịch (Ô trống) -->
+                <div id="calendar-grid" class="grid grid-cols-7 min-h-96 p-2 md:p-4">
+                    <!-- Mô phỏng các ô ngày. Khi nhấp vào sẽ có hiệu ứng -->
+                    <!-- Ví dụ: Một ô ngày -->
+                    <div class="border border-gray-100 h-20 p-1 text-xs text-gray-400 hover:bg-pc-gray cursor-pointer transition duration-100">
+                        1
+                        <span class="block mt-1 text-pc-blue font-medium">1 Hẹn</span>
+                    </div>
+                    <!-- Tạo thêm các ô trống để làm đầy lưới lịch -->
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">2</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">3</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">4</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">5</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">6</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">7</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">8</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">9</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">10</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">11</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">12</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">13</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">14</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">15</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">16</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">17</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">18</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">19</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">20</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">21</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">22</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">23</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">24</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">25</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">26</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">27</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">28</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">29</div>
+                    <div class="border border-gray-100 h-20 p-1 hover:bg-pc-gray cursor-pointer transition duration-100">30</div>
+                </div>
+
+                <!-- Thanh điều hướng Trước/Sau -->
+                <div class="bg-gray-100 p-3 md:p-4 flex justify-end items-center space-x-4 border-t border-gray-300">
+                    <button id="prev-btn" class="flex items-center px-3 py-1.5 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition duration-150" onclick="changeMonth(-1)">
+                        <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                        Trước
+                    </button>
+                    <button id="next-btn" class="flex items-center px-3 py-1.5 text-gray-700 font-medium rounded-lg hover:bg-gray-200 transition duration-150" onclick="changeMonth(1)">
+                        Sau
+                        <svg class="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        // Khai báo các biến trạng thái
+        let isEditMode = false;
+        let currentMonthIndex = 10; // 0=Jan, 10=Nov
+        let currentYear = 2025;
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"];
+
+        // Hàm cập nhật hiển thị tháng/năm
+        function updateMonthDisplay() {
+            document.getElementById('current-month').textContent = 
+                `${monthNames[currentMonthIndex]} - ${currentYear}`;
+            console.log(`Đang hiển thị tháng: ${monthNames[currentMonthIndex]} ${currentYear}`);
+        }
+
+        // Hàm xử lý việc chuyển tháng (tương tác với nút Trước/Sau)
+        function changeMonth(direction) {
+            currentMonthIndex += direction;
+            
+            if (currentMonthIndex < 0) {
+                currentMonthIndex = 11;
+                currentYear--;
+            } else if (currentMonthIndex > 11) {
+                currentMonthIndex = 0;
+                currentYear++;
+            }
+
+            updateMonthDisplay();
+            // Trong ứng dụng thực tế, bạn sẽ tải dữ liệu lịch mới ở đây
+            console.log(`Đã chuyển sang tháng: ${monthNames[currentMonthIndex]} ${currentYear}`);
+
+            // Hiển thị thông báo tương tác
+            showToast(`Đã chuyển sang ${direction > 0 ? 'tháng sau' : 'tháng trước'}.`);
+        }
+
+        // Hàm xử lý chế độ Chỉnh sửa
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            const editBtn = document.getElementById('edit-btn');
+            const calendarGrid = document.getElementById('calendar-grid');
+
+            if (isEditMode) {
+                editBtn.classList.remove('bg-red-500', 'hover:bg-red-600');
+                editBtn.classList.add('bg-green-500', 'hover:bg-green-600');
+                editBtn.innerHTML = '<svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Hoàn tất';
+                calendarGrid.classList.add('border-4', 'border-dashed', 'border-red-300');
+                console.log('Đã BẬT chế độ chỉnh sửa.');
+                showToast('Chế độ Chỉnh sửa ĐÃ BẬT. Giờ bạn có thể nhấp vào ô ngày.');
+            } else {
+                editBtn.classList.remove('bg-green-500', 'hover:bg-green-600');
+                editBtn.classList.add('bg-red-500', 'hover:bg-red-600');
+                editBtn.innerHTML = '<svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg> Chỉnh sửa';
+                calendarGrid.classList.remove('border-4', 'border-dashed', 'border-red-300');
+                console.log('Đã TẮT chế độ chỉnh sửa.');
+                showToast('Chế độ Chỉnh sửa ĐÃ TẮT.');
+            }
+        }
+
+        // Hàm xử lý tương tác với menu bên hông (Sidebar)
+        function handleNavigation(page) {
+            const scheduleBtn = document.getElementById('schedule-btn');
+            const appointmentBtn = document.getElementById('appointment-btn');
+            
+            // Đặt lại tất cả về trạng thái không hoạt động
+            scheduleBtn.classList.remove('bg-pc-blue', 'text-white', 'hover:bg-pc-dark-blue');
+            scheduleBtn.classList.add('text-gray-600', 'hover:bg-pc-gray');
+            appointmentBtn.classList.remove('bg-pc-blue', 'text-white', 'hover:bg-pc-dark-blue');
+            appointmentBtn.classList.add('text-gray-600', 'hover:bg-pc-gray');
+
+            // Đặt trạng thái hoạt động cho nút được nhấp
+            if (page === 'Lịch trình') {
+                scheduleBtn.classList.remove('text-gray-600', 'hover:bg-pc-gray');
+                scheduleBtn.classList.add('bg-pc-blue', 'text-white', 'hover:bg-pc-dark-blue');
+            } else if (page === 'Cuộc hẹn') {
+                appointmentBtn.classList.remove('text-gray-600', 'hover:bg-pc-gray');
+                appointmentBtn.classList.add('bg-pc-blue', 'text-white', 'hover:bg-pc-dark-blue');
+            }
+
+            console.log(`Đã chuyển sang trang: ${page}`);
+            showToast(`Đã chuyển sang trang ${page}.`);
+        }
+
+        // --- Hàm tạo Toast/Message Box thay cho alert() ---
+        function showToast(message) {
+            const toastId = 'app-toast';
+            let toast = document.getElementById(toastId);
+
+            if (!toast) {
+                // Nếu toast chưa tồn tại, tạo nó
+                toast = document.createElement('div');
+                toast.id = toastId;
+                toast.className = 'fixed bottom-5 right-5 z-50 p-3 bg-gray-800 text-white rounded-lg shadow-xl transition-opacity duration-300 opacity-0';
+                document.body.appendChild(toast);
+            }
+
+            // Cập nhật nội dung và hiển thị
+            toast.textContent = message;
+            toast.classList.remove('opacity-0');
+            toast.classList.add('opacity-90');
+
+            // Tự động ẩn sau 3 giây
+            setTimeout(() => {
+                toast.classList.remove('opacity-90');
+                toast.classList.add('opacity-0');
+            }, 3000);
+        }
+
+        // Khởi tạo trạng thái ban đầu khi tải trang
+        window.onload = function() {
+            updateMonthDisplay();
+            console.log('Trang đã tải xong.');
+            showToast('Chào mừng đến với Bảng điều khiển PetCareUS!');
+        };
+    </script>
+
+</body>
+</html>
