@@ -4,204 +4,241 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xem Chi Tiết Hóa Đơn | PetCareUS</title>
-    <!-- Tải Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tải Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Iceberg&display=swap" rel="stylesheet">
 
-    <script>
-        // Cấu hình Tailwind
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'blue-primary': '#2167FF',
-                        'gray-medium': '#B1A4A4',
-                        'gray-light': '#D9D9D9',
-                        'error-icon': '#852221', /* Màu icon Hủy/Đóng */
-                    },
-                    boxShadow: {
-                        'input': '0px 4px 10px rgba(0, 0, 0, 0.25)',
-                    },
-                    fontFamily: {
-                        'abhaya': ['Abhaya Libre', 'serif'],
-                        'iceberg': ['Iceberg', 'cursive'],
-                    },
-                }
-            }
-        }
-    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&family=Inter:wght@400;500&family=Iceberg&display=swap" rel="stylesheet">
+    
     <style>
-        /* Styling riêng */
-        .font-abhaya-bold {
+        /* Định nghĩa biến màu tùy chỉnh */
+        :root {
+            --bs-blue-primary: #2167FF;
+            --bs-blue-dark: #001C57;
+            --bs-header-gray: #D9D9D9;
+            --bs-gray-medium: #B1A4A4;
+            --bs-gray-light: #D9D9D9;
+            --bs-error-icon: #852221;
+            --bs-box-shadow-sm: 0px 4px 10px rgba(0, 0, 0, 0.25);
+            --bs-box-shadow-lg: 0px 4px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Định nghĩa font chữ tùy chỉnh */
+        .font-abhaya-title {
             font-family: 'Abhaya Libre', serif;
-            font-weight: 700;
         }
+        .font-iceberg {
+            font-family: 'Iceberg', sans-serif;
+        }
+        .font-inter {
+            font-family: 'Inter', sans-serif;
+        }
+        .text-red-600 { color: #DC2626; } /* Tương đương Tailwind red-600 */
 
-        .display-box {
-            /* Styles for date/vet fields */
-            border: 3px solid #000000;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-            border-radius: 20px;
-            padding: 8px 16px;
-            height: 36px;
+        /* Các lớp tiện ích tùy chỉnh */
+        .bg-header-gray { background-color: var(--bs-header-gray); }
+        .text-blue-primary { color: var(--bs-blue-primary); }
+        .shadow-custom-lg { box-shadow: var(--bs-box-shadow-lg) !important; }
+        .bg-gray-light { background-color: var(--bs-gray-light); }
+        .border-gray-medium { border-color: var(--bs-gray-medium) !important; }
+        .text-error-icon { color: var(--bs-error-icon) !important; }
+
+        /* Custom style cho Service Item (Mục dịch vụ/sản phẩm) */
+        .service-item {
+            /* w-full h-[52px] bg-gray-light rounded-xl flex items-center px-4 shadow-input */
+            width: 100%;
+            height: 52px;
+            background-color: var(--bs-gray-light);
+            border-radius: 0.75rem !important; /* rounded-xl */
             display: flex;
             align-items: center;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            box-shadow: var(--bs-box-shadow-sm) !important;
         }
 
+        /* Custom style cho Summary Box (Tổng kết) */
         .summary-box {
-            /* Styles for SUBTOTAL/DISCOUNT/TOTAL fields */
-            border: 1px solid #000000;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-            border-radius: 10px;
-            padding: 8px 16px;
-            height: 44px;
+            /* w-full max-w-[187px] h-[52px] rounded-xl flex items-center justify-center shadow-input border border-black */
+            width: 100%;
+            max-width: 187px;
+            height: 52px;
+            border-radius: 0.75rem !important; /* rounded-xl */
             display: flex;
             align-items: center;
-            justify-content: flex-end; /* Căn phải giá trị */
+            justify-content: center;
+            box-shadow: var(--bs-box-shadow-sm) !important;
+            border: 1px solid black; 
+        }
+
+        /* Custom Button Style cho Quay Về */
+        .btn-back-detail {
+            /* w-[159px] h-[70px] bg-white border-3 border-blue-primary text-blue-primary font-abhaya-bold rounded-[20px] shadow-input text-3xl */
+            width: 159px;
+            height: 70px;
+            border: 3px solid var(--bs-blue-primary); 
+            background-color: white; 
+            color: var(--bs-blue-primary);
+            font-weight: bold;
+            border-radius: 20px !important; 
+            box-shadow: var(--bs-box-shadow-sm) !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.15s ease-in-out;
+            font-family: 'Abhaya Libre', serif;
+            font-size: 1.875rem; /* text-3xl */
+        }
+        .btn-back-detail:hover {
+            background-color: rgba(33, 103, 255, 0.1); /* blue-primary/10 */
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-light"> 
+    <header class="shadow-sm">
+        <nav class="navbar navbar-expand-lg bg-white">
+            <div class="container-fluid max-w-[1340px] px-4 px-md-0 mx-auto">
+                <a class="navbar-brand d-flex align-items-center" href="test1.html">
+                    <div class="rounded-pill bg-header-gray d-flex align-items-center justify-content-center me-2" style="width: 50px; height: 50px;">
+                        <span class="fs-2 font-iceberg text-black">PC</span>
+                    </div>
+                    <span class="fs-2 font-iceberg text-blue-primary">PetCareUS</span>
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-    <!-- USER Container (Invoice Details Box) -->
-    <div class="flex flex-col w-full max-w-5xl bg-white border-[4px] border-gray-medium rounded-2xl mx-auto my-12 shadow-2xl">
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav fs-4 font-abhaya-title fw-normal me-4">
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black hover-underline" href="test1.html">TRANG CHỦ</a>
+                        </li>
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black hover-underline" href="test2.html">VỀ CHÚNG TÔI</a>
+                        </li>
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black hover-underline" href="test3.html">LIÊN HỆ</a>
+                        </li>
+                    </ul>
 
-        <!-- Rectangle 34 (Header Bar) -->
-        <div class="h-24 bg-gray-light rounded-t-2xl flex items-center justify-between px-6 md:px-12 border-b-[5px] border-gray-medium">
-            <!-- INVOICE DETAILS -->
-            <!-- Sử dụng font Abhaya Libre Bold cho tiêu đề chính, trừ khi Iceberg được chỉ định rõ ràng -->
-            <h1 class="text-3xl sm:text-4xl font-abhaya-bold text-black translate-y-0.5">INVOICE DETAILS</h1>
+                    <div class="d-flex align-items-center">
+                        <div class="text-end d-none d-sm-block me-3">
+                            <p class="fs-5 fw-bold text-black mb-0 font-abhaya-title">Customer</p>
+                            <p class="fs-6 font-abhaya-title text-danger mb-0" style="color: var(--bs-error-icon);">@cus_name</p>
+                        </div>
+                        
+                        <div class="dropdown">
+                            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle active" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="bg-header-gray rounded-circle d-flex align-items-center justify-content-center fw-bold text-black" style="width: 48px; height: 48px; font-size: 1.25rem;">
+                                    C
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu text-small shadow-sm" style="font-family: var(--bs-font-sans-serif);">
+                                <li><a class="dropdown-item text-blue-primary fw-bold" href="test5.html">Hồ sơ người dùng</a></li>
+                                <li><a class="dropdown-item" href="test9.html">Quản lý cuộc hẹn</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#">Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container-fluid">
+        <div class="container mx-auto max-w-[1340px] pt-4 pb-5">
             
-            <!-- Close/Cancel Button -->
-            <button class="w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center text-error-icon rounded-full hover:bg-gray-300 transition duration-150">
-                <!-- Close icon (X) -->
-                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-8 h-8">
-                    <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm4.3 10.7L12.7 14l3.6 3.3-.7.7-3.6-3.3-3.6 3.3-.7-.7 3.6-3.3-3.6-3.3.7-.7 3.6 3.3 3.6-3.3.7.7z"/>
-                </svg>
-            </button>
-        </div>
-
-        <!-- Main Content -->
-        <div class="p-6 md:p-10 flex-grow">
-
-            <!-- Row 1: Date and Vet -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-6 mb-8">
-                
-                <!-- DATE : -->
-                <div>
-                    <label for="invoice-date" class="block text-2xl font-abhaya-bold text-black mb-2">DATE :</label>
-                    <div id="invoice-date" class="display-box bg-white max-w-[200px]">
-                        <span class="text-xl font-inter">2024-11-20</span>
-                    </div>
-                </div>
-
-                <!-- VET: -->
-                <div>
-                    <label for="vet-name" class="block text-2xl font-abhaya-bold text-black mb-2">VET:</label>
-                    <div id="vet-name" class="display-box bg-white max-w-full">
-                        <span class="text-xl font-inter">Dr. Jane Smith (General Vet)</span>
-                    </div>
-                </div>
+            <div class="text-start mb-4">
+                <a href="test10.html" class="text-decoration-underline text-black fs-4 font-abhaya-title fw-normal transition text-blue-primary-hover">
+                    &larr; BACK TO APPOINTMENT DETAIL
+                </a>
             </div>
 
-            <!-- Row 2: Items Table (Simplified Mockup) -->
-            <div class="mb-10">
-                <h3 class="text-2xl font-abhaya-bold text-black mb-4">ITEMIZED SERVICES</h3>
-                <!-- Table for items -->
-                <div class="overflow-x-auto border border-gray-300 rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-4 py-3 text-left text-xs font-abhaya-bold uppercase tracking-wider">Service/Medicine</th>
-                                <th class="px-4 py-3 text-right text-xs font-abhaya-bold uppercase tracking-wider">Price (VND)</th>
-                                <th class="px-4 py-3 text-right text-xs font-abhaya-bold uppercase tracking-wider">Qty</th>
-                                <th class="px-4 py-3 text-right text-xs font-abhaya-bold uppercase tracking-wider">Amount (VND)</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200 text-sm font-inter">
-                            <tr>
-                                <td class="px-4 py-3">Kiểm tra sức khỏe định kỳ</td>
-                                <td class="px-4 py-3 text-right">300,000</td>
-                                <td class="px-4 py-3 text-right">1</td>
-                                <td class="px-4 py-3 text-right">300,000</td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3">Vaccine Dại (1 liều)</td>
-                                <td class="px-4 py-3 text-right">250,000</td>
-                                <td class="px-4 py-3 text-right">1</td>
-                                <td class="px-4 py-3 text-right">250,000</td>
-                            </tr>
-                             <tr>
-                                <td class="px-4 py-3">Thuốc bổ (30 ngày)</td>
-                                <td class="px-4 py-3 text-right">150,000</td>
-                                <td class="px-4 py-3 text-right">2</td>
-                                <td class="px-4 py-3 text-right">300,000</td>
-                            </tr>
-                            <!-- Total Row Placeholder -->
-                            <tr class="bg-gray-50 font-abhaya-bold text-base">
-                                <td colspan="3" class="px-4 py-3 text-right">SUBTOTAL:</td>
-                                <td class="px-4 py-3 text-right">850,000</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <h1 class="fs-1 fw-bold text-black font-abhaya-title text-center mb-5">CHI TIẾT HÓA ĐƠN</h1>
 
-
-            <!-- Row 3: Payment Method and Summary Totals -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-8">
+            <div class="col-12 col-lg-8 mx-auto shadow-custom-lg bg-white rounded-4 p-4 p-md-5">
                 
-                <!-- PAYMENT METHOD Section -->
-                <div>
-                    <h3 class="text-2xl font-abhaya-bold text-black mb-4">PAYMENT METHOD</h3>
-                    <div class="space-y-3 text-xl font-inter">
-                        <!-- Method: -->
-                        <p>
-                            <span class="font-bold">Method:</span>
-                            <span class="ml-2 text-blue-primary">Credit Card (Visa)</span>
-                        </p>
-                        <!-- Status: -->
-                        <p>
-                            <span class="font-bold">Status:</span>
-                            <span class="ml-2 text-green-600 font-bold">Paid</span>
-                        </p>
-                    </div>
-                </div>
-
-                <!-- SUMMARY Totals Section -->
-                <div class="space-y-4">
+                <div class="d-flex justify-content-between align-items-center mb-5 border-bottom border-gray-medium pb-4">
+                    <h2 class="fs-2 font-abhaya-title fw-bold text-black mb-0">INVOICE: <span class="text-blue-primary">#PCUS20250825-001</span></h2>
                     
-                    <!-- SUBTOTAL: -->
-                    <div class="flex justify-between items-center">
-                        <label class="text-2xl font-abhaya-bold text-black mr-4">SUBTOTAL:</label>
-                        <div class="summary-box bg-gray-50 w-full max-w-[187px]">
-                            <span class="text-xl font-inter font-medium">850,000</span>
+                    <p class="fs-3 fw-normal font-abhaya-title mb-0 text-black">25/08/2025</p>
+                </div>
+
+                <div class="row gx-4 fs-4 font-abhaya-title fw-bold text-black mb-3">
+                    <div class="col-8">
+                        DỊCH VỤ / SẢN PHẨM
+                    </div>
+                    <div class="col-4 text-end">
+                        CHI PHÍ
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column gap-3 fs-5 font-inter fw-medium">
+                    
+                    <div class="d-flex align-items-center">
+                        <span class="text-black me-3 text-2xl font-abhaya-title font-bold">1.</span>
+                        <div class="service-item d-flex justify-content-between">
+                            <span>Khám tổng quát</span>
+                            <span class="text-black fw-bold">400,000</span>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center">
+                        <span class="text-black me-3 text-2xl font-abhaya-title font-bold">2.</span>
+                        <div class="service-item d-flex justify-content-between">
+                            <span>Thuốc giảm đau (2 liều)</span>
+                            <span class="text-black fw-bold">250,000</span>
                         </div>
                     </div>
 
-                    <!-- DISCOUNT: -->
-                    <div class="flex justify-between items-center">
-                        <label class="text-2xl font-abhaya-bold text-black mr-4">DISCOUNT:</label>
-                        <div class="summary-box bg-white w-full max-w-[187px]">
-                            <span class="text-xl font-inter text-red-600 font-medium">- 50,000</span>
+                    <div class="d-flex align-items-center">
+                        <span class="text-black me-3 text-2xl font-abhaya-title font-bold">3.</span>
+                        <div class="service-item d-flex justify-content-between">
+                            <span>Men tiêu hóa (1 hộp)</span>
+                            <span class="text-black fw-bold">200,000</span>
                         </div>
                     </div>
 
-                    <!-- TOTAL: -->
-                    <div class="flex justify-between items-center mt-6 pt-2 border-t border-gray-300">
-                        <label class="text-3xl font-abhaya-bold text-black mr-4">TOTAL:</label>
-                        <div class="summary-box bg-blue-primary/10 border-blue-primary w-full max-w-[187px]">
-                            <span class="text-2xl font-abhaya-bold text-blue-primary">800,000</span>
+                    <div class="text-secondary text-center py-4 fs-4 font-inter">
+                        </div>
+                </div>
+
+                <div class="pt-5 border-top border-black mt-5 d-flex flex-column gap-3 align-items-end">
+                    
+                    <div class="d-flex justify-content-between align-items-center w-100" style="max-width: 480px;">
+                        <label class="fs-4 font-abhaya-title fw-bold text-black me-4">SUBTOTAL:</label>
+                        <div class="summary-box bg-light">
+                            <span class="fs-5 font-inter fw-medium text-black">850,000</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center w-100" style="max-width: 480px;">
+                        <label class="fs-4 font-abhaya-title fw-bold text-black me-4">DISCOUNT:</label>
+                        <div class="summary-box bg-white">
+                            <span class="fs-5 font-inter fw-medium text-red-600">- 50,000</span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center w-100 mt-3 pt-2 border-top border-gray-300" style="max-width: 480px;">
+                        <label class="fs-3 font-abhaya-title fw-bold text-black me-4">TOTAL:</label>
+                        <div class="summary-box border-blue-primary" style="background-color: rgba(33, 103, 255, 0.1);">
+                            <span class="fs-4 font-abhaya-title fw-bold text-blue-primary">800,000</span>
                         </div>
                     </div>
                 </div>
+
+                <div class="pt-8 flex justify-content-center">
+                    <a href="test10.html" class="btn-back-detail text-decoration-none">
+                        QUAY VỀ
+                    </a>
+                </div>
+
             </div>
-            
+
         </div>
+    </main>
 
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

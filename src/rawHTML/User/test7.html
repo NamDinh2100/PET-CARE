@@ -4,164 +4,262 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hồ Sơ Thú Cưng | PetCareUS</title>
-    <!-- Tải Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tải Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&family=Iceberg&display=swap" rel="stylesheet">
     
-    <script>
-        // Cấu hình Tailwind
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'blue-primary': '#2167FF',
-                        'blue-dark': '#001C57',
-                        'gray-medium': '#B1A4A4',
-                        'gray-light': '#D9D9D9',
-                        'error-red': '#852221',
-                    },
-                    boxShadow: {
-                        'input': '0px 4px 10px rgba(0, 0, 0, 0.25)',
-                        'section': '0px 4px 20px rgba(0, 0, 0, 0.25)',
-                    },
-                    fontFamily: {
-                        'abhaya': ['Abhaya Libre', 'serif'],
-                        'sans': ['Inter', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
     <style>
-        /* Styling riêng cho Abhaya Libre */
+        /* Định nghĩa biến màu tùy chỉnh */
+        :root {
+            --bs-blue-primary: #2167FF;
+            --bs-blue-dark: #001C57;
+            --bs-header-gray: #D9D9D9;
+            --bs-gray-medium: #B1A4A4;
+            --bs-gray-light: #D9D9D9;
+            --bs-error-red: #852221;
+            --bs-box-shadow-sm: 0px 4px 10px rgba(0, 0, 0, 0.25);
+            --bs-box-shadow-lg: 0px 4px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Định nghĩa font chữ tùy chỉnh */
         .font-abhaya-title {
             font-family: 'Abhaya Libre', serif;
         }
-        
-        .form-label {
-            font-size: 24px;
-            line-height: 28px;
-            font-weight: 700;
+        .font-iceberg {
+            font-family: 'Iceberg', sans-serif;
         }
 
+        /* Các lớp tiện ích tùy chỉnh */
+        .bg-header-gray { background-color: var(--bs-header-gray); }
+        .text-blue-primary { color: var(--bs-blue-primary); }
+        .shadow-custom-lg { box-shadow: var(--bs-box-shadow-lg) !important; }
+        .text-error-red { color: var(--bs-error-red) !important; }
+
+        /* Custom Input/Select/Date field style */
         .input-field {
-            font-size: 18px;
-            padding: 8px 16px;
+            /* Tương đương h-12/text-xl/p-3 */
+            height: 50px; 
+            padding: 0.5rem 1.25rem;
+            font-size: 1.25rem; 
+            font-family: 'Abhaya Libre', serif;
+            box-shadow: var(--bs-box-shadow-sm) !important;
+            border-radius: 20px !important;
         }
+
+        /* Custom Input Group (Weight field) */
+        .input-group-weight {
+            /* Tương đương w-[324px] rounded-2xl border border-black shadow-input */
+            width: 324px;
+            max-width: 100%;
+            border: 1px solid black;
+            border-radius: 20px !important;
+            box-shadow: var(--bs-box-shadow-sm) !important;
+            overflow: hidden;
+        }
+        .input-group-weight .form-control {
+            border: none;
+            box-shadow: none !important;
+            height: 50px;
+            padding: 0.5rem 1.25rem;
+            font-size: 1.25rem; 
+            font-family: 'Abhaya Libre', serif;
+        }
+        .input-group-weight .input-group-text {
+            /* w-1/3 bg-gray-50 text-xl font-semibold text-gray-700 */
+            width: 33.33%;
+            background-color: #f8f9fa; /* gray-50 */
+            color: #495057; /* text-gray-700 */
+            font-size: 1.25rem;
+            font-weight: 600;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Custom Button Style (Save/Update) */
+        .btn-save-primary {
+            /* px-12 py-3 bg-blue-primary text-white font-abhaya-title text-2xl font-bold rounded-2xl shadow-md */
+            padding: 0.75rem 3rem;
+            background-color: var(--bs-blue-primary);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 20px !important;
+            box-shadow: var(--bs-box-shadow-sm) !important;
+            border: none;
+            transition: background-color 0.15s ease-in-out;
+            font-family: 'Abhaya Libre', serif;
+        }
+        .btn-save-primary:hover {
+            background-color: var(--bs-blue-dark);
+        }
+
+        /* Label Style */
+        .form-label-custom {
+            font-size: 1.5rem; /* text-3xl md:text-2xl */
+            font-weight: bold;
+            color: black;
+            flex-shrink: 0;
+            margin-right: 1rem;
+            font-family: 'Abhaya Libre', serif;
+        }
+        
     </style>
 </head>
-<body class="bg-white min-h-screen flex flex-col items-center pt-8">
-    
-    <!-- HEADER_CONTACT -->
-    <header class="w-full max-w-[1440px] px-4 md:px-8 flex justify-between items-center h-[120px] md:h-[150px] lg:h-[200px]">
-        <div class="flex items-center space-x-2">
-            <!-- PetCareUS Logo & Text -->
-            <svg width="64" height="64" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-blue-primary w-16 h-16">
-                <path d="M21 2C10.51 2 2 10.51 2 21s8.51 19 19 19 19-8.51 19-19S31.49 2 21 2zm0 34c-8.28 0-15-6.72-15-15S12.72 6 21 6s15 6.72 15 15-6.72 15-15 15zm-2-12c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm-8-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm16 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm-8-5c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z" fill="currentColor"/>
-            </svg>
-            <span class="text-5xl lg:text-6xl font-abhaya-title font-normal text-blue-primary">PetCareUS</span>
-        </div>
-        
-        <!-- Navigation Links -->
-        <nav class="hidden md:flex space-x-12 lg:space-x-20 font-abhaya-title text-3xl font-normal">
-            <a href="#" class="text-black hover:text-blue-primary">Home</a>
-            <a href="#" class="text-black hover:text-blue-primary">About</a>
-            <a href="#" class="text-black hover:text-blue-primary">Contact</a>
-        </nav>
+<body class="bg-light"> 
+    <header class="shadow-sm">
+        <nav class="navbar navbar-expand-lg bg-white">
+            <div class="container-fluid max-w-[1340px] px-4 px-md-0 mx-auto">
+                <a class="navbar-brand d-flex align-items-center" href="test1.html">
+                    <div class="rounded-pill bg-header-gray d-flex align-items-center justify-content-center me-2" style="width: 50px; height: 50px;">
+                        <span class="text-3xl font-iceberg text-black">PC</span>
+                    </div>
+                    <span class="fs-2 font-iceberg text-blue-primary">PetCareUS</span>
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-        <!-- Profile / Dropdown Placeholder -->
-        <div class="flex items-center space-x-2">
-            <div>
-                <p class="text-2xl font-abhaya-title font-normal text-black">Customer</p>
-                <p class="text-xl font-abhaya-title font-normal text-red-600 text-right">@cus_name</p>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav fs-4 font-abhaya-title fw-normal me-4">
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black hover-underline" href="test1.html">TRANG CHỦ</a>
+                        </li>
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black hover-underline" href="test2.html">VỀ CHÚNG TÔI</a>
+                        </li>
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black hover-underline" href="test3.html">LIÊN HỆ</a>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex align-items-center">
+                        <div class="text-end d-none d-sm-block me-3">
+                            <p class="fs-5 fw-bold text-black mb-0 font-abhaya-title">Customer</p>
+                            <p class="fs-6 font-abhaya-title text-danger mb-0" style="color: var(--bs-red-danger);">@cus_name</p>
+                        </div>
+                        
+                        <div class="dropdown">
+                            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle active" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="bg-header-gray rounded-circle d-flex align-items-center justify-content-center text-xl fw-bold text-black" style="width: 48px; height: 48px;">
+                                    C
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu text-small shadow-sm" style="font-family: var(--bs-font-sans-serif);">
+                                <li><a class="dropdown-item text-blue-primary fw-bold" href="test5.html">Hồ sơ người dùng</a></li>
+                                <li><a class="dropdown-item" href="test9.html">Quản lý cuộc hẹn</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#">Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center">
-                <!-- User Icon Placeholder -->
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                </svg>
-            </div>
-            <!-- Dropdown Arrow -->
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-black">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-            </svg>
-        </div>
+        </nav>
     </header>
 
-    <!-- Main Content Area: Centered Pet View Form -->
-    <main class="w-full flex justify-center mt-12 mb-12">
-        
-        <!-- USER PET VIEW FORM (Max 688px wide) -->
-        <div class="relative w-full max-w-[688px] h-auto bg-white border-[4px] border-gray-medium rounded-[20px] shadow-xl mx-4">
+    <main class="container-fluid">
+        <div class="container mx-auto max-w-[1340px] pt-4 pb-5">
+            
+            <h1 class="fs-1 fw-bold text-black font-abhaya-title text-center mb-5">HỒ SƠ THÚ CƯNG</h1>
 
-            <!-- Rectangle 34 (Header Bar) -->
-            <div class="absolute top-0 left-0 w-full h-24 bg-gray-light rounded-t-[20px] flex items-center justify-center border-b-[5px] border-gray-medium">
-                <h2 class="text-4xl font-abhaya-title font-bold text-black pt-4">PET PROFILE</h2>
+            <form action="#" method="POST" class="col-12 col-lg-8 mx-auto shadow-custom-lg bg-white rounded-4 p-4 p-md-5">
                 
-                <!-- Cancel Icon (Close button) -->
-                <button class="absolute right-4 top-4 p-2 rounded-full hover:bg-gray-medium transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-10 h-10 text-error-red">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
+                <div class="d-flex justify-content-between align-items-center mb-5 border-bottom border-gray-medium pb-4">
+                    <h2 class="fs-2 font-abhaya-title fw-bold text-black mb-0">Pet Name: <span class="text-blue-primary">Vàng</span></h2>
+                    
+                    <a href="test8.html" class="text-decoration-underline fs-5 font-abhaya-title fw-normal transition text-blue-primary-hover">
+                        XEM HỒ SƠ Y TẾ
+                    </a>
+                </div>
 
-            <!-- Form Fields -->
-            <form class="pt-28 pb-8 px-6 md:px-12 space-y-8">
+                <div class="d-flex align-items-center mb-5 border-bottom border-gray-medium pb-4">
+                    <div class="rounded-circle bg-gray-light d-flex align-items-center justify-content-center me-4" style="width: 80px; height: 80px;">
+                        <span class="fs-2 fw-bold text-black">V</span>
+                    </div>
+                    
+                    <button type="button" class="btn btn-outline-secondary px-4 py-2 rounded-pill font-abhaya-title fs-5" style="border-width: 2px;">
+                        Edit Photo
+                    </button>
+                    
+                    <button type="button" class="btn btn-link text-error-red ms-auto text-decoration-none fs-5 font-abhaya-title fw-normal">
+                        Delete Pet
+                    </button>
+                </div>
                 
-                <!-- PET NAME -->
-                <div class="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
-                    <label for="pet_name" class="font-abhaya-title form-label shrink-0 mr-4">PET NAME:</label>
-                    <input type="text" id="pet_name" value="Buddy"
-                           class="w-full md:w-[324px] input-field bg-white border border-black shadow-input rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-primary">
-                </div>
+                <div class="row g-4 justify-content-center">
+                    
+                    <div class="col-md-6 d-flex flex-column gap-4">
+                        
+                        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                            <label for="pet_name" class="form-label-custom mb-2 mb-md-0">PET NAME:</label>
+                            <input type="text" id="pet_name" value="Vàng" class="form-control input-field w-100 w-md-auto" style="min-width: 200px;" required>
+                        </div>
 
-                <!-- SEX -->
-                <div class="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
-                    <label for="pet_sex" class="font-abhaya-title form-label shrink-0 mr-4">SEX:</label>
-                    <select id="pet_sex" 
-                            class="w-full md:w-[324px] input-field bg-white border border-black shadow-input rounded-2xl appearance-none focus:outline-none focus:ring-2 focus:ring-blue-primary">
-                        <option value="male" selected>Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                </div>
+                        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                            <label for="pet_species" class="form-label-custom mb-2 mb-md-0">PET SPECIES:</label>
+                            <select id="pet_species" class="form-select input-field w-100 w-md-auto" style="min-width: 200px;" required>
+                                <option value="Chó">Chó</option>
+                                <option value="Mèo">Mèo</option>
+                                <option value="Thỏ">Thỏ</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                        </div>
 
-                <!-- SPECIES -->
-                <div class="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
-                    <label for="pet_species" class="font-abhaya-title form-label shrink-0 mr-4">SPECIES:</label>
-                    <input type="text" id="pet_species" value="Dog (Golden Retriever)"
-                           class="w-full md:w-[324px] input-field bg-white border border-black shadow-input rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-primary">
-                </div>
+                        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                            <label for="pet_breed" class="form-label-custom mb-2 mb-md-0">PET BREED:</label>
+                            <input type="text" id="pet_breed" value="Golden Retriever" class="form-control input-field w-100 w-md-auto" style="min-width: 200px;">
+                        </div>
 
-                <!-- YEAR OF BIRTH -->
-                <div class="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
-                    <label for="pet_yob" class="font-abhaya-title form-label shrink-0 mr-4">YEAR OF BIRTH:</label>
-                    <input type="number" id="pet_yob" value="2020" min="1990" max="2025"
-                           class="w-full md:w-[324px] input-field bg-white border border-black shadow-input rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-primary">
-                </div>
+                    </div>
+                    
+                    <div class="col-md-6 d-flex flex-column gap-4">
 
-                <!-- WEIGHT -->
-                <div class="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
-                    <label for="pet_weight" class="font-abhaya-title form-label shrink-0 mr-4">WEIGHT:</label>
-                    <div class="flex w-full md:w-[324px] rounded-2xl border border-black shadow-input overflow-hidden">
-                        <input type="number" id="pet_weight" value="15" step="0.1"
-                               class="w-2/3 input-field bg-white pr-2 border-r border-black focus:outline-none focus:ring-0">
-                        <span class="w-1/3 flex items-center justify-center bg-gray-50 text-xl font-semibold text-gray-700">kg</span>
+                        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                            <label for="pet_dob" class="form-label-custom mb-2 mb-md-0">DATE OF BIRTH:</label>
+                            <input type="date" id="pet_dob" value="2020-05-15" min="1990-01-01" max="2025-12-31" 
+                                   class="form-control input-field w-100 w-md-auto" style="min-width: 200px;">
+                        </div>
+
+                        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                            <label for="pet_gender" class="form-label-custom mb-2 mb-md-0">GENDER:</label>
+                            <select id="pet_gender" class="form-select input-field w-100 w-md-auto" style="min-width: 200px;" required>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                            <label for="pet_weight" class="form-label-custom mb-2 mb-md-0">WEIGHT:</label>
+                            <div class="input-group-weight ms-md-auto">
+                                <input type="number" id="pet_weight" value="15" step="0.1"
+                                       class="form-control text-end" style="border-radius: 20px 0 0 20px !important;" required>
+                                <span class="input-group-text">kg</span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
-                <!-- Action Button -->
-                <div class="pt-6 flex justify-center">
-                    <button type="submit" class="px-12 py-3 bg-blue-primary text-white font-abhaya-title text-2xl font-bold rounded-2xl shadow-md hover:bg-blue-dark transition transform hover:scale-105">
+                <div class="pt-5 mt-4 flex justify-content-center">
+                    <button type="submit" class="btn-save-primary">
                         SAVE CHANGES
                     </button>
                 </div>
             </form>
             
+            <div class="text-center pt-5">
+                <a href="test6.html" class="text-decoration-underline text-black fs-4 font-abhaya-title fw-normal transition text-blue-primary-hover">
+                    &larr; BACK TO PET LIST
+                </a>
+            </div>
+
         </div>
-        
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

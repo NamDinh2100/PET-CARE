@@ -4,226 +4,201 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liên Hệ | PetCareUS</title>
-    <!-- Tải Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tải Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Tải Lucide Icons cho các biểu tượng liên hệ -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&family=Iceberg&display=swap" rel="stylesheet">
+    
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <script>
-        // Cấu hình Tailwind
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'blue-primary': '#2167FF',
-                        'blue-dark': '#001C57', /* Màu xanh đậm cho footer */
-                        'header-gray': '#D9D9D9',
-                        'red-danger': '#FF0000',
-                    },
-                    boxShadow: {
-                        'custom-sm': '0px 4px 10px rgba(0, 0, 0, 0.25)',
-                        'custom-lg': '0px 4px 20px rgba(0, 0, 0, 0.25)',
-                    },
-                    fontFamily: {
-                        'abhaya': ['Abhaya Libre', 'serif'],
-                        'sans': ['Inter', 'sans-serif'], // Fallback
-                    },
-                }
-            }
-        }
-    </script>
     <style>
-        /* Styling riêng cho Abhaya Libre */
+        /* Định nghĩa biến màu tùy chỉnh */
+        :root {
+            --bs-blue-primary: #2167FF;
+            --bs-blue-dark: #001C57; /* Màu xanh đậm cho footer */
+            --bs-header-gray: #D9D9D9;
+            --bs-red-danger: #FF0000;
+            --bs-box-shadow-lg: 0px 4px 20px rgba(0, 0, 0, 0.25);
+            --bs-box-shadow-sm: 0px 4px 10px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Định nghĩa font chữ tùy chỉnh */
         .font-abhaya-title {
             font-family: 'Abhaya Libre', serif;
         }
-
-        /* Tăng cường hiệu ứng bóng đổ cho các khối chính */
-        .content-card {
-            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
+        .font-iceberg {
+            font-family: 'Iceberg', sans-serif;
         }
 
-        /* Placeholder nội dung */
-        .info-placeholder {
-            background-color: #D9D9D9;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        /* Các lớp tiện ích tùy chỉnh */
+        .bg-header-gray { background-color: var(--bs-header-gray); }
+        .bg-blue-dark { background-color: var(--bs-blue-dark); }
+        .text-blue-primary { color: var(--bs-blue-primary); }
+        .rounded-50px { border-radius: 50px !important; }
+        .shadow-custom-lg { box-shadow: var(--bs-box-shadow-lg) !important; }
+        .shadow-custom-sm { box-shadow: var(--bs-box-shadow-sm) !important; }
+        
+        /* Custom Input Style for Forms (Lớn, bo góc 20px) */
+        .input-box-lg {
+            height: 70px;
+            padding: 1rem 1.5rem;
+            border-radius: 20px !important;
+            box-shadow: var(--bs-box-shadow-sm);
+            border: 1px solid var(--bs-header-gray) !important;
+            font-size: 1.5rem; /* Text size approximation */
+            font-family: 'Abhaya Libre', serif;
+        }
+
+        /* Custom style cho Lucide Icons trong Footer */
+        .lucide-icon-lg {
+            width: 40px; 
+            height: 40px; 
+            stroke-width: 3.5px; /* Giữ nguyên độ dày nét vẽ */
+            flex-shrink: 0;
+            margin-top: 0.25rem; /* Giả lập mt-1 */
+        }
+
+        /* Lớp cho nút bấm (dùng lại từ test1.html) */
+        .btn-primary-outline { 
+            color: var(--bs-blue-primary); 
+            border: 5px solid var(--bs-blue-primary); 
+            background-color: white; 
+            box-shadow: var(--bs-box-shadow-sm);
+        }
+        .btn-primary-outline:hover {
+            color: var(--bs-blue-primary); 
+            background-color: rgba(33, 103, 255, 0.1); /* blue-primary/10 */
         }
     </style>
 </head>
-<body class="bg-white min-h-screen pt-[100px] md:pt-[120px]">
-    
-    <!-- HEADER_CONTACT -->
-    <header class="fixed top-0 left-0 w-full h-[100px] md:h-[120px] bg-white shadow-custom-sm z-50 flex items-center justify-between px-4 md:px-8">
-        <div class="max-w-[1440px] w-full mx-auto flex items-center justify-between">
-            <!-- Group 1: PetCareUS Logo -->
-            <div class="flex items-center space-x-2">
-                <!-- Foot Icon Placeholder -->
-                <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-blue-primary w-10 h-10 md:w-[64px] md:h-[64px]">
-                    <path d="M21 2C10.51 2 2 10.51 2 21s8.51 19 19 19 19-8.51 19-19S31.49 2 21 2zm0 34c-8.28 0-15-6.72-15-15S12.72 6 21 6s15 6.72 15 15-6.72 15-15 15zm-2-12c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm-8-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm16 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm-8-5c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z" fill="currentColor"/>
-                </svg>
-                <span class="text-3xl md:text-5xl lg:text-6xl font-abhaya-title font-bold text-blue-primary">PetCareUS</span>
-            </div>
-
-            <!-- Navigation Links -->
-            <nav class="flex space-x-6 md:space-x-12 items-center text-xl md:text-3xl font-abhaya-title font-normal">
-                <!-- Home -->
-                <a href="#" class="text-black hover:text-gray-700 transition">Trang Chủ</a>
-                <!-- About -->
-                <a href="#" class="text-black hover:text-gray-700 transition">Về Chúng Tôi</a>
-                
-                <!-- Contact -->
-                <a href="#" class="text-blue-primary relative pb-1">
-                    Liên Hệ
-                    <!-- Line 4 -->
-                    <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full h-[4px] bg-blue-primary rounded-full"></div>
+<body class="bg-light d-flex flex-column min-vh-100"> 
+    <header class="shadow-sm">
+        <nav class="navbar navbar-expand-lg bg-white">
+            <div class="container-fluid max-w-[1340px] px-4 px-md-0 mx-auto">
+                <a class="navbar-brand d-flex align-items-center" href="test1.html">
+                    <div class="rounded-pill bg-header-gray d-flex align-items-center justify-content-center me-2" style="width: 50px; height: 50px;">
+                        <span class="text-3xl font-iceberg text-black">PC</span>
+                    </div>
+                    <span class="fs-2 font-iceberg text-blue-primary">PetCareUS</span>
                 </a>
-            </nav>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <!-- User Info and Profile (Right Side) -->
-            <div class="flex items-center space-x-3 md:space-x-4">
-                <div class="text-right hidden sm:block">
-                    <p class="text-base md:text-xl font-abhaya-title text-black">Customer</p>
-                    <p class="text-base md:text-lg font-abhaya-title text-red-danger leading-tight">@cus_name</p>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav fs-4 font-abhaya-title fw-normal me-4">
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black hover-underline" href="test1.html">TRANG CHỦ</a>
+                        </li>
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black hover-underline" href="test2.html">VỀ CHÚNG TÔI</a>
+                        </li>
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black fw-bold text-blue-primary active" aria-current="page" href="test3.html">LIÊN HỆ</a>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex align-items-center">
+                        <div class="text-end d-none d-sm-block me-3">
+                            <p class="fs-5 fw-bold text-black mb-0 font-abhaya-title">Customer</p>
+                            <p class="fs-6 font-abhaya-title text-danger mb-0" style="color: var(--bs-red-danger);">@cus_name</p>
+                        </div>
+                        
+                        <div class="dropdown">
+                            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="bg-header-gray rounded-circle d-flex align-items-center justify-content-center text-xl fw-bold text-black" style="width: 48px; height: 48px;">
+                                    C
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu text-small shadow-sm" style="font-family: var(--bs-font-sans-serif);">
+                                <li><a class="dropdown-item" href="test5.html">Hồ sơ người dùng</a></li>
+                                <li><a class="dropdown-item" href="test9.html">Quản lý cuộc hẹn</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#">Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- Ellipse 1 (Profile Avatar Placeholder) -->
-                <div class="w-12 h-12 md:w-16 md:h-16 bg-header-gray rounded-full flex items-center justify-center text-lg md:text-xl font-bold text-black overflow-hidden">
-                    C
-                </div>
-                
-                <!-- Chevron Down -->
-                <svg class="w-3 h-3 md:w-4 md:h-4 text-black" fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l5 5 5-5"/></svg>
             </div>
-        </div>
+        </nav>
     </header>
 
-    <!-- MAIN CONTENT AREA -->
-    <main class="w-full relative">
-        <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
+    <main class="container-fluid flex-grow-1">
+        <div class="container mx-auto max-w-[1340px] pt-4 pb-5">
+            
+            <h1 class="fs-1 fw-bold text-black font-abhaya-title text-center mb-5">LIÊN HỆ VỚI CHÚNG TÔI</h1>
 
-            <!-- Section 1: GIỜ LÀM VIỆC & THÔNG TIN CHUNG (Rectangle 36) -->
-            <section class="mt-8 mb-16">
-                <!-- STAFF INFOMATION Title (Đổi thành Giờ Làm Việc) -->
-                <h2 class="text-4xl md:text-5xl font-abhaya-title font-bold text-black mb-8">
-                    GIỜ LÀM VIỆC VÀ CƠ SỞ
-                </h2>
+            <div class="row g-5">
                 
-                <!-- Rectangle 36: Content Card -->
-                <div class="bg-white content-card rounded-[40px] p-6 md:p-10 lg:p-16">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-8 justify-items-center">
-                        
-                        <!-- Info Card 1: Giờ làm việc thường -->
-                        <div class="flex flex-col items-center text-center max-w-xs">
-                            <!-- Placeholder -->
-                            <div class="w-40 h-40 md:w-48 md:h-48 rounded-xl info-placeholder mb-4 flex items-center justify-center text-3xl font-bold text-gray-700">
-                                GP
-                            </div>
-                            <!-- Emp role -->
-                            <p class="text-2xl font-abhaya-title font-normal text-black leading-snug">Giờ làm việc</p>
-                            <!-- Emp name -->
-                            <p class="text-3xl font-abhaya-title font-normal text-black leading-snug font-bold">Thứ 2 - Thứ 6</p>
-                            <p class="text-xl font-abhaya-title font-normal text-gray-600">8:00 - 18:00</p>
-                        </div>
+                <div class="col-md-5">
+                    <form action="#" method="POST" class="d-flex flex-column gap-4">
+                        <input type="text" placeholder="Họ và tên" class="form-control input-box-lg" required>
+                        <input type="email" placeholder="Email" class="form-control input-box-lg" required>
+                        <input type="tel" placeholder="Số điện thoại" class="form-control input-box-lg">
+                        <textarea placeholder="Nội dung tin nhắn" rows="4" class="form-control input-box-lg" style="height: auto;"></textarea>
 
-                        <!-- Info Card 2: Giờ làm việc cuối tuần -->
-                        <div class="flex flex-col items-center text-center max-w-xs">
-                            <!-- Placeholder -->
-                            <div class="w-40 h-40 md:w-48 md:h-48 rounded-xl info-placeholder mb-4 flex items-center justify-center text-3xl font-bold text-gray-700">
-                                WE
-                            </div>
-                            <!-- Emp role -->
-                            <p class="text-2xl font-abhaya-title font-normal text-black leading-snug">Cuối tuần</p>
-                            <!-- Emp name -->
-                            <p class="text-3xl font-abhaya-title font-normal text-black leading-snug font-bold">Thứ 7 & Chủ Nhật</p>
-                            <p class="text-xl font-abhaya-title font-normal text-gray-600">9:00 - 17:00</p>
+                        <div class="text-center pt-3">
+                            <button type="submit" class="btn btn-primary-outline px-5 py-3 rounded-pill">
+                                <span class="fs-3 fw-bold font-abhaya-title">
+                                    GỬI
+                                </span>
+                            </button>
                         </div>
-
-                        <!-- Info Card 3: Địa điểm chính -->
-                        <div class="flex flex-col items-center text-center max-w-xs">
-                            <!-- Placeholder -->
-                            <div class="w-40 h-40 md:w-48 md:h-48 rounded-xl info-placeholder mb-4 flex items-center justify-center text-3xl font-bold text-gray-700">
-                                LOC
-                            </div>
-                            <!-- Emp role -->
-                            <p class="text-2xl font-abhaya-title font-normal text-black leading-snug">Cơ sở chính</p>
-                            <!-- Emp name -->
-                            <p class="text-3xl font-abhaya-title font-normal text-black leading-snug font-bold">PetCareUS 1</p>
-                            <p class="text-xl font-abhaya-title font-normal text-gray-600">Quận 1, TP. HCM</p>
-                        </div>
-
-                        <!-- Info Card 4: Địa điểm phụ -->
-                        <div class="flex flex-col items-center text-center max-w-xs">
-                            <!-- Placeholder -->
-                            <div class="w-40 h-40 md:w-48 md:h-48 rounded-xl info-placeholder mb-4 flex items-center justify-center text-3xl font-bold text-gray-700">
-                                BRANCH
-                            </div>
-                            <!-- Emp role -->
-                            <p class="text-2xl font-abhaya-title font-normal text-black leading-snug">Chi nhánh</p>
-                            <!-- Emp name -->
-                            <p class="text-3xl font-abhaya-title font-normal text-black leading-snug font-bold">PetCareUS 2</p>
-                            <p class="text-xl font-abhaya-title font-normal text-gray-600">Hà Nội</p>
-                        </div>
-                        
-                    </div>
+                    </form>
                 </div>
-            </section>
-        </div>
-        
-        <!-- FOOTER CONTACT (Rectangle 37) -->
-        <footer class="w-full bg-blue-dark py-12 md:py-20 px-4 md:px-8 lg:px-16">
-            <div class="max-w-7xl mx-auto text-white">
-                <!-- CONTACT US Title -->
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-abhaya-title font-bold mb-10">
-                    LIÊN HỆ VỚI CHÚNG TÔI
-                </h2>
-                
-                <div class="space-y-6">
-                    
-                    <!-- Address -->
-                    <div class="flex items-start space-x-6">
-                        <!-- Home Icon -->
-                        <i data-lucide="home" class="w-8 h-8 md:w-10 md:h-10 text-white stroke-[3.5px] mt-1"></i>
-                        <div>
-                            <p class="text-2xl md:text-3xl lg:text-4xl font-abhaya-title font-normal">
-                                <span class="font-bold">Địa chỉ:</span>
-                                123 Đường Thú Cưng, Phường Chăm Sóc, Quận 1, TP. Hồ Chí Minh.
-                            </p>
-                        </div>
-                    </div>
 
-                    <!-- Phone -->
-                    <div class="flex items-start space-x-6">
-                        <!-- Phone Icon -->
-                        <i data-lucide="phone" class="w-8 h-8 md:w-10 md:h-10 text-white stroke-[3.5px] mt-1"></i>
-                        <div>
-                            <p class="text-2xl md:text-3xl lg:text-4xl font-abhaya-title font-normal">
-                                <span class="font-bold">Điện thoại:</span>
-                                (028) 123 4567 - Hotline: 0987 654 321
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Email -->
-                    <div class="flex items-start space-x-6">
-                        <!-- Mail Icon -->
-                        <i data-lucide="mail" class="w-8 h-8 md:w-10 md:h-10 text-white stroke-[3.5px] mt-1"></i>
-                        <div>
-                            <p class="text-2xl md:text-3xl lg:text-4xl font-abhaya-title font-normal">
-                                <span class="font-bold">Email:</span>
-                                contact@petcareus.com
-                            </p>
-                        </div>
+                <div class="col-md-7">
+                    <div class="w-100 bg-header-gray shadow-custom-lg rounded-4 d-flex align-items-center justify-content-center text-black-50" style="height: 680px;">
+                        <p class="fs-4 font-abhaya-title">Bản Đồ Đặt Ở Đây (Google Maps Placeholder)</p>
                     </div>
                 </div>
             </div>
-        </footer>
+        </div>
     </main>
 
-    <!-- Script để render Lucide icons -->
+    <footer class="bg-blue-dark text-white pt-5 pb-5 mt-5">
+        <div class="container mx-auto max-w-[1340px] px-4 px-md-0">
+            <div class="row row-cols-1 row-cols-lg-3 g-5">
+                
+                <div class="col d-flex align-items-start">
+                    <i data-lucide="map-pin" class="text-white lucide-icon-lg me-4"></i>
+                    <div>
+                        <p class="fs-4 font-abhaya-title fw-normal mb-0 text-break">
+                            <span class="fw-bold">Địa chỉ:</span><br>
+                            Tầng 1, Tòa nhà PetCareUS, 123 Đường Nguyễn Văn Linh, Quận 7, TP.HCM
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col d-flex align-items-start">
+                    <i data-lucide="phone" class="text-white lucide-icon-lg me-4"></i>
+                    <div>
+                        <p class="fs-4 font-abhaya-title fw-normal mb-0">
+                            <span class="fw-bold">Điện thoại:</span><br>
+                            (028) 123 4567<br>
+                            Hotline: 0987 654 321
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col d-flex align-items-start">
+                    <i data-lucide="mail" class="text-white lucide-icon-lg me-4"></i>
+                    <div>
+                        <p class="fs-4 font-abhaya-title fw-normal mb-0 text-break">
+                            <span class="fw-bold">Email:</span><br>
+                            contact@petcareus.com
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <script>
         lucide.createIcons();
     </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

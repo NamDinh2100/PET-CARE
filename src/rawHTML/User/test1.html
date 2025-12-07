@@ -4,198 +4,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trang Chủ PetCareUS</title>
-    <!-- Tải Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tải Fonts -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
     <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&family=Iceberg&display=swap" rel="stylesheet">
     
-    <script>
-        // Cấu hình Tailwind
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'blue-primary': '#2167FF',
-                        'header-gray': '#D9D9D9',
-                        'red-danger': '#FF0000',
-                    },
-                    boxShadow: {
-                        'custom-sm': '0px 4px 10px rgba(0, 0, 0, 0.25)',
-                        'custom-lg': '0px 4px 20px rgba(0, 0, 0, 0.25)',
-                    },
-                    fontFamily: {
-                        // Thiết lập các font theo yêu cầu
-                        'abhaya': ['Abhaya Libre', 'serif'],
-                        'iceberg': ['Iceberg', 'sans-serif'],
-                        'sans': ['Inter', 'sans-serif'], // Fallback
-                    },
-                    spacing: {
-                        '15': '3.75rem', // 60px
-                        '18': '4.5rem', // 72px
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        /* CSS cho khu vực Hero - mô phỏng bg 1 */
-        .hero-bg-placeholder {
-            /* Sử dụng màu xanh nhẹ hoặc gradient để mô phỏng background lớn */
-            background: linear-gradient(180deg, rgba(33, 103, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
-            min-height: 900px;
+        /* Định nghĩa biến màu tùy chỉnh */
+        :root {
+            --bs-blue-primary: #2167FF;
+            --bs-header-gray: #D9D9D9;
+            --bs-red-danger: #FF0000;
+            --bs-box-shadow-lg: 0px 4px 20px rgba(0, 0, 0, 0.25);
+            --bs-box-shadow-sm: 0px 4px 10px rgba(0, 0, 0, 0.25);
         }
 
-        /* Styling riêng cho Abhaya Libre (Phần lớn nội dung) */
+        /* Định nghĩa font chữ tùy chỉnh */
         .font-abhaya-title {
             font-family: 'Abhaya Libre', serif;
         }
+        .font-iceberg {
+            font-family: 'Iceberg', sans-serif;
+        }
+
+        /* Các lớp tiện ích tùy chỉnh */
+        .bg-header-gray { background-color: var(--bs-header-gray); }
+        .text-blue-primary { color: var(--bs-blue-primary); }
+        .btn-primary-outline { 
+            color: var(--bs-blue-primary); 
+            border: 5px solid var(--bs-blue-primary); 
+            background-color: white; 
+            box-shadow: var(--bs-box-shadow-sm);
+        }
+        .btn-primary-outline:hover {
+            color: var(--bs-blue-primary); 
+            background-color: rgba(33, 103, 255, 0.1); /* blue-primary/10 */
+        }
+        .rounded-50px { border-radius: 50px !important; }
+        .shadow-custom-lg { box-shadow: var(--bs-box-shadow-lg) !important; }
+        .shadow-custom-sm { box-shadow: var(--bs-box-shadow-sm) !important; }
+        .input-display-box {
+            height: 70px;
+            padding: 1rem 1.5rem;
+            border-radius: 20px;
+            box-shadow: var(--bs-box-shadow-sm);
+            border: 1px solid #ced4da; /* Giả lập border */
+        }
     </style>
 </head>
-<body class="bg-white min-h-screen pt-[100px] md:pt-[120px]">
-    
-    <!-- HEADER_HOME -->
-    <header class="fixed top-0 left-0 w-full h-[100px] md:h-[120px] bg-white shadow-custom-sm z-50 flex items-center justify-between px-4 md:px-8">
-        <div class="max-w-[1440px] w-full mx-auto flex items-center justify-between">
-            <!-- Group 1: PetCareUS Logo -->
-            <div class="flex items-center space-x-2">
-                <!-- Foot Icon Placeholder -->
-                <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-blue-primary w-10 h-10 md:w-[64px] md:h-[64px]">
-                    <path d="M21 2C10.51 2 2 10.51 2 21s8.51 19 19 19 19-8.51 19-19S31.49 2 21 2zm0 34c-8.28 0-15-6.72-15-15S12.72 6 21 6s15 6.72 15 15-6.72 15-15 15zm-2-12c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm-8-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm16 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm-8-5c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z" fill="currentColor"/>
-                </svg>
-                <span class="text-3xl md:text-5xl lg:text-6xl font-abhaya-title font-bold text-blue-primary">PetCareUS</span>
-            </div>
-
-            <!-- Navigation Links (Hidden on small screens) -->
-            <nav class="hidden lg:flex space-x-12 items-center text-3xl font-abhaya-title font-normal">
-                <!-- Home -->
-                <a href="#" class="text-blue-primary relative pb-1">
-                    Trang Chủ
-                    <div class="absolute bottom-0 left-0 w-full h-[4px] bg-blue-primary rounded-full"></div>
+<body class="bg-light"> 
+    <header class="shadow-sm">
+        <nav class="navbar navbar-expand-lg bg-white">
+            <div class="container-fluid max-w-[1340px] px-4 px-md-0 mx-auto">
+                <a class="navbar-brand d-flex align-items-center" href="test1.html">
+                    <div class="rounded-pill bg-header-gray d-flex align-items-center justify-content-center me-2" style="width: 50px; height: 50px;">
+                        <span class="text-3xl font-iceberg text-black">PC</span>
+                    </div>
+                    <span class="fs-2 font-iceberg text-blue-primary">PetCareUS</span>
                 </a>
-                <!-- About -->
-                <a href="#" class="text-black hover:text-gray-700 transition">Về Chúng Tôi</a>
-                <!-- Contact -->
-                <a href="#" class="text-black hover:text-gray-700 transition">Liên Hệ</a>
-            </nav>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <!-- User Info and Profile (Right Side) -->
-            <div class="flex items-center space-x-3 md:space-x-4">
-                <div class="text-right hidden sm:block">
-                    <p class="text-base md:text-xl font-abhaya-title text-black">Customer</p>
-                    <p class="text-base md:text-lg font-abhaya-title text-red-danger leading-tight">@cus_name</p>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav fs-4 font-abhaya-title fw-normal me-4">
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black hover-underline" href="test1.html">TRANG CHỦ</a>
+                        </li>
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black hover-underline" href="test2.html">VỀ CHÚNG TÔI</a>
+                        </li>
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black hover-underline" href="test3.html">LIÊN HỆ</a>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex align-items-center">
+                        <div class="text-end d-none d-sm-block me-3">
+                            <p class="fs-5 fw-bold text-black mb-0 font-abhaya-title">Customer</p>
+                            <p class="fs-6 font-abhaya-title text-danger mb-0" style="color: var(--bs-red-danger);">@cus_name</p>
+                        </div>
+                        
+                        <div class="dropdown">
+                            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="bg-header-gray rounded-circle d-flex align-items-center justify-content-center text-xl fw-bold text-black" style="width: 48px; height: 48px;">
+                                    C
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu text-small shadow-sm" style="font-family: var(--bs-font-sans-serif);">
+                                <li><a class="dropdown-item" href="test5.html">Hồ sơ người dùng</a></li>
+                                <li><a class="dropdown-item" href="test9.html">Quản lý cuộc hẹn</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#">Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                
-                <!-- Ellipse 1 (Profile Avatar Placeholder) -->
-                <div class="w-12 h-12 md:w-16 md:h-16 bg-header-gray rounded-full flex items-center justify-center text-lg md:text-xl font-bold text-black overflow-hidden">
-                    C
-                </div>
-                
-                <!-- Chevron Down -->
-                <svg class="w-3 h-3 md:w-4 md:h-4 text-black" fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l5 5 5-5"/></svg>
             </div>
-        </div>
+        </nav>
     </header>
 
-    <!-- MAIN CONTENT AREA -->
-    <main class="w-full bg-white relative">
-        <div class="max-w-[1440px] mx-auto">
+    <main class="container-fluid">
+        <div class="container mx-auto max-w-[1340px] pt-4 pb-5">
             
-            <!-- Hero Section (bg 1 Placeholder) -->
-            <section class="hero-bg-placeholder pt-16 pb-24 px-4 md:px-8 lg:px-16">
-                <!-- Large Text Blocks -->
-                <div class="max-w-4xl space-y-6">
-                    <!-- Comprehensive care for your pet -->
-                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-abhaya-title font-bold text-black leading-tight mt-10">
-                        Chăm sóc toàn diện cho thú cưng của bạn
-                    </h1>
-                    <!-- We always provide the best services... -->
-                    <p class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-abhaya-title font-normal text-black leading-snug">
-                        Chúng tôi luôn cung cấp dịch vụ tốt nhất để đảm bảo thú cưng của bạn luôn vui vẻ, khỏe mạnh và an toàn.
+            <section class="d-flex flex-column flex-md-row align-items-center justify-content-between p-4 p-md-5 mt-5 mb-5 bg-header-gray shadow-custom-lg rounded-50px">
+                <div class="col-md-8 text-center text-md-start mb-4 mb-md-0">
+                    <h1 class="fs-1 fw-bold text-black mb-3 font-abhaya-title">CHĂM SÓC TOÀN DIỆN CHO THÚ CƯNG CỦA BẠN</h1>
+                    <p class="fs-4 font-abhaya-title fw-normal text-black mb-4">
+                        Tận tâm, chuyên nghiệp, công nghệ hiện đại.
                     </p>
+                    <a href="test9.html" class="btn btn-primary-outline btn-lg fs-3 fw-bold rounded-pill px-5 py-3 font-abhaya-title">
+                        ĐẶT HẸN NGAY
+                    </a>
                 </div>
 
-                <!-- Booking Buttons -->
-                <div class="flex flex-col sm:flex-row space-y-6 sm:space-y-0 sm:space-x-8 mt-16 md:mt-24 max-w-lg">
-                    <!-- Rectangle 10 / Booking now! (Blue text, White BG) -->
-                    <button class="w-full sm:w-72 h-[70px] bg-white border-3 border-blue-primary shadow-custom-sm rounded-xl text-blue-primary text-3xl md:text-4xl font-abhaya-title font-bold hover:bg-blue-50 transition duration-150 active:scale-[.98]">
-                        Đặt lịch ngay!
-                    </button>
-
-                    <!-- Rectangle 29 / BOOKING NOW! (White text, Blue BG) -->
-                    <button class="w-full sm:w-72 h-[70px] bg-blue-primary shadow-custom-sm rounded-full text-white text-3xl md:text-4xl font-iceberg font-normal hover:bg-blue-600 transition duration-150 active:scale-[.98]">
-                        BOOKING NOW!
-                    </button>
+                <div class="col-md-4 d-flex justify-content-center justify-content-md-end">
+                    <div class="rounded-circle bg-white d-flex align-items-center justify-content-center text-gray-500" style="width: 200px; height: 200px; box-shadow: var(--bs-box-shadow-sm);">
+                        Image Placeholder
+                    </div>
                 </div>
             </section>
 
-            <!-- OUR SERVICE Section (Rectangle 36 Container) -->
-            <section class="relative -mt-20 md:-mt-32 pb-20 px-4 md:px-8 lg:px-16">
-                
-                <!-- Rectangle 36 - White Card Container -->
-                <div class="w-full bg-white shadow-custom-lg rounded-[40px] p-6 md:p-10 lg:p-16">
-                    
-                    <!-- OUR SERVICE Title -->
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-abhaya-title font-bold text-black mb-12 lg:mb-16">
-                        DỊCH VỤ CỦA CHÚNG TÔI
-                    </h2>
+            <section class="mt-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="fs-1 fw-bold text-black font-abhaya-title">DỊCH VỤ CỦA CHÚNG TÔI</h2>
+                    <a href="#" class="btn btn-outline-primary rounded-pill px-4 py-2 font-abhaya-title fs-4 fw-bold" style="border-width: 3px;">
+                        View More
+                    </a>
+                </div>
 
-                    <!-- Service Cards Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-12">
-                        
-                        <!-- Service Card 1 -->
-                        <div class="space-y-4">
-                            <!-- Rectangle 13: Service Placeholder -->
-                            <div class="w-full h-48 lg:h-64 bg-header-gray shadow-custom-sm rounded-xl flex items-center justify-center text-xl text-gray-500">
+                <div class="row row-cols-2 row-cols-lg-4 g-4 g-lg-5">
+                    
+                    <div class="col">
+                        <div class="d-flex flex-column h-100">
+                            <div class="w-100 bg-header-gray shadow-custom-sm rounded-4 d-flex align-items-center justify-content-center text-secondary mb-3" style="height: 15rem;">
                                 Dịch vụ 1 Placeholder
                             </div>
-                            <!-- Service name -->
-                            <h3 class="text-3xl font-abhaya-title font-normal text-black leading-tight">Khám tổng quát</h3>
-                            <!-- Service description -->
-                            <p class="text-2xl font-abhaya-title font-normal text-gray-700 leading-tight">Kiểm tra sức khỏe định kỳ</p>
+                            <h3 class="fs-3 font-abhaya-title fw-normal text-black lh-sm">Khám tổng quát</h3>
+                            <p class="fs-4 font-abhaya-title fw-normal text-secondary lh-sm">Kiểm tra sức khỏe định kỳ</p>
                         </div>
+                    </div>
 
-                        <!-- Service Card 2 -->
-                        <div class="space-y-4">
-                            <!-- Rectangle 32: Service Placeholder -->
-                            <div class="w-full h-48 lg:h-64 bg-header-gray shadow-custom-sm rounded-xl flex items-center justify-center text-xl text-gray-500">
+                    <div class="col">
+                        <div class="d-flex flex-column h-100">
+                            <div class="w-100 bg-header-gray shadow-custom-sm rounded-4 d-flex align-items-center justify-content-center text-secondary mb-3" style="height: 15rem;">
                                 Dịch vụ 2 Placeholder
                             </div>
-                            <!-- Service name -->
-                            <h3 class="text-3xl font-abhaya-title font-normal text-black leading-tight">Tiêm phòng</h3>
-                            <!-- Service description (Dịch vụ này được cung cấp 2 lần trong CSS gốc, tôi giữ 1 cái) -->
-                            <p class="text-2xl font-abhaya-title font-normal text-gray-700 leading-tight">Bảo vệ khỏi bệnh truyền nhiễm</p>
+                            <h3 class="fs-3 font-abhaya-title fw-normal text-black lh-sm">Tiêm phòng</h3>
+                            <p class="fs-4 font-abhaya-title fw-normal text-secondary lh-sm">Vắc-xin chất lượng cao</p>
                         </div>
+                    </div>
 
-                        <!-- Service Card 3 -->
-                        <div class="space-y-4">
-                            <!-- Rectangle 31: Service Placeholder -->
-                            <div class="w-full h-48 lg:h-64 bg-header-gray shadow-custom-sm rounded-xl flex items-center justify-center text-xl text-gray-500">
+                    <div class="col">
+                        <div class="d-flex flex-column h-100">
+                            <div class="w-100 bg-header-gray shadow-custom-sm rounded-4 d-flex align-items-center justify-content-center text-secondary mb-3" style="height: 15rem;">
                                 Dịch vụ 3 Placeholder
                             </div>
-                            <!-- Service name -->
-                            <h3 class="text-3xl font-abhaya-title font-normal text-black leading-tight">Phẫu thuật</h3>
-                            <!-- Service description -->
-                            <p class="text-2xl font-abhaya-title font-normal text-gray-700 leading-tight">Phẫu thuật an toàn, hiện đại</p>
+                            <h3 class="fs-3 font-abhaya-title fw-normal text-black lh-sm">Phẫu thuật</h3>
+                            <p class="fs-4 font-abhaya-title fw-normal text-secondary lh-sm">Phẫu thuật an toàn, hiện đại</p>
                         </div>
+                    </div>
 
-                        <!-- Service Card 4 (Thêm để lấp đầy ô) -->
-                        <div class="space-y-4">
-                            <!-- Rectangle X: Service Placeholder -->
-                            <div class="w-full h-48 lg:h-64 bg-header-gray shadow-custom-sm rounded-xl flex items-center justify-center text-xl text-gray-500">
+                    <div class="col">
+                        <div class="d-flex flex-column h-100">
+                            <div class="w-100 bg-header-gray shadow-custom-sm rounded-4 d-flex align-items-center justify-content-center text-secondary mb-3" style="height: 15rem;">
                                 Dịch vụ 4 Placeholder
                             </div>
-                            <!-- Service name -->
-                            <h3 class="text-3xl font-abhaya-title font-normal text-black leading-tight">Cấp cứu 24/7</h3>
-                            <!-- Service description -->
-                            <p class="text-2xl font-abhaya-title font-normal text-gray-700 leading-tight">Sẵn sàng mọi lúc</p>
+                            <h3 class="fs-3 font-abhaya-title fw-normal text-black lh-sm">Cấp cứu 24/7</h3>
+                            <p class="fs-4 font-abhaya-title fw-normal text-secondary lh-sm">Sẵn sàng mọi lúc</p>
                         </div>
-
                     </div>
-                    
+
                 </div>
             </section>
-
         </div>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

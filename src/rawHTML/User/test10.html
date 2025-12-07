@@ -4,177 +4,254 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xem Chi Tiết Cuộc Hẹn | PetCareUS</title>
-    <!-- Tải Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tải Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 
-    <script>
-        // Cấu hình Tailwind
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'blue-primary': '#2167FF',
-                        'blue-dark': '#001C57',
-                        'gray-medium': '#B1A4A4',
-                        'gray-light': '#D9D9D9',
-                        'success-green': '#348D44',
-                        'error-red': '#FF0000',
-                        'error-icon': '#852221', /* Màu icon Hủy/Đóng */
-                    },
-                    boxShadow: {
-                        'input': '0px 4px 10px rgba(0, 0, 0, 0.25)',
-                    },
-                    fontFamily: {
-                        'abhaya': ['Abhaya Libre', 'serif'],
-                        'inter': ['Inter', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&family=Inter:wght@400;500&family=Iceberg&display=swap" rel="stylesheet">
+    
     <style>
-        /* Styling riêng cho Abhaya Libre */
-        .font-abhaya-bold {
-            font-family: 'Abhaya Libre', serif;
-            font-weight: 700;
+        /* Định nghĩa biến màu tùy chỉnh */
+        :root {
+            --bs-blue-primary: #2167FF;
+            --bs-blue-dark: #001C57;
+            --bs-header-gray: #D9D9D9;
+            --bs-gray-medium: #B1A4A4;
+            --bs-gray-light: #D9D9D9;
+            --bs-success-green: #348D44;
+            --bs-error-red: #FF0000;
+            --bs-error-icon: #852221;
+            --bs-box-shadow-sm: 0px 4px 10px rgba(0, 0, 0, 0.25);
+            --bs-box-shadow-lg: 0px 4px 20px rgba(0, 0, 0, 0.25);
         }
 
-        .input-display-box {
-            /* Rectangle 9/10/45/47/48 style */
-            border: 3px solid #000000;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-            border-radius: 20px;
-            padding: 10px 20px;
-            height: 60px; /* Điều chỉnh chiều cao cố định */
+        /* Định nghĩa font chữ tùy chỉnh */
+        .font-abhaya-title {
+            font-family: 'Abhaya Libre', serif;
+        }
+        .font-iceberg {
+            font-family: 'Iceberg', sans-serif;
+        }
+        .font-inter {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Các lớp tiện ích tùy chỉnh */
+        .bg-header-gray { background-color: var(--bs-header-gray); }
+        .text-blue-primary { color: var(--bs-blue-primary); }
+        .shadow-custom-lg { box-shadow: var(--bs-box-shadow-lg) !important; }
+        .bg-gray-light { background-color: var(--bs-gray-light); }
+        .border-gray-medium { border-color: var(--bs-gray-medium) !important; }
+        .text-success-green { color: var(--bs-success-green) !important; }
+        .text-error-red { color: var(--bs-error-red) !important; }
+        .text-error-icon { color: var(--bs-error-icon) !important; }
+
+        /* Custom style cho Detail Box (Thông tin chi tiết) */
+        .detail-box {
+            /* Tương đương w-full h-[52px] bg-gray-light rounded-xl flex items-center px-4 shadow-input */
+            width: 100%;
+            height: 52px;
+            background-color: var(--bs-gray-light);
+            border-radius: 0.75rem !important; /* rounded-xl */
             display: flex;
             align-items: center;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            box-shadow: var(--bs-box-shadow-sm) !important;
         }
 
+        /* Custom style cho Action Button (Nút hành động) */
         .action-button {
-            /* Rectangle 10/11 style */
-            height: 70px;
-            border-radius: 20px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-            transition: transform 0.2s, box-shadow 0.2s;
+            /* Tương đương h-[60px] rounded-[10px] shadow-input text-2xl font-abhaya-bold */
+            height: 60px;
+            border-radius: 10px !important;
+            box-shadow: var(--bs-box-shadow-sm) !important;
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: bold;
+            font-family: 'Abhaya Libre', serif;
+            transition: background-color 0.15s ease-in-out;
+        }
+        /* Style cho nút HỦY (Đỏ) */
+        .action-button.btn-cancel {
+            border: 3px solid var(--bs-error-icon);
+            color: var(--bs-error-icon);
+        }
+        .action-button.btn-cancel:hover {
+            background-color: rgba(133, 34, 33, 0.1);
+        }
+        /* Style cho nút Xem Hồ Sơ/Hóa Đơn (Xanh) */
+        .action-button.btn-view-blue {
+            border: 3px solid var(--bs-blue-primary);
+            color: var(--bs-blue-primary);
+        }
+        .action-button.btn-view-blue:hover {
+            background-color: rgba(33, 103, 255, 0.1);
         }
 
-        .action-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.35);
-        }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-
-    <!-- USER Container (Appointment Details Box) -->
-    <!-- Sử dụng flex-col để các thành phần xếp chồng lên nhau tự nhiên, tránh chồng chéo -->
-    <div class="flex flex-col w-full max-w-6xl bg-white border-[4px] border-gray-medium rounded-2xl mx-auto my-12 shadow-2xl">
-
-        <!-- Rectangle 34 (Header Bar) - Đã bỏ absolute để dòng chảy tự nhiên -->
-        <div class="h-24 bg-gray-light rounded-t-2xl flex items-center justify-between px-6 md:px-12 border-b-[5px] border-gray-medium">
-            <!-- USER MANAGEMENT (Updated to Appointment Details for context) -->
-            <h1 class="text-3xl sm:text-4xl font-abhaya-bold text-black translate-y-0.5">APPOINTMENT DETAILS</h1>
-            
-            <!-- Close/Cancel Button -->
-            <button class="w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center text-error-icon rounded-full hover:bg-gray-300 transition duration-150">
-                <!-- Close icon (X) -->
-                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-8 h-8">
-                    <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm4.3 10.7L12.7 14l3.6 3.3-.7.7-3.6-3.3-3.6 3.3-.7-.7 3.6-3.3-3.6-3.3.7-.7 3.6 3.3 3.6-3.3.7.7z"/>
-                </svg>
-            </button>
-        </div>
-
-        <!-- Main Content (Không cần pt-[110px] vì đã dòng chảy tự nhiên) -->
-        <div class="p-6 md:p-10 flex-grow">
-
-            <!-- Row 1: Pet Name and Veterinarian Name -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-8 mb-10">
+<body class="bg-light"> 
+    <header class="shadow-sm">
+        <nav class="navbar navbar-expand-lg bg-white">
+            <div class="container-fluid max-w-[1340px] px-4 px-md-0 mx-auto">
+                <a class="navbar-brand d-flex align-items-center" href="test1.html">
+                    <div class="rounded-pill bg-header-gray d-flex align-items-center justify-content-center me-2" style="width: 50px; height: 50px;">
+                        <span class="fs-2 font-iceberg text-black">PC</span>
+                    </div>
+                    <span class="fs-2 font-iceberg text-blue-primary">PetCareUS</span>
+                </a>
                 
-                <!-- PET NAME -->
-                <div>
-                    <label for="pet-name" class="block text-2xl font-abhaya-bold text-black mb-2">PET NAME</label>
-                    <div id="pet-name" class="input-display-box bg-white">
-                        <span class="text-xl text-black">Bello (Dog, 2 Years Old)</span>
-                    </div>
-                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                <!-- VETERINARIAN NAME -->
-                <div>
-                    <label for="vet-name" class="block text-2xl font-abhaya-bold text-black mb-2">VETERINARIAN NAME</label>
-                    <div id="vet-name" class="input-display-box bg-white">
-                        <span class="text-xl text-black">Dr. Jane Smith (General Vet)</span>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav fs-4 font-abhaya-title fw-normal me-4">
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black hover-underline" href="test1.html">TRANG CHỦ</a>
+                        </li>
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black hover-underline" href="test2.html">VỀ CHÚNG TÔI</a>
+                        </li>
+                        <li class="nav-item me-4">
+                            <a class="nav-link text-black hover-underline" href="test3.html">LIÊN HỆ</a>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex align-items-center">
+                        <div class="text-end d-none d-sm-block me-3">
+                            <p class="fs-5 fw-bold text-black mb-0 font-abhaya-title">Customer</p>
+                            <p class="fs-6 font-abhaya-title text-danger mb-0" style="color: var(--bs-error-red);">@cus_name</p>
+                        </div>
+                        
+                        <div class="dropdown">
+                            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle active" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="bg-header-gray rounded-circle d-flex align-items-center justify-content-center fw-bold text-black" style="width: 48px; height: 48px; font-size: 1.25rem;">
+                                    C
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu text-small shadow-sm" style="font-family: var(--bs-font-sans-serif);">
+                                <li><a class="dropdown-item text-blue-primary fw-bold" href="test5.html">Hồ sơ người dùng</a></li>
+                                <li><a class="dropdown-item" href="test9.html">Quản lý cuộc hẹn</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#">Đăng xuất</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
+        </nav>
+    </header>
+
+    <main class="container-fluid">
+        <div class="container mx-auto max-w-[1340px] pt-4 pb-5">
             
-            <!-- Row 2: Time, Date Start, and Status -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-8 mb-10">
+            <div class="text-start mb-4">
+                <a href="test9.html" class="text-decoration-underline text-black fs-4 font-abhaya-title fw-normal transition text-blue-primary-hover">
+                    &larr; BACK TO APPOINTMENT LIST
+                </a>
+            </div>
+
+            <h1 class="fs-1 fw-bold text-black font-abhaya-title text-center mb-5">CHI TIẾT CUỘC HẸN</h1>
+
+            <div class="col-12 col-lg-8 mx-auto shadow-custom-lg bg-white rounded-4 p-4 p-md-5">
                 
-                <!-- TIME: -->
-                <div>
-                    <label for="time" class="block text-2xl font-abhaya-bold text-black mb-2">TIME:</label>
-                    <div id="time" class="input-display-box w-full bg-white max-w-[150px] md:max-w-full">
-                        <span class="text-xl text-black">10:30 AM</span>
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-5 border-bottom border-gray-medium pb-4">
+                    <h2 class="fs-2 font-abhaya-title fw-bold text-black mb-2 mb-sm-0">Pet Name: <span class="text-blue-primary">Vàng</span></h2>
+                    
+                    <p class="fs-3 fw-bold font-inter mb-0 text-success-green">CONFIRMED</p>
+                </div>
+
+                <div class="row g-4 fs-5 font-abhaya-title fw-normal">
+                    
+                    <div class="col-md-6 d-flex flex-column gap-4">
+                        
+                        <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center">
+                            <label class="fw-bold text-black me-4 shrink-0" style="min-width: 80px;">DATE:</label>
+                            <div class="detail-box mt-1 mt-sm-0 w-100">
+                                <span class="font-inter fw-medium text-black">25/08/2025</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center">
+                            <label class="fw-bold text-black me-4 shrink-0" style="min-width: 80px;">PET:</label>
+                            <div class="detail-box mt-1 mt-sm-0 w-100">
+                                <span class="font-inter fw-medium text-black">Vàng (Golden Retriever)</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center">
+                            <label class="fw-bold text-black me-4 shrink-0" style="min-width: 80px;">SERVICE:</label>
+                            <div class="detail-box mt-1 mt-sm-0 w-100">
+                                <span class="font-inter fw-medium text-black">Khám tổng quát</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <div class="col-md-6 d-flex flex-column gap-4">
+
+                        <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center">
+                            <label class="fw-bold text-black me-4 shrink-0" style="min-width: 80px;">TIME:</label>
+                            <div class="detail-box mt-1 mt-sm-0 w-100">
+                                <span class="font-inter fw-medium text-black">10:00 AM</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center">
+                            <label class="fw-bold text-black me-4 shrink-0" style="min-width: 80px;">CUSTOMER:</label>
+                            <div class="detail-box mt-1 mt-sm-0 w-100">
+                                <span class="font-inter fw-medium text-black">@cus_name</span>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center">
+                            <label class="fw-bold text-black me-4 shrink-0" style="min-width: 80px;">DOCTOR:</label>
+                            <div class="detail-box mt-1 mt-sm-0 w-100">
+                                <span class="font-inter fw-medium text-black">BS. Lê Văn A</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- DATE START : -->
-                <div>
-                    <label for="date-start" class="block text-2xl font-abhaya-bold text-black mb-2">DATE START :</label>
-                    <div id="date-start" class="input-display-box w-full bg-white max-w-[220px] md:max-w-full">
-                        <span class="text-xl text-black">2024-11-20</span>
+                <div class="mt-4">
+                    <label class="fw-bold text-black fs-5 font-abhaya-title d-block mb-2">NOTE:</label>
+                    <div class="bg-gray-light rounded-xl shadow-custom-lg p-3" style="min-height: 100px;">
+                        <span class="font-inter fw-medium text-black fs-5">
+                            Thú cưng có biểu hiện lờ đờ, chán ăn 2 ngày nay.
+                        </span>
                     </div>
+                </div>
+                
+                <div class="d-flex flex-column flex-sm-row justify-content-center gap-4 mt-5 pt-3">
+                    
+                    <a href="#" class="action-button btn-cancel w-100 w-sm-auto px-4 d-flex align-items-center justify-content-center" style="min-width: 246px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="me-2" style="width: 24px; height: 24px; color: var(--bs-error-icon);">
+                            <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm4.3 10.7L12.7 14l3.6 3.3-.7.7-3.6-3.3-3.6 3.3-.7-.7 3.6-3.3-3.6-3.3.7-.7 3.6 3.3 3.6-3.3.7.7z"/>
+                        </svg>
+                        CANCEL
+                    </a>
+
+                    <a href="test13.html" class="action-button btn-view-blue w-100 w-sm-auto px-4 d-flex align-items-center justify-content-center" style="min-width: 246px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="me-2" style="width: 24px; height: 24px; color: var(--bs-blue-primary);">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.43 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                        VIEW RECORD
+                    </a>
+
+                    <a href="test11.html" class="action-button btn-view-blue w-100 w-sm-auto px-4 d-flex align-items-center justify-content-center" style="min-width: 246px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="me-2" style="width: 24px; height: 24px; color: var(--bs-blue-primary);">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3-3m0 0 3 3m-3-3v8.25m-6-6h9m-9 0a3.375 3.375 0 0 0-3.375 3.375v4.5c0 1.035.84 1.875 1.875 1.875h1.5a.75.75 0 0 0 .75-.75v-1.5a3.375 3.375 0 0 1 3.375-3.375h7.5c1.035 0 1.875.84 1.875 1.875v3.75c0 .354-.04.707-.11 1.054a1.875 1.875 0 0 1-1.84 1.821h-7.5a1.875 1.875 0 0 1-1.875-1.875V11.25M4.5 9.75h9" />
+                        </svg>
+                        VIEW INVOICE
+                    </a>
                 </div>
 
-                <!-- STATUS : -->
-                <div>
-                    <label for="status" class="block text-2xl font-abhaya-bold text-black mb-2">STATUS :</label>
-                    <div id="status" class="input-display-box w-full bg-white max-w-[220px] md:max-w-full">
-                        <span class="text-xl font-bold text-yellow-600">Pending</span>
-                    </div>
-                </div>
             </div>
-            
-            <!-- Row 3: NOTE: (Text Area) -->
-            <div class="mb-12">
-                <label for="note" class="block text-2xl font-abhaya-bold text-black mb-2">NOTE:</label>
-                <!-- Rectangle 44 -->
-                <div id="note" class="w-full bg-white border-3 border-black shadow-input rounded-2xl p-4 md:p-6 min-h-[150px] sm:min-h-[273px] overflow-auto">
-                    <p class="text-lg text-black">
-                        Lý do cuộc hẹn: Kiểm tra sức khỏe định kỳ và tiêm vaccine dại. Thú cưng có tiền sử dị ứng nhẹ với cỏ. Vui lòng chuẩn bị hồ sơ y tế trước.
-                    </p>
-                </div>
-            </div>
-            
+
         </div>
+    </main>
 
-        <!-- Action Buttons (Footer) -->
-        <div class="p-6 md:p-10 flex flex-col sm:flex-row justify-end gap-6 border-t border-gray-light">
-
-            <!-- Rectangle 11 (Record Button - Green) -->
-            <button class="action-button flex items-center justify-center w-full sm:w-[246px] bg-white border-3 border-success-green text-success-green hover:bg-success-green/10">
-                <!-- Eye Icon (View) -->
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 mr-2 text-success-green">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.43 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                </svg>
-                <span class="text-3xl font-abhaya-bold">Record</span>
-            </button>
-
-            <!-- Rectangle 10 (Invoice Button - Blue) -->
-            <button class="action-button flex items-center justify-center w-full sm:w-[246px] bg-white border-3 border-blue-primary text-blue-primary hover:bg-blue-primary/10">
-                <!-- Eye Icon (View) -->
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 mr-2 text-blue-primary">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.43 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                </svg>
-                <span class="text-3xl font-abhaya-bold">Invoice</span>
-            </button>
-        </div>
-
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
