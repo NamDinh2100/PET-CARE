@@ -1,6 +1,6 @@
 import express from 'express';
 import bcrypt, {compareSync, hash} from 'bcryptjs';
-import * as userService from '../service/user.service.js';
+import * as userService from '../models/user.model.js';
 
 const router = express.Router();
 
