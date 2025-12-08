@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xem Chi Tiết Cuộc Hẹn | PetCareUS</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+    <script>
+        // Cấu hình Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blue-primary': '#2167FF',
+                        'blue-dark': '#001C57',
+                        'gray-medium': '#B1A4A4',
+                        'gray-light': '#D9D9D9',
+                        'success-green': '#348D44',
+                        'error-red': '#FF0000',
+                        'error-icon': '#852221', /* Màu icon Hủy/Đóng */
+                    },
+                    boxShadow: {
+                        'input': '0px 4px 10px rgba(0, 0, 0, 0.25)',
+                    },
+                    fontFamily: {
+                        'abhaya': ['Abhaya Libre', 'serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Styling riêng cho Abhaya Libre */
+        .font-abhaya-bold {
+            font-family: 'Abhaya Libre', serif;
+            font-weight: 700;
+        }
+
+        .input-display-box {
+            /* Rectangle 9/10/45/47/48 style */
+            border: 3px solid #000000;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+            border-radius: 20px;
+            padding: 10px 20px;
+            height: 60px; /* Điều chỉnh chiều cao cố định */
+            display: flex;
+            align-items: center;
+        }
+
+        .action-button {
+            /* Rectangle 10/11 style */
+            height: 70px;
+            border-radius: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.35);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+    <!-- USER Container (Appointment Details Box) -->
+    <!-- Sử dụng flex-col để các thành phần xếp chồng lên nhau tự nhiên, tránh chồng chéo -->
+    <div class="flex flex-col w-full max-w-6xl bg-white border-[4px] border-gray-medium rounded-2xl mx-auto my-12 shadow-2xl">
+
+        <!-- Rectangle 34 (Header Bar) - Đã bỏ absolute để dòng chảy tự nhiên -->
+        <div class="h-24 bg-gray-light rounded-t-2xl flex items-center justify-between px-6 md:px-12 border-b-[5px] border-gray-medium">
+            <!-- USER MANAGEMENT (Updated to Appointment Details for context) -->
+            <h1 class="text-3xl sm:text-4xl font-abhaya-bold text-black translate-y-0.5">APPOINTMENT DETAILS</h1>
+            
+            <!-- Close/Cancel Button -->
+            <button class="w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center text-error-icon rounded-full hover:bg-gray-300 transition duration-150">
+                <!-- Close icon (X) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-8 h-8">
+                    <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm4.3 10.7L12.7 14l3.6 3.3-.7.7-3.6-3.3-3.6 3.3-.7-.7 3.6-3.3-3.6-3.3.7-.7 3.6 3.3 3.6-3.3.7.7z"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Main Content (Không cần pt-[110px] vì đã dòng chảy tự nhiên) -->
+        <div class="p-6 md:p-10 flex-grow">
+
+            <!-- Row 1: Pet Name and Veterinarian Name -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-8 mb-10">
+                
+                <!-- PET NAME -->
+                <div>
+                    <label for="pet-name" class="block text-2xl font-abhaya-bold text-black mb-2">PET NAME</label>
+                    <div id="pet-name" class="input-display-box bg-white">
+                        <span class="text-xl text-black">Bello (Dog, 2 Years Old)</span>
+                    </div>
+                </div>
+
+                <!-- VETERINARIAN NAME -->
+                <div>
+                    <label for="vet-name" class="block text-2xl font-abhaya-bold text-black mb-2">VETERINARIAN NAME</label>
+                    <div id="vet-name" class="input-display-box bg-white">
+                        <span class="text-xl text-black">Dr. Jane Smith (General Vet)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Row 2: Time, Date Start, and Status -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-8 mb-10">
+                
+                <!-- TIME: -->
+                <div>
+                    <label for="time" class="block text-2xl font-abhaya-bold text-black mb-2">TIME:</label>
+                    <div id="time" class="input-display-box w-full bg-white max-w-[150px] md:max-w-full">
+                        <span class="text-xl text-black">10:30 AM</span>
+                    </div>
+                </div>
+
+                <!-- DATE START : -->
+                <div>
+                    <label for="date-start" class="block text-2xl font-abhaya-bold text-black mb-2">DATE START :</label>
+                    <div id="date-start" class="input-display-box w-full bg-white max-w-[220px] md:max-w-full">
+                        <span class="text-xl text-black">2024-11-20</span>
+                    </div>
+                </div>
+
+                <!-- STATUS : -->
+                <div>
+                    <label for="status" class="block text-2xl font-abhaya-bold text-black mb-2">STATUS :</label>
+                    <div id="status" class="input-display-box w-full bg-white max-w-[220px] md:max-w-full">
+                        <span class="text-xl font-bold text-yellow-600">Pending</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Row 3: NOTE: (Text Area) -->
+            <div class="mb-12">
+                <label for="note" class="block text-2xl font-abhaya-bold text-black mb-2">NOTE:</label>
+                <!-- Rectangle 44 -->
+                <div id="note" class="w-full bg-white border-3 border-black shadow-input rounded-2xl p-4 md:p-6 min-h-[150px] sm:min-h-[273px] overflow-auto">
+                    <p class="text-lg text-black">
+                        Lý do cuộc hẹn: Kiểm tra sức khỏe định kỳ và tiêm vaccine dại. Thú cưng có tiền sử dị ứng nhẹ với cỏ. Vui lòng chuẩn bị hồ sơ y tế trước.
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Action Buttons (Footer) -->
+        <div class="p-6 md:p-10 flex flex-col sm:flex-row justify-end gap-6 border-t border-gray-light">
+
+            <!-- Rectangle 11 (Record Button - Green) -->
+            <button class="action-button flex items-center justify-center w-full sm:w-[246px] bg-white border-3 border-success-green text-success-green hover:bg-success-green/10">
+                <!-- Eye Icon (View) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 mr-2 text-success-green">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.43 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+                <span class="text-3xl font-abhaya-bold">Record</span>
+            </button>
+
+            <!-- Rectangle 10 (Invoice Button - Blue) -->
+            <button class="action-button flex items-center justify-center w-full sm:w-[246px] bg-white border-3 border-blue-primary text-blue-primary hover:bg-blue-primary/10">
+                <!-- Eye Icon (View) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 mr-2 text-blue-primary">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.43 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+                <span class="text-3xl font-abhaya-bold">Invoice</span>
+            </button>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<div class="data-card">
+    <div class="card-header-title" id="pageTitle">
+        EMPLOYEES
+        <a class="btn btn-large btn-outline-success float-end" href="/admin/employees/add" role="button">
+            <i class="bi bi-plus-lg"></i> New
+        </a>
+    </div>
+
+    <div class="table-header-row">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Role</th>
+                        <th scope="col" class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each employees}}
+                    <tr class="">
+                        <td scope="row">{{user_id}}</td>
+                        <td>{{full_name}}</td>
+                        <td>{{email}}</td>
+                        <td>{{phone}}</td>
+                        <td>{{role}}</td>
+                        <td class="text-end">
+                            <a class="btn btn-outline-primary" href="/admin/employees/edit?id={{user_id}}"
+                                role="button">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            <nav aria-label="...">
+                <ul class="pagination">
+
+                    {{#each pageNumbers}}
+                    {{#if isCurrent}}
+                    <li class="page-item active">
+                        <a class="page-link" href="javascript:;">{{value}}</a>
+                    </li>
+                    {{else}}
+                    <li class="page-item">
+                        <a class="page-link" href="/admin/employees?page={{value}}">{{value}}</a>
+                    </li>
+                    {{/if}}
+                    {{/each}}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

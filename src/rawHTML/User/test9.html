@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Cuộc Hẹn | PetCareUS</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Iceberg&display=swap" rel="stylesheet">
+
+    <script>
+        // Cấu hình Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blue-primary': '#2167FF',
+                        'blue-dark': '#001C57',
+                        'gray-medium': '#B1A4A4',
+                        'gray-light': '#D9D9D9',
+                        'success-green': '#348D44',
+                        'error-red': '#FF0000',
+                    },
+                    boxShadow: {
+                        'input': '0px 4px 10px rgba(0, 0, 0, 0.25)',
+                        'section': '0px 4px 20px rgba(0, 0, 0, 0.25)',
+                    },
+                    fontFamily: {
+                        'abhaya': ['Abhaya Libre', 'serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                        'iceberg': ['Iceberg', 'cursive'],
+                    },
+                    fontSize: {
+                        '32px': '32px', /* Kích thước font cho tiêu đề cột */
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Styling riêng cho Abhaya Libre và các kích thước font/line-height chính xác */
+        .font-abhaya-title {
+            font-family: 'Abhaya Libre', serif;
+        }
+
+        .header-nav-link {
+            font-size: 36px;
+            line-height: 42px;
+        }
+
+        .section-tab-link {
+            font-size: 24px;
+            line-height: 28px;
+            padding-bottom: 8px; /* Để tạo không gian cho line */
+        }
+
+        .table-header {
+            font-size: 32px;
+            line-height: 38px;
+            font-weight: 400;
+        }
+        
+        .table-data {
+            font-size: 20px;
+            padding: 16px 0;
+            border-bottom: 1px solid #B1A4A4;
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center">
+
+    <!-- HEADER_CONTACT (Top Navigation Bar) -->
+    <header class="w-full max-w-[1440px] px-8 py-6 flex justify-between items-center h-[200px] bg-white">
+        <!-- Logo & Text -->
+        <div class="flex items-center space-x-2">
+            <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-blue-primary w-10 h-10 md:w-16 md:h-16">
+                <path d="M21 2C10.51 2 2 10.51 2 21s8.51 19 19 19 19-8.51 19-19S31.49 2 21 2zm0 34c-8.28 0-15-6.72-15-15S12.72 6 21 6s15 6.72 15 15-6.72 15-15 15zm-2-12c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm-8-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm16 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm-8-5c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z" fill="currentColor"/>
+            </svg>
+            <span class="text-5xl lg:text-6xl font-abhaya-title font-normal text-blue-primary">PetCareUS</span>
+        </div>
+
+        <!-- Navigation Links (Hidden on small screens) -->
+        <nav class="hidden md:flex space-x-12 lg:space-x-20 font-abhaya-title header-nav-link font-normal">
+            <a href="#" class="text-black hover:text-blue-primary">Home</a>
+            <a href="#" class="text-black hover:text-blue-primary">About</a>
+            <a href="#" class="text-black hover:text-blue-primary">Contact</a>
+        </nav>
+
+        <!-- Profile / Dropdown Placeholder -->
+        <div class="flex items-center space-x-2">
+            <div>
+                <p class="text-2xl font-abhaya-title font-normal text-black">Customer</p>
+                <p class="text-xl font-abhaya-title font-normal text-error-red text-right">@cus_name</p>
+            </div>
+            <div class="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center">
+                <!-- User Icon Placeholder -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+            </div>
+            <!-- Dropdown Arrow -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-black">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+        </div>
+    </header>
+
+    <!-- Main Profile and Appointment Container (Rectangle 6) -->
+    <div class="relative w-full max-w-[1340px] h-auto min-h-[162px] bg-white border-[5px] border-gray-light shadow-section rounded-[50px] mx-auto px-4 md:px-12 py-6 mt-8">
+
+        <!-- User Info Row -->
+        <div class="flex items-center space-x-6 pb-4">
+            <!-- Profile Avatar (Ellipse 1) -->
+            <div class="w-28 h-28 bg-gray-light rounded-full flex items-center justify-center border-4 border-gray-medium shrink-0">
+                <!-- Placeholder for profile image/icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-black">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+            </div>
+
+            <!-- Customer Name -->
+            <h1 class="text-4xl font-abhaya-title font-normal text-black pt-2">@customer_name</h1>
+        </div>
+        
+        <!-- Line 1 (Divider) -->
+        <div class="w-full h-0 border-t-[3px] border-black my-4"></div>
+
+        <!-- Navigation Tabs -->
+        <nav class="flex justify-start space-x-12 md:space-x-16 lg:space-x-24 font-abhaya-title mt-2">
+            <!-- MY PROFILE -->
+            <a href="#" class="section-tab-link text-black hover:text-blue-primary">MY PROFILE</a>
+            
+            <!-- MY PETS -->
+            <a href="#" class="section-tab-link text-black hover:text-blue-primary">MY PETS</a>
+            
+            <!-- MY APPOINTMENTS (Active) -->
+            <div class="relative">
+                <a href="#" class="section-tab-link font-bold text-blue-primary">MY APPOINTMENTS</a>
+                <!-- Line 2 (Active Indicator) -->
+                <div class="absolute bottom-0 left-0 w-full h-[6px] bg-blue-primary rounded-full"></div>
+            </div>
+            
+            <!-- Other Tabs if needed -->
+        </nav>
+    </div>
+
+    <!-- Appointment List Section (USER Box) -->
+    <div class="relative w-full max-w-[1340px] h-auto min-h-[640px] bg-white border-[4px] border-gray-medium rounded-[20px] shadow-section mx-auto mt-6">
+
+        <!-- Rectangle 34 (Header Bar for List) -->
+        <div class="absolute top-0 left-0 w-full h-20 bg-gray-light rounded-t-[16px] flex items-center px-6 border-b-[4px] border-gray-medium">
+            <h2 class="text-4xl font-abhaya-title font-bold text-black pt-2 mr-auto">APPOINTMENTS</h2>
+            
+            <!-- Add New Appointment Button (Rectangle 37 + New + Plus) -->
+            <button class="flex items-center bg-success-green border-2 border-black rounded-xl px-4 py-1 space-x-2 hover:bg-green-700 shadow-input">
+                <!-- Plus Icon (Using lucide-react equivalent) -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="w-6 h-6 text-white">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <span class="text-xl font-abhaya-title font-normal text-white">New</span>
+            </button>
+        </div>
+
+        <!-- Table Headers -->
+        <div class="pt-[90px] px-6 md:px-8 w-full flex text-black font-abhaya-title table-header bg-white border-b-4 border-gray-light">
+            <!-- Date start -->
+            <div class="w-1/4 py-2">Date start</div>
+            <!-- Service -->
+            <div class="w-1/4 py-2">Service</div>
+            <!-- Status -->
+            <div class="w-1/4 py-2">Status</div>
+            <!-- Action -->
+            <div class="w-1/4 py-2 text-right">Action</div>
+        </div>
+
+        <!-- Frame 1 (Table Content Area) -->
+        <div class="p-4 md:p-8 w-full min-h-[400px] bg-gray-light/50">
+            
+            <!-- Example Record 1 -->
+            <div class="flex text-black font-abhaya table-data items-center bg-white rounded-lg px-4 hover:bg-gray-100 transition duration-150">
+                <div class="w-1/4">2024-11-20 14:00</div>
+                <div class="w-1/4">Routine Checkup - Dog</div>
+                <div class="w-1/4 text-yellow-600 font-medium">Pending</div>
+                <div class="w-1/4 text-right">
+                    <button class="text-blue-primary hover:underline text-lg font-abhaya-title">View/Cancel</button>
+                </div>
+            </div>
+
+            <!-- Example Record 2 -->
+            <div class="flex text-black font-abhaya table-data items-center bg-white rounded-lg px-4 mt-2 hover:bg-gray-100 transition duration-150">
+                <div class="w-1/4">2024-11-15 10:30</div>
+                <div class="w-1/4">Vaccination - Cat</div>
+                <div class="w-1/4 text-success-green font-medium">Completed</div>
+                <div class="w-1/4 text-right">
+                    <button class="text-blue-primary hover:underline text-lg font-abhaya-title">View Details</button>
+                </div>
+            </div>
+
+            <!-- Placeholder for more records -->
+            <div class="text-gray-500 text-center py-12 text-xl font-sans">
+                <!-- More appointment entries would be loaded here. -->
+            </div>
+
+        </div>
+
+        <!-- Rectangle 36 (Footer/Pagination) -->
+        <div class="absolute bottom-0 left-0 w-full h-20 bg-gray-light rounded-b-[16px] flex items-center justify-start px-8 border-t-[4px] border-gray-medium">
+            <nav class="flex space-x-2 text-xl font-abhaya-title font-normal items-center">
+                <!-- 1-square-fill -->
+                <button class="w-8 h-8 bg-black text-white rounded-md flex items-center justify-center shadow-md">1</button>
+                <!-- 2-square -->
+                <button class="w-8 h-8 bg-white text-black border border-black rounded-md flex items-center justify-center hover:bg-gray-200">2</button>
+                <!-- 3-square -->
+                <button class="w-8 h-8 bg-white text-black border border-black rounded-md flex items-center justify-center hover:bg-gray-200">3</button>
+
+                <!-- chevron-right -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6 ml-4 text-black">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+            </nav>
+        </div>
+
+    </div>
+
+</body>
+</html>

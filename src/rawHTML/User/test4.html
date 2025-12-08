@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký | PetCareUS</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        // Cấu hình Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blue-primary': '#2167FF',
+                        'blue-dark': '#001C57',
+                        'gray-placeholder': '#808080',
+                    },
+                    boxShadow: {
+                        'input': '0px 4px 10px rgba(0, 0, 0, 0.25)',
+                    },
+                    fontFamily: {
+                        'abhaya': ['Abhaya Libre', 'serif'],
+                        'sans': ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Styling riêng cho Abhaya Libre và Input lớn */
+        .font-abhaya-title {
+            font-family: 'Abhaya Libre', serif;
+        }
+        
+        /* Style cho Input Fields theo design 70px height, 3px border */
+        .custom-input {
+            height: 70px;
+            border-width: 3px;
+            border-color: #000000;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
+            padding-left: 130px; /* Vị trí placeholder */
+            font-size: 36px;
+            line-height: 42px;
+            color: #000000; /* Màu chữ khi gõ */
+        }
+
+        .custom-input::placeholder {
+            color: #808080;
+            opacity: 0.5;
+            /* Cần điều chỉnh vị trí padding của placeholder bên trong input */
+            /* Do đã đặt padding-left lớn, không cần điều chỉnh thêm */
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center pt-8 md:pt-16">
+    
+    <!-- Header (Consistent with Contact Page - Simplified) -->
+    <header class="w-full max-w-[1440px] px-8 md:px-16 flex justify-between items-center mb-10">
+        <div class="flex items-center space-x-2">
+            <!-- PetCareUS Logo -->
+            <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-blue-primary w-10 h-10 md:w-[64px] md:h-[64px]">
+                <path d="M21 2C10.51 2 2 10.51 2 21s8.51 19 19 19 19-8.51 19-19S31.49 2 21 2zm0 34c-8.28 0-15-6.72-15-15S12.72 6 21 6s15 6.72 15 15-6.72 15-15 15zm-2-12c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm-8-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm16 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm-8-5c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z" fill="currentColor"/>
+            </svg>
+            <span class="text-3xl md:text-5xl lg:text-6xl font-abhaya-title font-bold text-blue-primary">PetCareUS</span>
+        </div>
+    </header>
+
+    <!-- SIGN_UP Container -->
+    <div class="w-full max-w-[800px] h-auto bg-white p-6 md:p-12 shadow-2xl rounded-lg">
+        <!-- JOIN OUR FAMILY -->
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-abhaya-title font-bold text-center mb-10 md:mb-16">
+            JOIN OUR FAMILY
+        </h1>
+
+        <!-- Form Fields -->
+        <form class="space-y-6 md:space-y-8 max-w-[600px] mx-auto">
+            
+            <!-- Email -->
+            <input type="email" placeholder="Email" class="w-full custom-input rounded-[20px] font-abhaya-title" required>
+            
+            <!-- Full Name -->
+            <input type="text" placeholder="Full name" class="w-full custom-input rounded-[20px] font-abhaya-title" required>
+
+            <!-- Phone Number -->
+            <input type="tel" placeholder="Phone number" class="w-full custom-input rounded-[20px] font-abhaya-title" required>
+
+            <!-- Password -->
+            <input type="password" placeholder="Password" class="w-full custom-input rounded-[20px] font-abhaya-title" required>
+
+            <!-- Confirm Password -->
+            <input type="password" placeholder="Confirm password" class="w-full custom-input rounded-[20px] font-abhaya-title" required>
+
+            <!-- I have an account! LOGIN -->
+            <div class="text-center pt-2 md:pt-4">
+                <a href="#" class="text-xl md:text-2xl lg:text-3xl font-abhaya-title font-normal text-black hover:text-blue-primary transition underline">
+                    I have an account! LOGIN
+                </a>
+            </div>
+
+            <!-- SUBMIT Button -->
+            <div class="text-center pt-8">
+                <button type="submit" class="w-[229px] h-[67px] bg-white border-[5px] border-blue-primary shadow-input rounded-full 
+                                           flex items-center justify-center transition hover:bg-blue-primary/10">
+                    <span class="text-3xl md:text-4xl font-abhaya-title font-bold text-blue-primary">
+                        SUBMIT
+                    </span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

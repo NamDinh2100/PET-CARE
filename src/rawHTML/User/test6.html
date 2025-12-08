@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Người Dùng | PetCareUS</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        // Cấu hình Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blue-primary': '#2167FF',
+                        'blue-dark': '#001C57',
+                        'gray-medium': '#B1A4A4',
+                        'gray-light': '#D9D9D9',
+                    },
+                    boxShadow: {
+                        'input': '0px 4px 10px rgba(0, 0, 0, 0.25)',
+                        'section': '0px 4px 20px rgba(0, 0, 0, 0.25)',
+                    },
+                    fontFamily: {
+                        'abhaya': ['Abhaya Libre', 'serif'],
+                        'sans': ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Styling riêng cho Abhaya Libre */
+        .font-abhaya-title {
+            font-family: 'Abhaya Libre', serif;
+        }
+        
+        .profile-label {
+            font-size: 24px;
+            line-height: 28px;
+        }
+
+        .pet-list-header {
+            font-size: 32px;
+            line-height: 38px;
+            font-weight: 400;
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center pt-8">
+    
+    <!-- HEADER_CONTACT -->
+    <header class="w-full max-w-[1440px] px-4 md:px-8 flex justify-between items-center h-[200px]">
+        <div class="flex items-center space-x-2">
+            <!-- PetCareUS Logo & Text -->
+            <svg width="64" height="64" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-blue-primary w-16 h-16">
+                <path d="M21 2C10.51 2 2 10.51 2 21s8.51 19 19 19 19-8.51 19-19S31.49 2 21 2zm0 34c-8.28 0-15-6.72-15-15S12.72 6 21 6s15 6.72 15 15-6.72 15-15 15zm-2-12c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm-8-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm16 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm-8-5c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z" fill="currentColor"/>
+            </svg>
+            <span class="text-5xl lg:text-6xl font-abhaya-title font-normal text-blue-primary">PetCareUS</span>
+        </div>
+        
+        <!-- Navigation Links -->
+        <nav class="hidden md:flex space-x-12 lg:space-x-20 font-abhaya-title text-3xl font-normal">
+            <a href="#" class="text-black hover:text-blue-primary">Home</a>
+            <a href="#" class="text-black hover:text-blue-primary">About</a>
+            <a href="#" class="text-black hover:text-blue-primary">Contact</a>
+        </nav>
+
+        <!-- Profile / Dropdown Placeholder -->
+        <div class="flex items-center space-x-2">
+            <div>
+                <p class="text-2xl font-abhaya-title font-normal text-black">Customer</p>
+                <p class="text-xl font-abhaya-title font-normal text-red-600 text-right">@cus_name</p>
+            </div>
+            <div class="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center">
+                <!-- User Icon Placeholder -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+            </div>
+            <!-- Dropdown Arrow -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-black">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="w-full max-w-[1340px] px-4 md:px-0 mt-8">
+        
+        <!-- User Header Section (Rounded box for user name/avatar) -->
+        <div class="relative w-full bg-white border-[5px] border-gray-300 shadow-section rounded-[50px] p-6 mb-12 flex items-center space-x-6 h-[162px]">
+            <div class="w-[150px] h-[150px] bg-gray-300 rounded-full flex items-center justify-center -translate-y-1/2 absolute top-0 left-10">
+                <!-- Large Avatar Placeholder -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20 text-black">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+            </div>
+            
+            <p class="font-abhaya-title text-4xl font-normal ml-52 mt-auto">@customer_name</p>
+        </div>
+
+        <!-- USER MANAGEMENT SECTION (Main Content Box) -->
+        <div class="relative w-full h-auto bg-white border-[4px] border-gray-medium rounded-[20px] pt-20 pb-0 shadow-xl">
+
+            <!-- Tab Bar Header -->
+            <div class="absolute top-0 left-0 w-full h-20 bg-gray-light rounded-t-[20px] flex items-end px-10 border-b-[5px] border-gray-medium">
+                <h2 class="text-4xl font-abhaya-title font-bold text-black pt-4">USER MANAGEMENT</h2>
+            </div>
+
+            <!-- Tab Navigation Links -->
+            <div class="flex space-x-12 mt-4 px-10 border-b-[3px] border-black pb-2">
+                <a href="#" class="font-abhaya-title profile-label text-black font-normal hover:text-blue-primary transition">MY PROFILE</a>
+
+                <div class="relative">
+                    <a href="#" class="font-abhaya-title profile-label text-blue-primary font-bold">MY PETS</a>
+                    <!-- Active Tab Indicator Line -->
+                    <div class="absolute bottom-[-10px] left-0 w-[100px] h-[6px] bg-blue-primary rounded-full"></div>
+                </div>
+
+                <a href="#" class="font-abhaya-title profile-label text-black font-normal hover:text-blue-primary transition">MY APPOINTMENTS</a>
+            </div>
+
+            <!-- MY PETS Content -->
+            <div class="p-4 md:p-8">
+                <!-- Add New Pet Button (Implied functionality) -->
+                <div class="flex justify-end mb-6">
+                    <button class="px-6 py-2 bg-blue-primary text-white font-abhaya-title text-2xl font-bold rounded-xl shadow-md hover:bg-blue-dark transition">
+                        + Add New Pet
+                    </button>
+                </div>
+
+                <!-- Pet List Table (Frame 1 background) -->
+                <div class="bg-gray-light p-4 md:p-6 rounded-xl shadow-lg">
+                    
+                    <!-- Table Header Row -->
+                    <div class="grid grid-cols-5 gap-4 font-abhaya-title text-black text-center border-b-[8px] border-gray-light mb-2 md:mb-4">
+                        <div class="pet-list-header text-left">Name</div>
+                        <div class="pet-list-header">Age</div>
+                        <div class="pet-list-header">Sex</div>
+                        <div class="pet-list-header">Weight</div>
+                        <div class="pet-list-header text-right">Action</div>
+                    </div>
+
+                    <!-- Mock Pet Data Rows -->
+                    <div id="pet-list" class="space-y-2">
+                        <!-- Pet 1 -->
+                        <div class="grid grid-cols-5 gap-4 font-sans text-xl py-3 px-1 bg-white rounded-lg items-center shadow-sm">
+                            <div class="text-left font-semibold">Buddy</div>
+                            <div class="text-center">5 years</div>
+                            <div class="text-center">Male</div>
+                            <div class="text-center">15 kg</div>
+                            <div class="text-right">
+                                <button class="text-blue-primary hover:text-blue-dark font-medium mr-2">Edit</button> | 
+                                <button class="text-red-500 hover:text-red-700 font-medium ml-2">Delete</button>
+                            </div>
+                        </div>
+                        <!-- Pet 2 -->
+                        <div class="grid grid-cols-5 gap-4 font-sans text-xl py-3 px-1 bg-white rounded-lg items-center shadow-sm">
+                            <div class="text-left font-semibold">Luna</div>
+                            <div class="text-center">2 years</div>
+                            <div class="text-center">Female</div>
+                            <div class="text-center">8 kg</div>
+                            <div class="text-right">
+                                <button class="text-blue-primary hover:text-blue-dark font-medium mr-2">Edit</button> | 
+                                <button class="text-red-500 hover:text-red-700 font-medium ml-2">Delete</button>
+                            </div>
+                        </div>
+                        <!-- Pet 3 -->
+                        <div class="grid grid-cols-5 gap-4 font-sans text-xl py-3 px-1 bg-white rounded-lg items-center shadow-sm">
+                            <div class="text-left font-semibold">Max</div>
+                            <div class="text-center">1 year</div>
+                            <div class="text-center">Male</div>
+                            <div class="text-center">4 kg</div>
+                            <div class="text-right">
+                                <button class="text-blue-primary hover:text-blue-dark font-medium mr-2">Edit</button> | 
+                                <button class="text-red-500 hover:text-red-700 font-medium ml-2">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination Bar (Rectangle 36) -->
+            <div class="w-full h-20 bg-gray-light border-y-[5px] border-gray-medium flex items-center justify-between px-10 mt-8">
+                <!-- Pagination Buttons -->
+                <div class="flex space-x-2 text-xl">
+                    <!-- Square 1 (Filled) -->
+                    <button class="w-8 h-8 flex items-center justify-center bg-black text-white rounded-md shadow-md">1</button>
+                    <!-- Square 2 (Outline) -->
+                    <button class="w-8 h-8 flex items-center justify-center border-2 border-black text-black bg-white rounded-md shadow-md hover:bg-gray-100">2</button>
+                    <!-- Square 3 (Outline) -->
+                    <button class="w-8 h-8 flex items-center justify-center border-2 border-black text-black bg-white rounded-md shadow-md hover:bg-gray-100">3</button>
+                    
+                    <!-- Right Chevron -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8 text-black ml-4 hover:text-blue-primary cursor-pointer">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                </div>
+                
+                <p class="font-abhaya-title text-xl text-black">Showing 1-3 of 10 pets</p>
+            </div>
+            
+        </div>
+        
+    </main>
+
+</body>
+</html>

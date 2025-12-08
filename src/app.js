@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import accountRouter from './routes/account.route.js';
+import employeeRouter from './routes/admin-employee.route.js';
 import veterinarianAppointmentRouter from './routes/appointment.route.js';
 
 const app = express();
@@ -56,15 +57,18 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/', function (req, res) {
-    res.render('');
-})
 
 app.use('/account', accountRouter);
 
-app.use('/veterinarian/appointments', veterinarianAppointmentRouter);
+//app.use('/veterinarian/appointments', veterinarianAppointmentRouter);
 
+// Admin Routers
+//app.use('/admin/users', userRouter);
+//app.use('/admin/medicines', medicineRouter);
+app.use('/admin/employees', employeeRouter);
+//app.use('/admin/services', serviceRouter);
+//app.use('/admin/statistics', statisticRouter);
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}/account/signup`);
+    console.log(`Server is running on http://localhost:${PORT}/admin/employees`);
 });

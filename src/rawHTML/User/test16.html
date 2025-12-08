@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập | PetCareUS</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&family=Inter:wght=400;500&display=swap" rel="stylesheet">
+
+    <script>
+        // Cấu hình Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blue-primary': '#2167FF',
+                        'gray-medium': '#B1A4A4',
+                        'gray-light': '#D9D9D9',
+                        'gray-text': '#808080',
+                        'red-error': '#FF0000',
+                    },
+                    boxShadow: {
+                        'input': '0px 4px 10px rgba(0, 0, 0, 0.25)',
+                    },
+                    fontFamily: {
+                        'abhaya': ['Abhaya Libre', 'serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            // Thay thế alert() bằng modal hoặc thông báo tùy chỉnh
+            const message = "Đang thực hiện đăng nhập (Chức năng mô phỏng)!";
+            document.getElementById('message-box-text').textContent = message;
+            document.getElementById('message-box').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('message-box').classList.add('hidden');
+            }, 3000);
+        }
+    </script>
+    <style>
+        /* Styling riêng */
+        .font-abhaya-bold {
+            font-family: 'Abhaya Libre', serif;
+            font-weight: 700;
+        }
+        .text-64px {
+            font-size: 4rem; /* 64px */
+            line-height: 1;
+        }
+
+        .login-input {
+            /* Styles matching Rectangle 5, 7 */
+            height: 70px;
+            border: 3px solid #000000;
+            box-shadow: var(--tw-shadow-input);
+            border-radius: 20px;
+            padding: 0 30px;
+            font-size: 28px;
+            line-height: 42px;
+            font-family: 'Abhaya Libre', serif;
+            color: #000000;
+        }
+
+        .login-input::placeholder {
+            color: var(--tw-colors-gray-text);
+            opacity: 0.5;
+        }
+
+        .login-button {
+            /* Styles matching Rectangle 9 */
+            width: 229px;
+            height: 67px;
+            border: 5px solid var(--tw-colors-blue-primary);
+            border-radius: 100px; /* circle */
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .login-button:hover {
+            background-color: var(--tw-colors-blue-primary);
+            color: #FFFFFF;
+        }
+        
+        /* SIGN_IN container (border-radius: 50px) */
+        .sign-in-box {
+            border-radius: 50px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+    <!-- Message Box (Thay thế alert()) -->
+    <div id="message-box" class="hidden fixed top-0 left-1/2 -translate-x-1/2 mt-4 p-4 bg-blue-primary text-white text-lg font-abhaya-bold rounded-lg shadow-xl z-50 transition-opacity duration-300">
+        <span id="message-box-text"></span>
+    </div>
+
+    <!-- SIGN_IN Container -->
+    <div class="sign-in-box w-full max-w-lg sm:max-w-xl md:max-w-3xl lg:max-w-4xl bg-white mx-auto my-12 shadow-2xl p-4 sm:p-8 md:p-12 lg:p-16">
+
+        <!-- Header/Branding -->
+        <div class="flex items-center space-x-2 mb-16">
+            <!-- Foot Icon (Mock SVG for 'foot 1') -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-primary">
+                <path d="M12 21.5c-3.35 0-6.1-2.19-7.14-5.35-.38-1.15.03-2.42 1.05-3.3 1.25-1.07 3.32-1.55 5.09-1.55 1.83 0 3.7.53 5.06 1.55 1.05.79 1.4 2.06 1.03 3.23-.97 3.16-3.71 5.38-7.09 5.38zM12 21.5c-3.35 0-6.1-2.19-7.14-5.35-.38-1.15.03-2.42 1.05-3.3 1.25-1.07 3.32-1.55 5.09-1.55 1.83 0 3.7.53 5.06 1.55 1.05.79 1.4 2.06 1.03 3.23-.97 3.16-3.71 5.38-7.09 5.38zM12 21.5c-3.35 0-6.1-2.19-7.14-5.35-.38-1.15.03-2.42 1.05-3.3 1.25-1.07 3.32-1.55 5.09-1.55 1.83 0 3.7.53 5.06 1.55 1.05.79 1.4 2.06 1.03 3.23-.97 3.16-3.71 5.38-7.09 5.38zM12 21.5c-3.35 0-6.1-2.19-7.14-5.35-.38-1.15.03-2.42 1.05-3.3 1.25-1.07 3.32-1.55 5.09-1.55 1.83 0 3.7.53 5.06 1.55 1.05.79 1.4 2.06 1.03 3.23-.97 3.16-3.71 5.38-7.09 5.38zM12 21.5c-3.35 0-6.1-2.19-7.14-5.35-.38-1.15.03-2.42 1.05-3.3 1.25-1.07 3.32-1.55 5.09-1.55 1.83 0 3.7.53 5.06 1.55 1.05.79 1.4 2.06 1.03 3.23-.97 3.16-3.71 5.38-7.09 5.38zM12 21.5c-3.35 0-6.1-2.19-7.14-5.35-.38-1.15.03-2.42 1.05-3.3 1.25-1.07 3.32-1.55 5.09-1.55 1.83 0 3.7.53 5.06 1.55 1.05.79 1.4 2.06 1.03 3.23-.97 3.16-3.71 5.38-7.09 5.38zM12 21.5c-3.35 0-6.1-2.19-7.14-5.35-.38-1.15.03-2.42 1.05-3.3 1.25-1.07 3.32-1.55 5.09-1.55 1.83 0 3.7.53 5.06 1.55 1.05.79 1.4 2.06 1.03 3.23-.97 3.16-3.71 5.38-7.09 5.38zM12 21.5c-3.35 0-6.1-2.19-7.14-5.35-.38-1.15.03-2.42 1.05-3.3 1.25-1.07 3.32-1.55 5.09-1.55 1.83 0 3.7.53 5.06 1.55 1.05.79 1.4 2.06 1.03 3.23-.97 3.16-3.71 5.38-7.09 5.38z"/>
+                <circle cx="12" cy="7" r="2" fill="currentColor"/>
+                <circle cx="9" cy="8" r="1.5" fill="currentColor"/>
+                <circle cx="15" cy="8" r="1.5" fill="currentColor"/>
+                <circle cx="7.5" cy="11.5" r="1" fill="currentColor"/>
+                <circle cx="16.5" cy="11.5" r="1" fill="currentColor"/>
+            </svg>
+            <!-- PetCareUS -->
+            <span class="text-4xl sm:text-5xl md:text-6xl font-abhaya text-blue-primary">PetCareUS</span>
+        </div>
+
+        <!-- WELCOME BACK -->
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-abhaya-bold text-black text-center mb-10 sm:mb-16">WELCOME BACK</h1>
+
+        <!-- Login Form -->
+        <form class="space-y-6 sm:space-y-8" onsubmit="handleLogin(event)">
+            
+            <!-- Email Field -->
+            <div class="flex justify-center">
+                <input type="email" placeholder="Email" class="login-input w-full max-w-xl" required>
+            </div>
+
+            <!-- Password Field -->
+            <div class="flex justify-center">
+                <input type="password" placeholder="Password" class="login-input w-full max-w-xl" required>
+            </div>
+
+            <!-- Forgot password? -->
+            <div class="flex justify-end max-w-xl mx-auto pt-2">
+                <a href="#" class="text-2xl font-abhaya text-red-error hover:underline transition duration-150">
+                    Forgot password?
+                </a>
+            </div>
+
+            <!-- Already have no account? JOIN WITH US -->
+            <div class="text-center pt-4">
+                <p class="text-2xl sm:text-3xl font-abhaya text-black">
+                    Already have no account? 
+                    <a href="#" class="font-abhaya-bold text-blue-primary hover:underline transition duration-150">
+                        JOIN WITH US
+                    </a>
+                </p>
+            </div>
+
+            <!-- LOGIN Button -->
+            <div class="flex justify-center pt-8">
+                <button type="submit" class="login-button bg-white text-blue-primary font-abhaya-bold text-3xl hover:text-white flex items-center justify-center">
+                    LOGIN
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+</html>

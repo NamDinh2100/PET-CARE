@@ -1,123 +1,343 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Care US</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <title>PetCareUS Admin Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-blue: #2d5bff;
+            --bg-gray: #e0e0e0;
+            --text-dark: #333;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            font-family: 'Abhaya Libre', serif;
+            overflow-x: hidden;
+        }
+
+        /* --- 1. HEADER & TOP BAR --- */
+        .top-header {
+            background: white;
+            padding: 10px 30px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .brand-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #4a90e2;
+            text-decoration: none;
+        }
+
+        /* Icon logo xoay nhẹ */
+        .brand-logo i {
+            color: black;
+            transform: rotate(-20deg);
+        }
+
+        .admin-profile {
+            text-align: right;
+            line-height: 1.2;
+        }
+
+        .admin-name {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .admin-handle {
+            color: red;
+            font-size: 0.85rem;
+        }
+
+        .admin-avatar {
+            font-size: 2.5rem;
+            margin-left: 10px;
+            color: black;
+            vertical-align: middle;
+        }
+
+        /* --- 2. SIDEBAR (MENU TRÁI) --- */
+        .sidebar {
+            background: white;
+            min-height: calc(100vh - 70px);
+            padding-top: 20px;
+            border-right: 1px solid #eee;
+            float: left;
+            box-shadow: #0000001a 2px 0px 8px 0px;
+            width: 250px;
+            /* Cố định chiều rộng sidebar để layout không bị nhảy */
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            margin: 5px 15px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Chỉnh lại font-size cho Bootstrap Icon trong menu */
+        .nav-item i {
+            width: 30px;
+            font-size: 1.3rem;
+            /* Tăng nhẹ để icon rõ hơn */
+            margin-right: 5px;
+        }
+
+        .nav-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-blue);
+            color: white;
+            box-shadow: 0 4px 10px rgba(45, 91, 255, 0.3);
+            transform: translateX(5px);
+        }
+
+        /* --- 3. MAIN CONTENT --- */
+        .main-content {
+            padding: 30px;
+        }
+
+        /* Search Bar */
+        .search-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+            align-items: center;
+            position: relative;
+            /* Để đặt icon absolute nếu cần, nhưng ở đây dùng flex */
+        }
+
+        .search-input {
+            border: 2px solid #000;
+            border-radius: 50px;
+            padding: 5px 40px 5px 20px;
+            /* Padding phải lớn hơn để không đè icon nếu icon nằm trong */
+            width: 300px;
+            outline: none;
+        }
+
+        .search-icon {
+            font-size: 1.2rem;
+            margin-left: -35px;
+            /* Kéo icon vào trong input */
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        /* Các style khác giữ nguyên */
+        .data-card {
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: #D9D9D9;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header-title {
+            padding: 10px 20px 10px; 
+            font-family: 'Abhaya Libre', serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-bottom: 1px solid #bbb;
+        }
+
+        .table-header-row {
+            background-color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+            font-family: 'Abhaya Libre', serif;
+        }
+
+        .table-body-placeholder {
+            flex-grow: 1;
+            background-color: #dcdcdc;
+        }
+
+        .pagination-container {
+            padding: 15px 20px;
+        }
+
+        .page-box {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 26px;
+            text-align: center;
+            border: 2px solid #000;
+            margin-right: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .page-box.active {
+            background-color: black;
+            color: white;
+        }
+
+        .page-next {
+            font-size: 1.2rem;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Dropdown */
+        .dropdown-menu {
+            border: 2px solid #eee;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 10px !important;
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            font-size: 0.95rem;
+        }
+
+        .dropdown-item:active {
+            background-color: var(--primary-blue);
+        }
+
+        .dropdown .show .transition-icon {
+            transform: rotate(180deg);
+            transition: transform 0.3s ease;
+        }
+
+        .transition-icon {
+            transition: transform 0.3s ease;
+        }
+    </style>
+
     {{{_sections.css}}}
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary shadow">
-        <div class="container-fluid">
-        
-        <a class="navbar-brand" href="#">
-            <i class="bi bi-house-heart"></i>
+
+    <header class="top-header">
+        <a href="#" class="brand-logo">
+            <i class="bi bi-paw me-2"></i>PetCareUS
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">
-                Home
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/products">
-                Products
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown
-                </a>
-                <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-            </li>
-            </ul>
-
-          
-
-            <ul class="navbar-nav mb-2 mb-lg-0">
-            {{#if isAuth}}
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Hello, <b>{{authUser.full_name}}</b>!
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                    <a class="dropdown-item" href="/account/profile">
-                    <i class="bi bi-person-circle"></i>
-                    Profile
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item" href="/account/change-password">
-                    <i class="bi bi-key"></i>
-                    Change Password
-                    </a>
-                </li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li>
-                    <a class="dropdown-item" href="javascript: document.querySelector('#frmSignOut').submit();">
-                    <i class="bi bi-box-arrow-right"></i>
-                    Sign Out
-                    </a>
-                </li>
-                </ul>
-            </li>
-            <form id="frmSignOut" action="/account/signout" method="post"></form>
-            {{else}}
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="/account/signup">
-                <i class="bi bi-person-plus"></i>
-                Sign Up
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/account/signin">
-                <i class="bi bi-person-lock"></i>
-                Sign In
-                </a>
-            </li>
-            {{/if}}
-            </ul>
-        </div>
-        </div>
-    </nav>
-
-    <div class="container-fluid mt-4 mb-3">
-        <div class="row">
-            
-            <div class="col-md-12">
-                {{{body}}}
+        <div class="dropdown">
+            <div class="d-flex align-items-center cursor-pointer" id="adminDropdown" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <div class="admin-profile me-2">
+                    <div class="admin-name">ADMIN</div>
+                    <div class="admin-handle">@ad_name</div>
+                </div>
+                <i class="bi bi-person-circle admin-avatar"></i>
+                <i class="bi bi-chevron-down ms-2 transition-icon" style="font-size: 0.8rem;"></i>
             </div>
+
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
+                <li><a class="dropdown-item" href="#"><i class="bi bi-person-fill me-2"></i>Profile</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-gear-fill me-2"></i>Settings</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
+                </li>
+
+            </ul>
         </div>
+    </header>
+
+    <div class="d-flex">
+        <aside class="sidebar">
+            <a href="/admin/customers" class="nav-item">
+                <i class="bi bi-person-fill"></i> USER
+            </a>
+
+            <a href="/admin/employees" class="nav-item">
+                <i class="bi bi-people-fill"></i> EMPLOYEE
+            </a>
+
+            <a href="/admin/medicines" class="nav-item">
+                <i class="bi bi-capsule"></i> MEDICINE
+            </a>
+
+            <a href="/admin/appointments" class="nav-item">
+                <i class="bi bi-calendar-event"></i> APPOINTMENT
+            </a>
+
+            <a href="/admin/services" class="nav-item">
+                <i class="bi bi-scissors"></i> SERVICE
+            </a>
+
+            <a href="/admin/statistical" class="nav-item">
+                <i class="bi bi-graph-up"></i> STATISTICAL
+            </a>
+        </aside>
+
+        <main class="main-content flex-grow-1">
+
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="SEARCH...">
+                <i class="bi bi-search search-icon"></i>
+            </div>
+
+            {{{body}}}
+        </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    {{{_sections.js}}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Logic Active Navigation giữ nguyên
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.sidebar .nav-item');
+
+            navLinks.forEach(link => {
+                const linkPath = link.getAttribute('href');
+                if (currentPath === linkPath || (linkPath !== '/' && currentPath.includes(linkPath))) {
+                    link.classList.add('active');
+
+                    const titleText = link.innerText.trim();
+                    const pageTitleElement = document.getElementById('pageTitle');
+                    // Lưu ý: pageTitleElement nằm trong {{{body}}}, script này sẽ tìm thấy nó nếu trang con có ID đó
+                    if (pageTitleElement) {
+                        pageTitleElement.innerText = titleText;
+                    }
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

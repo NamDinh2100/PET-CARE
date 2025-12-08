@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Thú Cưng | PetCareUS</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        // Cấu hình Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'blue-primary': '#2167FF',
+                        'blue-dark': '#001C57',
+                        'gray-medium': '#B1A4A4',
+                        'gray-light': '#D9D9D9',
+                        'error-red': '#852221',
+                    },
+                    boxShadow: {
+                        'input': '0px 4px 10px rgba(0, 0, 0, 0.25)',
+                        'section': '0px 4px 20px rgba(0, 0, 0, 0.25)',
+                    },
+                    fontFamily: {
+                        'abhaya': ['Abhaya Libre', 'serif'],
+                        'sans': ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Styling riêng cho Abhaya Libre */
+        .font-abhaya-title {
+            font-family: 'Abhaya Libre', serif;
+        }
+        
+        .form-label {
+            font-size: 24px;
+            line-height: 28px;
+            font-weight: 700;
+        }
+
+        .input-field {
+            font-size: 18px;
+            padding: 8px 16px;
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center pt-8">
+    
+    <!-- HEADER_CONTACT -->
+    <header class="w-full max-w-[1440px] px-4 md:px-8 flex justify-between items-center h-[120px] md:h-[150px] lg:h-[200px]">
+        <div class="flex items-center space-x-2">
+            <!-- PetCareUS Logo & Text -->
+            <svg width="64" height="64" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-blue-primary w-16 h-16">
+                <path d="M21 2C10.51 2 2 10.51 2 21s8.51 19 19 19 19-8.51 19-19S31.49 2 21 2zm0 34c-8.28 0-15-6.72-15-15S12.72 6 21 6s15 6.72 15 15-6.72 15-15 15zm-2-12c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm-8-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm16 0c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm-8-5c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z" fill="currentColor"/>
+            </svg>
+            <span class="text-5xl lg:text-6xl font-abhaya-title font-normal text-blue-primary">PetCareUS</span>
+        </div>
+        
+        <!-- Navigation Links -->
+        <nav class="hidden md:flex space-x-12 lg:space-x-20 font-abhaya-title text-3xl font-normal">
+            <a href="#" class="text-black hover:text-blue-primary">Home</a>
+            <a href="#" class="text-black hover:text-blue-primary">About</a>
+            <a href="#" class="text-black hover:text-blue-primary">Contact</a>
+        </nav>
+
+        <!-- Profile / Dropdown Placeholder -->
+        <div class="flex items-center space-x-2">
+            <div>
+                <p class="text-2xl font-abhaya-title font-normal text-black">Customer</p>
+                <p class="text-xl font-abhaya-title font-normal text-red-600 text-right">@cus_name</p>
+            </div>
+            <div class="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center">
+                <!-- User Icon Placeholder -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+            </div>
+            <!-- Dropdown Arrow -->
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-black">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+        </div>
+    </header>
+
+    <!-- Main Content Area: Centered Pet View Form -->
+    <main class="w-full flex justify-center mt-12 mb-12">
+        
+        <!-- USER PET VIEW FORM (Max 688px wide) -->
+        <div class="relative w-full max-w-[688px] h-auto bg-white border-[4px] border-gray-medium rounded-[20px] shadow-xl mx-4">
+
+            <!-- Rectangle 34 (Header Bar) -->
+            <div class="absolute top-0 left-0 w-full h-24 bg-gray-light rounded-t-[20px] flex items-center justify-center border-b-[5px] border-gray-medium">
+                <h2 class="text-4xl font-abhaya-title font-bold text-black pt-4">PET PROFILE</h2>
+                
+                <!-- Cancel Icon (Close button) -->
+                <button class="absolute right-4 top-4 p-2 rounded-full hover:bg-gray-medium transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-10 h-10 text-error-red">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Form Fields -->
+            <form class="pt-28 pb-8 px-6 md:px-12 space-y-8">
+                
+                <!-- PET NAME -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
+                    <label for="pet_name" class="font-abhaya-title form-label shrink-0 mr-4">PET NAME:</label>
+                    <input type="text" id="pet_name" value="Buddy"
+                           class="w-full md:w-[324px] input-field bg-white border border-black shadow-input rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-primary">
+                </div>
+
+                <!-- SEX -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
+                    <label for="pet_sex" class="font-abhaya-title form-label shrink-0 mr-4">SEX:</label>
+                    <select id="pet_sex" 
+                            class="w-full md:w-[324px] input-field bg-white border border-black shadow-input rounded-2xl appearance-none focus:outline-none focus:ring-2 focus:ring-blue-primary">
+                        <option value="male" selected>Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+                <!-- SPECIES -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
+                    <label for="pet_species" class="font-abhaya-title form-label shrink-0 mr-4">SPECIES:</label>
+                    <input type="text" id="pet_species" value="Dog (Golden Retriever)"
+                           class="w-full md:w-[324px] input-field bg-white border border-black shadow-input rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-primary">
+                </div>
+
+                <!-- YEAR OF BIRTH -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
+                    <label for="pet_yob" class="font-abhaya-title form-label shrink-0 mr-4">YEAR OF BIRTH:</label>
+                    <input type="number" id="pet_yob" value="2020" min="1990" max="2025"
+                           class="w-full md:w-[324px] input-field bg-white border border-black shadow-input rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-primary">
+                </div>
+
+                <!-- WEIGHT -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between space-y-2 md:space-y-0">
+                    <label for="pet_weight" class="font-abhaya-title form-label shrink-0 mr-4">WEIGHT:</label>
+                    <div class="flex w-full md:w-[324px] rounded-2xl border border-black shadow-input overflow-hidden">
+                        <input type="number" id="pet_weight" value="15" step="0.1"
+                               class="w-2/3 input-field bg-white pr-2 border-r border-black focus:outline-none focus:ring-0">
+                        <span class="w-1/3 flex items-center justify-center bg-gray-50 text-xl font-semibold text-gray-700">kg</span>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="pt-6 flex justify-center">
+                    <button type="submit" class="px-12 py-3 bg-blue-primary text-white font-abhaya-title text-2xl font-bold rounded-2xl shadow-md hover:bg-blue-dark transition transform hover:scale-105">
+                        SAVE CHANGES
+                    </button>
+                </div>
+            </form>
+            
+        </div>
+        
+    </main>
+
+</body>
+</html>
