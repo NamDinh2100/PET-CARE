@@ -7,10 +7,17 @@ import { fileURLToPath } from 'url';
 
 import accountRouter from './routes/account.route.js';
 import employeeRouter from './routes/admin-employee.route.js';
+import serviceRouter from './routes/admin-service.route.js';
+import appointmentRouter from './routes/admin-appointment.route.js';
+import userRouter from './routes/admin-customer.route.js';
+import medicineRouter from './routes/admin-medicine.route.js';
+import statisticRouter from './routes/admin-statistical.route.js';
+
 import veterinarianAppointmentRouter from './routes/appointment.route.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 
 // Lấy __dirname trong ES module
 const __filename = fileURLToPath(import.meta.url);
@@ -34,9 +41,17 @@ app.engine('handlebars', engine({
     path.join(__dirname, 'views/shared'),
   ],
   partialsDir: path.join(__dirname, 'views/vwVeterinarian/vwAppointment'),     // 🎯 thư mục partials
+  
   helpers: {
+    formatDate(date) {
+    return new Date(date).toLocaleDateString('vi-VN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    })},
+
     section: expressHandlebarsSections(),
-  },
+  }
 }));
 
 app.set('view engine', 'handlebars');
@@ -63,11 +78,12 @@ app.use('/account', accountRouter);
 //app.use('/veterinarian/appointments', veterinarianAppointmentRouter);
 
 // Admin Routers
-//app.use('/admin/users', userRouter);
-//app.use('/admin/medicines', medicineRouter);
+app.use('/admin/customers', userRouter);
+app.use('/admin/medicines', medicineRouter);
 app.use('/admin/employees', employeeRouter);
-//app.use('/admin/services', serviceRouter);
-//app.use('/admin/statistics', statisticRouter);
+app.use('/admin/appointments', appointmentRouter);
+app.use('/admin/services', serviceRouter);
+app.use('/admin/statistical', statisticRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}/admin/employees`);

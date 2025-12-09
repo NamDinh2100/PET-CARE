@@ -1,16 +1,22 @@
 import express from 'express';
+import * as serviceService from '../models/service.model.js';
 
 const router = express.Router();
 
 router.get('/', async function (req, res) {
     const list = await serviceService.getAllServices();
-    res.render('vwAccounts/vwService/list',{
-        services: list
+    res.render('vwAdmin/vwService/list',{
+        services: list,
+        isAddMode: false
     }) ;
 });
 
-router.get('/add', function (req, res) {
-    res.render('vwAccounts/vwService/add');
+router.get('/add', async function (req, res) {
+    const list = await serviceService.getAllServices();
+    res.render('vwAdmin/vwService/add', {
+        services: list,
+        isAddMode: true
+    });
 });
 
 router.post('/add', async function (req, res) {

@@ -6,7 +6,8 @@ const router = express.Router();
 router.get('/', async function (req, res) {
     const list = await userService.getAllUsers();
     res.render('vwAdmin/vwCustomer/list', { 
-        customers: list 
+        customers: list,
+        isAddMode: false
     });
 });
 
@@ -15,6 +16,7 @@ router.get('/edit', async function (req, res) {
     const customer = await userService.getUserByID(id);
     res.render('vwAdmin/vwCustomer/edit', { 
         customer: customer
+
     });
 });
 

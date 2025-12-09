@@ -7,238 +7,46 @@
     <title>PetCareUS Admin Dashboard</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    {{{_sections.css}}}
 
     <style>
+        /* Chỉ giữ lại các tùy chỉnh thương hiệu (Brand Identity) bắt buộc */
         :root {
             --primary-blue: #2d5bff;
-            --bg-gray: #e0e0e0;
-            --text-dark: #333;
         }
 
         body {
-            background-color: #f9f9f9;
             font-family: 'Abhaya Libre', serif;
-            overflow-x: hidden;
+            background-color: #f8f9fa; /* Bootstrap bg-light equivalent */
         }
 
-        /* --- 1. HEADER & TOP BAR --- */
-        .top-header {
-            background: white;
-            padding: 10px 30px;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 70px;
-        }
-
-        .brand-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
+        /* Brand Logo Style */
+        .brand-text {
+            font-family: 'Abhaya Libre', serif;
+            font-size: 2rem;
             color: #4a90e2;
-            text-decoration: none;
         }
-
-        /* Icon logo xoay nhẹ */
-        .brand-logo i {
-            color: black;
+        
+        .brand-icon {
             transform: rotate(-20deg);
         }
 
-        .admin-profile {
-            text-align: right;
-            line-height: 1.2;
-        }
-
-        .admin-name {
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        .admin-handle {
-            color: red;
-            font-size: 0.85rem;
-        }
-
-        .admin-avatar {
-            font-size: 2.5rem;
-            margin-left: 10px;
-            color: black;
-            vertical-align: middle;
-        }
-
-        /* --- 2. SIDEBAR (MENU TRÁI) --- */
-        .sidebar {
-            background: white;
-            min-height: calc(100vh - 70px);
-            padding-top: 20px;
-            border-right: 1px solid #eee;
-            float: left;
-            box-shadow: #0000001a 2px 0px 8px 0px;
-            width: 250px;
-            /* Cố định chiều rộng sidebar để layout không bị nhảy */
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 20px;
-            margin: 5px 15px;
-            color: #333;
-            text-decoration: none;
-            font-weight: 500;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        /* Chỉnh lại font-size cho Bootstrap Icon trong menu */
-        .nav-item i {
-            width: 30px;
-            font-size: 1.3rem;
-            /* Tăng nhẹ để icon rõ hơn */
-            margin-right: 5px;
-        }
-
-        .nav-item:hover {
-            background-color: #f0f0f0;
-        }
-
-        .nav-item.active {
+        /* Sidebar Item Active Override - Để dùng màu xanh thương hiệu thay vì xanh mặc định */
+        .list-group-item.active {
             background-color: var(--primary-blue);
-            color: white;
+            border-color: var(--primary-blue);
             box-shadow: 0 4px 10px rgba(45, 91, 255, 0.3);
-            transform: translateX(5px);
         }
 
-        /* --- 3. MAIN CONTENT --- */
-        .main-content {
-            padding: 30px;
-        }
-
-        /* Search Bar */
-        .search-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-            align-items: center;
-            position: relative;
-            /* Để đặt icon absolute nếu cần, nhưng ở đây dùng flex */
-        }
-
-        .search-input {
-            border: 2px solid #000;
+        /* Search Input Rounded */
+        .search-input-rounded {
             border-radius: 50px;
-            padding: 5px 40px 5px 20px;
-            /* Padding phải lớn hơn để không đè icon nếu icon nằm trong */
-            width: 300px;
-            outline: none;
         }
 
-        .search-icon {
-            font-size: 1.2rem;
-            margin-left: -35px;
-            /* Kéo icon vào trong input */
-            cursor: pointer;
-            z-index: 2;
-        }
 
-        /* Các style khác giữ nguyên */
-        .data-card {
-            border: 2px solid #ccc;
-            border-radius: 20px;
-            overflow: hidden;
-            background-color: #D9D9D9;
-            min-height: 500px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-header-title {
-            padding: 10px 20px 10px; 
-            font-family: 'Abhaya Libre', serif;
-            font-size: 1.5rem;
-            font-weight: bold;
-            border-bottom: 1px solid #bbb;
-        }
-
-        .table-header-row {
-            background-color: white;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            font-weight: 500;
-            font-family: 'Abhaya Libre', serif;
-        }
-
-        .table-body-placeholder {
-            flex-grow: 1;
-            background-color: #dcdcdc;
-        }
-
-        .pagination-container {
-            padding: 15px 20px;
-        }
-
-        .page-box {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            line-height: 26px;
-            text-align: center;
-            border: 2px solid #000;
-            margin-right: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            background: transparent;
-        }
-
-        .page-box.active {
-            background-color: black;
-            color: white;
-        }
-
-        .page-next {
-            font-size: 1.2rem;
-            vertical-align: middle;
-            cursor: pointer;
-        }
-
-        .cursor-pointer {
-            cursor: pointer;
-            user-select: none;
-        }
-
-        /* Dropdown */
-        .dropdown-menu {
-            border: 2px solid #eee;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            margin-top: 10px !important;
-        }
-
-        .dropdown-item {
-            padding: 10px 20px;
-            font-size: 0.95rem;
-        }
-
-        .dropdown-item:active {
-            background-color: var(--primary-blue);
-        }
-
-        .dropdown .show .transition-icon {
-            transform: rotate(180deg);
-            transition: transform 0.3s ease;
-        }
-
-        .transition-icon {
-            transition: transform 0.3s ease;
-        }
     </style>
 
     {{{_sections.css}}}
@@ -246,98 +54,107 @@
 
 <body>
 
-    <header class="top-header">
-        <a href="#" class="brand-logo">
-            <i class="bi bi-paw me-2"></i>PetCareUS
-        </a>
+    <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-3 px-3 shadow">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center fw-bold brand-text" href="#">
+                <i class="bi bi-paw me-2 brand-icon text-dark"></i>
+                PetCareUS
+            </a>
 
-        <div class="dropdown">
-            <div class="d-flex align-items-center cursor-pointer" id="adminDropdown" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <div class="admin-profile me-2">
-                    <div class="admin-name">ADMIN</div>
-                    <div class="admin-handle">@ad_name</div>
+            <div class="ms-auto d-flex align-items-center">
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none text-dark dropdown-toggle hidden-arrow" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="text-end me-2 lh-1">
+                            <div class="fw-bold small">ADMIN</div>
+                            <div class="text-danger" style="font-size: 0.8rem;">@ad_name</div>
+                        </div>
+                        <i class="bi bi-person-circle fs-2"></i>
+                       
+                    </a>
+                    
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 rounded-3" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item py-2" href="#"><i class="bi bi-person-fill me-2"></i>Profile</a></li>
+                        <li><a class="dropdown-item py-2" href="#"><i class="bi bi-gear-fill me-2"></i>Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item py-2 text-danger" href="#"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                    </ul>
                 </div>
-                <i class="bi bi-person-circle admin-avatar"></i>
-                <i class="bi bi-chevron-down ms-2 transition-icon" style="font-size: 0.8rem;"></i>
             </div>
-
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-person-fill me-2"></i>Profile</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-gear-fill me-2"></i>Settings</a></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
-                </li>
-
-            </ul>
         </div>
-    </header>
+    </nav>
 
-    <div class="d-flex">
-        <aside class="sidebar">
-            <a href="/admin/customers" class="nav-item">
-                <i class="bi bi-person-fill"></i> USER
-            </a>
+    <div class="container-fluid">
+        <div class="row">
+            
+            <nav id="sidebarMenu" class="col-md-2 col-lg-2 d-md-block bg-white sidebar collapse border-end min-vh-100 p-3 shadow-sm position-relative">
+                <div class="list-group list-group-flush mt-2">
+                    <a href="/admin/customers" class="list-group-item list-group-item-action border-0 rounded-3 mb-1 py-3 fw-bold text-secondary">
+                        <i class="bi bi-person-fill me-3 fs-5"></i> USER
+                    </a>
+                    
+                    <a href="/admin/employees" class="list-group-item list-group-item-action border-0 rounded-3 mb-1 py-3 fw-bold text-secondary">
+                        <i class="bi bi-people-fill me-3 fs-5"></i> EMPLOYEE
+                    </a>
+                    
+                    <a href="/admin/medicines" class="list-group-item list-group-item-action border-0 rounded-3 mb-1 py-3 fw-bold text-secondary">
+                        <i class="bi bi-capsule me-3 fs-5"></i> MEDICINE
+                    </a>
+                    
+                    <a href="/admin/appointments" class="list-group-item list-group-item-action border-0 rounded-3 mb-1 py-3 fw-bold text-secondary">
+                        <i class="bi bi-calendar-event me-3 fs-5"></i> APPOINTMENT
+                    </a>
+                    
+                    <a href="/admin/services" class="list-group-item list-group-item-action border-0 rounded-3 mb-1 py-3 fw-bold text-secondary">
+                        <i class="bi bi-tools me-3 fs-5"></i> SERVICE
+                    </a>
+                    
+                    <a href="/admin/statistical" class="list-group-item list-group-item-action border-0 rounded-3 mb-1 py-3 fw-bold text-secondary">
+                        <i class="bi bi-graph-up me-3 fs-5"></i> STATISTICAL
+                    </a>
+                </div>
+            </nav>
 
-            <a href="/admin/employees" class="nav-item">
-                <i class="bi bi-people-fill"></i> EMPLOYEE
-            </a>
+            <main class="col-md-10 col-lg-10 ms-sm-auto px-md-4 py-4 ">
+                
+                <div class="row mb-4 ">
+                    <div class="col-md-10 ms-auto"> <div class="input-group">
+                            <input type="text" class="form-control border-dark search-input-rounded ps-4" placeholder="SEARCH..." aria-label="Search">
+                            <span class="position-absolute end-0 top-50 translate-middle-y me-3 z-1 cursor-pointer">
+                                <i class="bi bi-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
 
-            <a href="/admin/medicines" class="nav-item">
-                <i class="bi bi-capsule"></i> MEDICINE
-            </a>
+                {{{body}}}
 
-            <a href="/admin/appointments" class="nav-item">
-                <i class="bi bi-calendar-event"></i> APPOINTMENT
-            </a>
-
-            <a href="/admin/services" class="nav-item">
-                <i class="bi bi-scissors"></i> SERVICE
-            </a>
-
-            <a href="/admin/statistical" class="nav-item">
-                <i class="bi bi-graph-up"></i> STATISTICAL
-            </a>
-        </aside>
-
-        <main class="main-content flex-grow-1">
-
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="SEARCH...">
-                <i class="bi bi-search search-icon"></i>
-            </div>
-
-            {{{body}}}
-        </main>
+            </main>
+        </div>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Logic Active Navigation giữ nguyên
             const currentPath = window.location.pathname;
-            const navLinks = document.querySelectorAll('.sidebar .nav-item');
+            // Chọn các thẻ a trong list-group
+            const navLinks = document.querySelectorAll('.list-group-item'); 
 
             navLinks.forEach(link => {
                 const linkPath = link.getAttribute('href');
+                // Logic so sánh đường dẫn
                 if (currentPath === linkPath || (linkPath !== '/' && currentPath.includes(linkPath))) {
-                    link.classList.add('active');
-
-                    const titleText = link.innerText.trim();
-                    const pageTitleElement = document.getElementById('pageTitle');
-                    // Lưu ý: pageTitleElement nằm trong {{{body}}}, script này sẽ tìm thấy nó nếu trang con có ID đó
-                    if (pageTitleElement) {
-                        pageTitleElement.innerText = titleText;
-                    }
+                    link.classList.add('active'); // Class active của Bootstrap sẽ tự đổi màu nền thành xanh
+                    link.classList.remove('text-secondary'); // Xóa màu xám
                 } else {
                     link.classList.remove('active');
+                    link.classList.add('text-secondary');
                 }
             });
         });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    {{{_sections.js}}}
 </body>
 
 </html>

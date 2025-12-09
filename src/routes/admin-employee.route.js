@@ -1,29 +1,52 @@
 import express from 'express';
+import bcrypt, {compareSync, hash} from 'bcryptjs';
 import * as employeeService from '../models/user.model.js';
+import * as emailService from '../models/email.model.js';
 
 const router = express.Router();
 
 router.get('/', async function (req, res) {
     const list = await employeeService.getAllEmployees();
     res.render('vwAdmin/vwEmployee/list', {
-        employees: list
+        employees: list,
+        isAddMode: false
     });
 });
 
-router.get('/add', function (req, res) {
-    res.render('vwAdmin/vwEmployee/add');
+router.get('/add', async function (req, res) {
+    const list = await employeeService.getAllEmployees();
+    res.render('vwAdmin/vwEmployee/list', {
+        employees: list,
+        isAddMode: true
+    });
 });
 
 router.post('/add', async function (req, res) {
-    const hashPassword = bcrypt.hashSync(req.body.password);
+     
+    const genPassword = emailService.generatePassword();
+    try {
+        const emailText = `Welcome to the our WEDSITE, ${req.body.full_name}!\nYour account has been created with the following credentials:
+        \nEmail: ${req.body.email}
+        \nPassword: ${genPassword}
+        \nRole: ${req.body.role}
+        \nPlease change your password after your first login.`;
+        await emailService.sendEmail(req.body.email, 'Welcome to WEDSITE', emailText);
+    } catch (error) {
+        console.error('Error sending email:', error);   
+    }
+
+    const hashPassword = bcrypt.hashSync(genPassword);
 
     const employee = {
         full_name: req.body.full_name,
         password: hashPassword,
         email: req.body.email,
         phone: req.body.phone,
-        role: req.body.role
+        role: req.body.role,
+        status: 'active'
     };
+
+    console.log(employee);
 
     await employeeService.addEmployee(employee);
     res.redirect('/admin/employees');
