@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCareUS Full Website</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Roboto', sans-serif; }
+
+        /* --- STYLES CHUNG & NAVBAR --- */
+        .brand-text { font-family: 'Playfair Display', serif; color: #4a90e2; font-size: 1.8rem; }
+        .fa-paw { color: #000; margin-right: 5px; }
+
+        /* --- DASHBOARD HEADER --- */
+        .profile-header-card { background: white; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid #ddd; position: relative; margin-top: 60px; padding: 10px 0 20px 0; }
+        .avatar-circle { width: 100px; height: 100px; background-color: black; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 50px; position: absolute; top: -40px; left: 60px; border: 5px solid white; z-index: 10; }
+        .username-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-left: 180px; margin-top: 20px; margin-bottom: 10px; }
+        
+        /* --- TABS & CONTENT CARD --- */
+        .nav-tabs { border-bottom: 2px solid #000; width: 90%; margin: 10px auto 0 auto; }
+        .nav-tabs .nav-link { border: none; color: #333; font-weight: 600; text-transform: uppercase; margin-right: 20px; background: transparent; padding-bottom: 10px; }
+        .nav-tabs .nav-link.active { color: #2b7de9; background: transparent; border-bottom: 4px solid #2b7de9; margin-bottom: -3px; }
+        .content-card { background-color: #fcfcfc; border: 3px solid #b8b8b8; border-radius: 20px; padding: 0; overflow: hidden; margin-top: 30px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .content-header { background-color: #d9d9d9; padding: 15px 20px; border-bottom: 3px solid #b8b8b8; font-family: 'Playfair Display', serif; font-weight: bold; font-size: 1.3rem; text-transform: uppercase; }
+        .content-body { padding: 30px; }
+
+        /* --- CSS RIÊNG CHO TRANG MY PROFILE (ĐÃ KHÔI PHỤC) --- */
+        .form-label-page { font-weight: bold; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 8px; display: block; color: #333; }
+        .custom-input-page { border: 2px solid #000; border-radius: 25px; padding: 10px 20px; background-color: #fff; width: 100%; margin-bottom: 25px; font-weight: 500; }
+        .custom-input-page:focus { outline: none; border-color: #4a90e2; }
+        .btn-update { border: 2px solid #2b7de9; color: #2b7de9; background: white; border-radius: 15px; padding: 8px 40px; font-weight: bold; font-size: 1.1rem; transition: all 0.3s; }
+        .btn-update:hover { background-color: #2b7de9; color: white; }
+
+        /* --- MODAL STYLES --- */
+        .modal-content-custom { border: 4px solid #b1a4a4; border-radius: 25px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .modal-header-custom { background-color: #d9d9d9; border-bottom: 3px solid #b1a4a4; padding: 15px; position: relative; justify-content: center; }
+        .modal-title-custom { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.5rem; text-transform: uppercase; color: #222; }
+        .btn-close-custom { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23a33'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat; border: 3px solid #a33; border-radius: 50%; opacity: 1; padding: 0.5rem; width: 2.5rem; height: 2.5rem; }
+        .btn-close-custom:hover { opacity: 0.7; }
+        .modal-body { padding: 2rem 3rem; }
+        .modal-form-label { font-weight: 700; font-size: 0.9rem; text-transform: uppercase; color: #000; margin-bottom: 0.5rem; display: block; }
+        .modal-input-standard { border: 2px solid #000; border-radius: 15px; padding: 10px 15px; font-weight: 500; }
+        .input-pill-short { border: 2px solid #000; border-radius: 50px; padding: 8px 15px; width: 120px; text-align: center; font-weight: 500; }
+        .modal-textarea { border: 2px solid #000; border-radius: 20px; padding: 15px; resize: none; }
+        .modal-footer-custom { border-top: none; padding: 0 3rem 2rem 3rem; justify-content: flex-end; gap: 15px; }
+        .btn-outline-record { border: 3px solid #4caf50; color: #4caf50; background: white; border-radius: 50px; padding: 8px 30px; font-weight: 700; font-size: 1.2rem; display: flex; align-items: center; transition: all 0.3s; }
+        .btn-outline-record:hover { background-color: #4caf50; color: white; }
+        .btn-outline-invoice { border: 3px solid #2b7de9; color: #2b7de9; background: white; border-radius: 50px; padding: 8px 30px; font-weight: 700; font-size: 1.2rem; display: flex; align-items: center; transition: all 0.3s; }
+        .btn-outline-invoice:hover { background-color: #2b7de9; color: white; }
+        .btn-outline-record i, .btn-outline-invoice i { margin-right: 10px; font-size: 1.3rem; }
+        .custom-input { border: 2px solid #000; border-radius: 50px; padding: 8px 20px; }
+
+        /* --- TABLE & PAGINATION --- */
+        .medical-header-row { background-color: white; padding: 15px 30px; font-weight: bold; border-bottom: 1px solid #ddd; font-family: 'Playfair Display', serif; }
+        .medical-body-gray { background-color: #d9d9d9; min-height: 400px; position: relative; padding: 20px; }
+        .pagination-square .page-item { margin: 0 5px; }
+        .pagination-square .page-link { border: 2px solid #000; color: #000; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; font-weight: bold; border-radius: 4px; background: transparent; }
+        .pagination-square .page-item.active .page-link { background-color: #000; color: #fff; border-color: #000; }
+        .pagination-square .page-link:hover { background-color: #333; color: #fff; }
+        .appointment-table-header { background-color: white; padding: 15px 20px; font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #222; }
+        .appointment-data-area { background-color: #d9d9d9; height: 400px; width: 100%; }
+
+        /* --- MEDICINE & RECORD --- */
+        .medicine-title { font-family: 'Playfair Display', serif; font-weight: bold; font-size: 1.5rem; text-align: center; margin: 20px 0 10px 0; text-transform: uppercase; }
+        .medicine-box { border: 3px solid #000; border-radius: 20px; padding: 10px; min-height: 200px; background: white; margin-bottom: 20px; }
+        .medicine-header-row { border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-bottom: 10px; font-weight: 600; }
+        .label-red { color: red; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; display: block; }
+        .input-red-border { border: 3px solid red !important; border-radius: 50px; padding: 10px 20px; width: 100%; background-color: white; }
+
+        /* --- MISC COMPONENTS --- */
+        .btn-new { background-color: #4caf50; color: white; border: 2px solid #3e8e41; border-radius: 5px; font-weight: bold; padding: 5px 20px; font-size: 0.9rem; transition: all 0.3s; }
+        .btn-new:hover { background-color: #3e8e41; color: white; }
+        
+        /* --- HOME PAGE STYLES --- */
+        .hero-section { background-color: #bce6eb; padding-top: 80px; position: relative; overflow: hidden; }
+        .hero-card { background-color: #fffbef; padding: 60px 50px 80px 50px; border-radius: 20px 20px 0 0; position: relative; }
+        .dog-image-container { position: absolute; top: -150px; left: 0; right: 0; text-align: center; z-index: 1; pointer-events: none; }
+        .dog-img-placeholder { height: 180px; width: auto; max-width: 100%; }
+        .hero-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: bold; color: #000; margin-top: 20px; margin-bottom: 20px; line-height: 1.2; }
+        .hero-desc { font-size: 1.1rem; color: #333; margin-bottom: 30px; max-width: 700px; }
+        .btn-booking-hero { background-color: transparent; color: #4a90e2; border: 2px solid #4a90e2; border-radius: 15px; padding: 10px 30px; font-weight: bold; font-size: 1.1rem; transition: all 0.3s; }
+        .btn-booking-hero:hover { background-color: #4a90e2; color: white; }
+
+        .service-section { background-color: white; padding: 40px 0; }
+        .service-section-title { font-family: 'Playfair Display', serif; font-weight: bold; font-size: 1.5rem; text-transform: uppercase; margin-bottom: 30px; }
+        .service-card-simple { background: white; border: 1px solid #f0f0f0; border-radius: 20px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); height: 100%; }
+        .service-img-gray { background-color: #d9d9d9; width: 100%; aspect-ratio: 1/1; border-radius: 15px; margin-bottom: 15px; }
+        .service-name { font-family: 'Playfair Display', serif; font-weight: bold; font-size: 1.1rem; }
+        .service-desc { font-size: 0.9rem; color: #666; }
+
+        /* --- ABOUT & CONTACT STYLES --- */
+        .section-rounded-card { background: white; border-radius: 40px; padding: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 40px; }
+        .section-title-large { font-family: 'Playfair Display', serif; font-weight: bold; font-size: 1.8rem; margin-bottom: 25px; color: #000; text-transform: uppercase; }
+        .about-text { font-size: 1rem; line-height: 1.6; color: #333; text-align: justify; }
+        .staff-avatar-placeholder { width: 150px; height: 150px; background-color: #d9d9d9; border-radius: 50%; margin: 0 auto 20px auto; }
+        .staff-role { font-family: 'Playfair Display', serif; font-weight: bold; font-size: 1.1rem; margin-bottom: 5px; }
+        .staff-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: #555; }
+        
+        .contact-blue-section { background-color: #001f5b; color: white; padding: 50px 0; margin-top: 40px; }
+        .contact-title { font-family: 'Playfair Display', serif; font-weight: bold; font-size: 2rem; margin-bottom: 30px; text-transform: uppercase; }
+        .contact-item { font-size: 1.1rem; margin-bottom: 20px; display: flex; align-items: center; }
+        .contact-item i { font-size: 1.5rem; margin-right: 15px; width: 30px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#" onclick="showPage('home')"><i class="fas fa-paw fa-lg"></i><span class="brand-text">PetCareUS</span></a>
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item mx-2"><a class="nav-link text-dark fw-medium" href="#" onclick="showPage('home')">Home</a></li>
+                    <li class="nav-item mx-2"><a class="nav-link text-dark fw-medium" href="#" onclick="showPage('about')">About</a></li>
+                    <li class="nav-item mx-2"><a class="nav-link text-dark fw-medium" href="#" onclick="showPage('contact')">Contact</a></li>
+                    <li class="nav-item ms-4 text-end lh-1" style="cursor: pointer;" onclick="showPage('dashboard')">
+                        <small class="d-block text-muted fw-bold">Customer</small>
+                        <span class="text-danger fw-bold">@cus_name</span>
+                    </li>
+                    <li class="nav-item ms-2" onclick="showPage('dashboard')" style="cursor: pointer;">
+                        <i class="fas fa-user-circle fa-2x"></i>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="home-page">
+        <div class="hero-section">
+            <div class="container">
+                <div class="dog-image-container">
+                    <img src="https://png.pngtree.com/png-clipart/20230427/original/pngtree-three-dogs-looking-up-border-png-image_9115712.png" class="dog-img-placeholder" alt="Dogs"> 
+                </div>
+                <div class="hero-card">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h1 class="hero-title">Comprehensive care for your pet</h1>
+                            <p class="hero-desc">We always provide the best services to ensure your pet is always happy, healthy and safe.</p>
+                            <button class="btn btn-booking-hero" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                                Booking now!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="service-section">
+            <div class="container">
+                <h3 class="service-section-title">OUR SERVICE</h3>
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="service-card-simple">
+                            <div class="service-img-gray"></div>
+                            <div class="service-name">Service name</div>
+                            <div class="service-desc">Service description goes here.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="service-card-simple">
+                            <div class="service-img-gray"></div>
+                            <div class="service-name">Service name</div>
+                            <div class="service-desc">Service description goes here.</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="service-card-simple">
+                            <div class="service-img-gray"></div>
+                            <div class="service-name">Service name</div>
+                            <div class="service-desc">Service description goes here.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="about-page" class="d-none">
+        <div class="container my-5">
+            <h2 class="section-title-large ps-3">WHO WE ARE?</h2>
+            <div class="section-rounded-card">
+                <div class="about-text">
+                    <p>PetCareUS is a customer-centered pet care service dedicated to delivering safe, reliable, and professional solutions for pet owners. Founded with a passion for animal well-being and modern technology, we aim to simplify the way customers manage their pets’ health, grooming, and daily care.</p>
+                    <p>At PetCareUS, we combine expert veterinary knowledge with a user-friendly digital platform to help pet owners schedule appointments, track medical records, and access high-quality care across multiple service branches. Our team is committed to maintaining the highest standards of hygiene, compassion, and service excellence.</p>
+                    <p>We believe that every pet deserves personalized attention and a comfortable experience. That is why we continuously improve our system, expand new features, and train our staff to ensure that both pets and owners feel supported throughout their journey with us.</p>
+                    <p class="fw-bold mt-4">PetCareUS – Caring for your pets with love, trust, and technology.</p>
+                </div>
+            </div>
+            <h2 class="section-title-large ps-3 mt-5">STAFF INFORMATION</h2>
+            <div class="section-rounded-card">
+                <div class="row text-center">
+                    <div class="col-md-3 mb-4"><div class="staff-avatar-placeholder"></div><div class="staff-role">Emp role</div><div class="staff-name">Emp name</div></div>
+                    <div class="col-md-3 mb-4"><div class="staff-avatar-placeholder"></div><div class="staff-role">Emp role</div><div class="staff-name">Emp name</div></div>
+                    <div class="col-md-3 mb-4"><div class="staff-avatar-placeholder"></div><div class="staff-role">Emp role</div><div class="staff-name">Emp name</div></div>
+                    <div class="col-md-3 mb-4"><div class="staff-avatar-placeholder"></div><div class="staff-role">Emp role</div><div class="staff-name">Emp name</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-page" class="d-none">
+        <div class="container my-5">
+            <h2 class="section-title-large ps-3">STAFF INFORMATION</h2>
+            <div class="section-rounded-card">
+                <div class="row text-center">
+                    <div class="col-md-3 mb-4"><div class="staff-avatar-placeholder"></div><div class="staff-role">Emp role</div><div class="staff-name">Emp name</div></div>
+                    <div class="col-md-3 mb-4"><div class="staff-avatar-placeholder"></div><div class="staff-role">Emp role</div><div class="staff-name">Emp name</div></div>
+                    <div class="col-md-3 mb-4"><div class="staff-avatar-placeholder"></div><div class="staff-role">Emp role</div><div class="staff-name">Emp name</div></div>
+                    <div class="col-md-3 mb-4"><div class="staff-avatar-placeholder"></div><div class="staff-role">Emp role</div><div class="staff-name">Emp name</div></div>
+                </div>
+            </div>
+        </div>
+        <div class="contact-blue-section">
+            <div class="container">
+                <h2 class="contact-title">CONTACT US</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="contact-item"><i class="fas fa-home"></i><span>Address: Your Address Here</span></div>
+                        <div class="contact-item"><i class="fas fa-phone-alt"></i><span>Phone: +1 234 567 890</span></div>
+                        <div class="contact-item"><i class="fas fa-envelope"></i><span>Email: contact@petcareus.com</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dashboard-page" class="d-none">
+        <div class="container my-4">
+            <a href="#" class="text-dark fs-4" onclick="showPage('home')"><i class="fas fa-arrow-left"></i></a>
+            <div class="profile-header-card">
+                <div class="avatar-circle"><i class="fas fa-user"></i></div>
+                <h2 class="username-title">@customer_name</h2>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item"><button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab">My Profile</button></li>
+                    <li class="nav-item"><button class="nav-link" id="pets-tab" data-bs-toggle="tab" data-bs-target="#pets" type="button" role="tab">My Pets</button></li>
+                    <li class="nav-item"><button class="nav-link active" id="appointments-tab" data-bs-toggle="tab" data-bs-target="#appointments" type="button" role="tab">My Appointments</button></li>
+                </ul>
+            </div>
+
+            <div class="tab-content" id="myTabContent">
+                
+                <div class="tab-pane fade" id="profile" role="tabpanel">
+                    <div class="content-card">
+                        <div class="content-header">MY PROFILE</div>
+                        <div class="content-body p-5">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label-page">Full Name</label>
+                                        <input type="text" class="custom-input-page" value="Nguyen Van A">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label-page">Phone Number</label>
+                                        <input type="text" class="custom-input-page" value="+84 123 456 789">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label-page">Email Address</label>
+                                        <input type="email" class="custom-input-page" value="email@example.com">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label-page">Address</label>
+                                        <input type="text" class="custom-input-page" value="123 Street, City">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="form-label-page">Date of Birth</label>
+                                        <input type="text" class="custom-input-page" value="01/01/1990">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label-page">Member ID</label>
+                                        <input type="text" class="custom-input-page" value="MEM12345" readonly style="background-color: #eee;">
+                                    </div>
+                                </div>
+                                <div class="text-end mt-3">
+                                    <button type="button" class="btn btn-update">UPDATE</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-pane fade" id="pets" role="tabpanel">
+                    <div class="content-card">
+                        <div class="content-header">PET</div>
+                        <div class="appointment-table-header border-bottom">
+                            <div class="row">
+                                <div class="col-md-2 ps-4">Name</div>
+                                <div class="col-md-2">Age</div>
+                                <div class="col-md-2">Sex</div>
+                                <div class="col-md-2">Weight</div>
+                                <div class="col-md-4 text-end pe-5">Action</div>
+                            </div>
+                        </div>
+                        <div class="appointment-data-area py-2" style="overflow-y: auto;">
+                            <div class="bg-white rounded mx-3 my-2 p-3 shadow-sm border align-items-center">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2 ps-3 fw-bold">Fluffy</div>
+                                    <div class="col-md-2">2</div>
+                                    <div class="col-md-2">Male</div>
+                                    <div class="col-md-2">5kg</div>
+                                    <div class="col-md-4 text-end pe-4">
+                                        <button class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold" data-bs-toggle="modal" data-bs-target="#viewPetModal">
+                                            <i class="far fa-eye me-1"></i> View Pet
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold ms-2" data-bs-toggle="modal" data-bs-target="#medicalRecordModal">
+                                            <i class="fas fa-file-medical me-1"></i> Medical Record
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3" style="background-color: #d9d9d9; border-top: 3px solid #b8b8b8;">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination pagination-square mb-0 ms-2">
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link border-0" href="#"><i class="fas fa-chevron-right"></i></a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade show active" id="appointments" role="tabpanel">
+                    <div class="content-card">
+                        <div class="content-header d-flex justify-content-between align-items-center">
+                            <span>APPOINTMENT</span>
+                            <button class="btn btn-new" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                                <i class="fas fa-plus me-1"></i> New
+                            </button>
+                        </div>
+                        <div class="appointment-table-header border-bottom">
+                            <div class="row">
+                                <div class="col-md-3 ps-4">Date start</div>
+                                <div class="col-md-3">Service</div>
+                                <div class="col-md-3">Status</div>
+                                <div class="col-md-3 text-end pe-5">Action</div>
+                            </div>
+                        </div>
+                        <div class="appointment-data-area py-2" style="overflow-y: auto;">
+                            <div class="bg-white rounded mx-3 my-2 p-3 shadow-sm border align-items-center">
+                                <div class="row align-items-center">
+                                    <div class="col-md-3 ps-3 fw-bold">15/11/2023 - 09:00 AM</div>
+                                    <div class="col-md-3 fw-medium">General Checkup</div>
+                                    <div class="col-md-3"><span class="badge bg-success text-white px-3 py-2 rounded-pill">Completed</span></div>
+                                    <div class="col-md-3 text-end pe-4">
+                                        <button class="btn btn-sm btn-outline-primary rounded-pill px-4 fw-bold" data-bs-toggle="modal" data-bs-target="#appointmentModal">
+                                            <i class="far fa-eye me-1"></i> View
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3" style="background-color: #d9d9d9; border-top: 3px solid #b8b8b8;">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination pagination-square mb-0 ms-2">
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link border-0" href="#"><i class="fas fa-chevron-right"></i></a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="appointmentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content modal-content-custom">
+                <div class="modal-header modal-header-custom">
+                    <h5 class="modal-title-custom">APPOINTMENT - VIEW DETAILS</h5>
+                    <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label class="modal-form-label">PET NAME</label>
+                                <input type="text" class="form-control modal-input-standard">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="modal-form-label">VETERINARIAN NAME</label>
+                                <input type="text" class="form-control modal-input-standard">
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center flex-wrap gap-3 mb-4">
+                            <div class="d-flex align-items-center">
+                                <label class="modal-form-label mb-0 me-3">TIME:</label>
+                                <input type="text" class="form-control input-pill-short">
+                            </div>
+                            <div class="d-flex align-items-center ms-md-4">
+                                <label class="modal-form-label mb-0 me-3">DATE START :</label>
+                                <input type="text" class="form-control input-pill-short">
+                            </div>
+                            <div class="d-flex align-items-center ms-md-4">
+                                <label class="modal-form-label mb-0 me-3">STATUS :</label>
+                                <input type="text" class="form-control input-pill-short">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="modal-form-label">NOTE:</label>
+                            <textarea class="form-control modal-textarea" rows="6"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer modal-footer-custom">
+                    <button type="button" class="btn btn-outline-record" data-bs-toggle="modal" data-bs-target="#recordDetailsModal">
+                        <i class="far fa-eye"></i> Record
+                    </button>
+                    <button type="button" class="btn btn-outline-invoice" data-bs-toggle="modal" data-bs-target="#invoiceModal">
+                        <i class="far fa-eye"></i> Invoice
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="invoiceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content modal-content-custom">
+                <div class="modal-header modal-header-custom">
+                    <h5 class="modal-title-custom">INVOICE</h5>
+                    <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-5">
+                    <form>
+                        <div class="mb-5">
+                            <div class="d-flex align-items-center mb-3">
+                                <label class="fw-bold text-uppercase me-3" style="width: 60px;">Date :</label>
+                                <input type="text" class="form-control custom-input" style="width: 200px; border-width: 2px;">
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <label class="fw-bold text-uppercase me-3" style="width: 60px;">Vet:</label>
+                                <input type="text" class="form-control custom-input" style="width: 400px; border-width: 2px;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 pt-2">
+                                <h6 class="fw-bold text-uppercase mb-4">PAYMENT METHOD</h6>
+                                <div class="mb-3 d-flex align-items-center"><span class="me-2">Method:</span></div>
+                                <div class="mb-3 d-flex align-items-center"><span class="me-2">Status:</span></div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-end align-items-center mb-3">
+                                    <label class="fw-bold text-uppercase me-3">SUBTOTAL:</label>
+                                    <input type="text" class="form-control custom-input" style="width: 180px; border-width: 2px;">
+                                </div>
+                                <div class="d-flex justify-content-end align-items-center mb-3">
+                                    <label class="fw-bold text-uppercase me-3">DISCOUNT:</label>
+                                    <input type="text" class="form-control custom-input" style="width: 180px; border-width: 2px;">
+                                </div>
+                                <div class="d-flex justify-content-end align-items-center">
+                                    <label class="fw-bold text-uppercase me-3">TOTAL:</label>
+                                    <input type="text" class="form-control custom-input" style="width: 180px; border-width: 2px;">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="pb-4"></div> 
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="medicalRecordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content modal-content-custom">
+                <div class="modal-header modal-header-custom">
+                    <h5 class="modal-title-custom">MEDICAL RECORD</h5>
+                    <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="medical-header-row">
+                        <div class="row text-center text-md-start">
+                            <div class="col-md-2">Date</div>
+                            <div class="col-md-3">Diagnosis</div>
+                            <div class="col-md-5">Treatment</div>
+                            <div class="col-md-2 text-md-end pe-4">Action</div>
+                        </div>
+                    </div>
+                    <div class="medical-body-gray d-flex flex-column justify-content-end">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-square mb-2 ms-3">
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item"><a class="page-link border-0" href="#"><i class="fas fa-chevron-right"></i></a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="recordDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content modal-content-custom">
+                <div class="modal-header modal-header-custom">
+                    <h5 class="modal-title-custom">RECORD</h5>
+                    <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 px-5">
+                    <form>
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 fw-bold text-uppercase text-end pe-3">DATE :</label>
+                            <div class="col-sm-6"><input type="text" class="form-control custom-input"></div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <label class="col-sm-3 fw-bold text-uppercase text-end pe-3">TREATMENT :</label>
+                            <div class="col-sm-6"><input type="text" class="form-control custom-input"></div>
+                        </div>
+                        <div class="row mb-4 align-items-center">
+                            <label class="col-sm-3 fw-bold text-uppercase text-end pe-3">SYMPTOM :</label>
+                            <div class="col-sm-9"><input type="text" class="form-control custom-input"></div>
+                        </div>
+                        <h5 class="medicine-title">MEDICINE</h5>
+                        <div class="medicine-box">
+                            <div class="row medicine-header-row text-center mx-1">
+                                <div class="col-2">No.</div>
+                                <div class="col-4">Name</div>
+                                <div class="col-3">Form</div>
+                                <div class="col-3">Category</div>
+                            </div>
+                            <div class="medicine-content p-2"></div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="row align-items-center">
+                                <div class="col-md-2"><label class="label-red mb-0">DIAGNOSIS :</label></div>
+                                <div class="col-md-10"><input type="text" class="form-control input-red-border"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="label-red ps-1">INSTRUCTION:</label>
+                            <input type="text" class="form-control input-red-border" style="height: 60px;"> 
+                        </div>
+                    </form>
+                </div>
+                <div class="pb-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-content-custom" style="max-width: 500px; margin: auto;">
+                <div class="modal-header modal-header-custom">
+                    <h5 class="modal-title-custom">BOOKING FORM</h5>
+                    <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form>
+                        <div class="mb-3">
+                            <select class="form-select custom-input text-uppercase text-muted fw-bold" style="border-radius: 50px;">
+                                <option selected>SELECT YOUR PET</option>
+                                <option value="1">Fluffy</option>
+                                <option value="2">Rex</option>
+                            </select>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <input type="text" class="form-control custom-input text-uppercase text-muted fw-bold" placeholder="DATE" onfocus="(this.type='date')" onblur="(this.type='text')" style="border-radius: 50px;">
+                            </div>
+                            <div class="col-6">
+                                <input type="text" class="form-control custom-input text-uppercase text-muted fw-bold" placeholder="TIME" onfocus="(this.type='time')" onblur="(this.type='text')" style="border-radius: 50px;">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <select class="form-select custom-input text-uppercase text-muted fw-bold" style="border-radius: 50px;">
+                                <option selected>SELECT OUR SERVICE</option>
+                                <option value="1">General Checkup</option>
+                                <option value="2">Vaccination</option>
+                                <option value="3">Grooming</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <textarea class="form-control custom-input text-muted" placeholder="Note something..." rows="5" style="border-radius: 20px; resize: none;"></textarea>
+                        </div>
+                        <div class="text-end">
+                            <button type="button" class="btn btn-outline-primary px-4 py-2 fw-bold" style="border-radius: 10px; border-width: 2px;">SUBMIT</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="viewPetModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content modal-content-custom">
+                <div class="modal-header modal-header-custom">
+                    <h5 class="modal-title-custom">PET DETAILS</h5>
+                    <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <p>Details about the pet will appear here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showPage(pageId) {
+            const pages = ['home-page', 'dashboard-page', 'about-page', 'contact-page'];
+            pages.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (id === pageId + '-page') {
+                        el.classList.remove('d-none');
+                    } else {
+                        el.classList.add('d-none');
+                    }
+                }
+            });
+            window.scrollTo(0, 0);
+        }
+        showPage('home'); 
+    </script>
+</body>
+</html>
