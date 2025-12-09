@@ -9,7 +9,7 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -20,7 +20,7 @@
 
         body {
             background-color: #f9f9f9;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Abhaya Libre', serif;
             overflow-x: hidden;
         }
 
@@ -126,7 +126,7 @@
             border: 2px solid #ccc;
             border-radius: 20px;
             overflow: hidden;
-            background-color: #ad1d1d; /* Màu nền xám đậm giống ảnh */
+            background-color: #867272; /* Màu nền xám đậm giống ảnh */
             min-height: 500px;
             display: flex;
             flex-direction: column;
@@ -185,7 +185,41 @@
             cursor: pointer;
         }
 
+        .cursor-pointer {
+            cursor: pointer;
+            user-select: none; /* Ngăn bôi đen văn bản khi click nhanh */
+        }
+
+        /* Tùy chỉnh Dropdown menu cho đẹp hơn */
+        .dropdown-menu {
+            border: 2px solid #eee;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 10px !important; /* Tạo khoảng cách một chút so với header */
+        }
+
+        .dropdown-item {
+            padding: 10px 20px;
+            font-size: 0.95rem;
+        }
+
+        .dropdown-item:active {
+            background-color: var(--primary-blue); /* Màu xanh khi click giữ */
+        }
+
+        /* Hiệu ứng: Khi dropdown đang mở (.show), xoay mũi tên 180 độ */
+        .dropdown .show .transition-icon {
+            transform: rotate(180deg);
+            transition: transform 0.3s ease;
+        }
+        /* Trạng thái bình thường của mũi tên */
+        .transition-icon {
+            transition: transform 0.3s ease;
+        }
+
     </style>
+
+    {{{_section 'css'}}}
 </head>
 <body>
 
@@ -193,13 +227,28 @@
         <a href="#" class="brand-logo">
             <i class="fa-solid fa-paw me-2"></i>PetCareUS
         </a>
-        <div class="d-flex align-items-center">
-            <div class="admin-profile">
-                <div class="admin-name">ADMIN</div>
-                <div class="admin-handle">@ad_name</div>
+    
+        <div class="dropdown">
+    
+            <div class="d-flex align-items-center cursor-pointer" id="adminDropdown" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <div class="admin-profile me-2">
+                    <div class="admin-name">ADMIN</div>
+                    <div class="admin-handle">@ad_name</div>
+                </div>
+                <i class="fa-solid fa-circle-user admin-avatar"></i>
+                <i class="fa-solid fa-chevron-down ms-2 transition-icon" style="font-size: 0.8rem;"></i>
             </div>
-            <i class="fa-solid fa-circle-user admin-avatar"></i>
-            <i class="fa-solid fa-chevron-down ms-2" style="font-size: 0.8rem;"></i>
+    
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
+                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-user me-2"></i>Profile</a></li>
+                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-gear me-2"></i>Settings</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item text-danger" href="#"><i
+                            class="fa-solid fa-right-from-bracket me-2"></i>Logout</a></li>
+            </ul>
         </div>
     </header>
 

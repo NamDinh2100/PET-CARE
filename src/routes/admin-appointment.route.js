@@ -1,0 +1,20 @@
+import express from 'express';
+import * as appointmentService from '../models/appointment.js';
+
+const router = express.Router();
+
+router.get('/', async function (req, res) {
+    const list = await appointmentService.getAllAppointments();
+    res.render('vwAdmin/vwAppointment/list', { 
+        appointments: list });
+});
+
+router.get('/details', async function (req, res) {
+    const id = req.query.id;
+    const appointment = await appointmentService.getAppointmentByID(id);
+    res.render('vwAdmin/vwAppointment/details', {
+        appointment: appointment
+    });
+});
+
+export default router;
