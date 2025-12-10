@@ -5,6 +5,11 @@ import session from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// USER ROUTER
+import profileRouter from './routes/customer-profile.route.js'
+
+
+// ADMIN ROUTER
 import accountRouter from './routes/account.route.js';
 import employeeRouter from './routes/admin-employee.route.js';
 import serviceRouter from './routes/admin-service.route.js';
@@ -31,27 +36,39 @@ app.use(express.urlencoded({
   extended: true,
 }));
 
+
+
 // Handlebars engine
 app.engine('handlebars', engine({
-  defaultLayout: 'main',                                   // file views/layouts/main.handlebars
-  layoutsDir: path.join(__dirname, 'views/layouts'),       // thư mục layouts
-  partialsDir: [
-    path.join(__dirname, 'views/vwAdmin/'),
-    path.join(__dirname, 'views/components'),
-    path.join(__dirname, 'views/shared'),
-  ],
-  partialsDir: path.join(__dirname, 'views/vwVeterinarian/vwAppointment'),     // 🎯 thư mục partials
-  
-  helpers: {
-    formatDate(date) {
-    return new Date(date).toLocaleDateString('vi-VN', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    })},
-
-    section: expressHandlebarsSections(),
-  }
+    defaultLayout: 'main',
+    layoutsDir: path.join(__dirname, 'views/layouts'),
+    
+    // 🎯 QUAN TRỌNG: Gộp tất cả đường dẫn partials vào 1 mảng duy nhất
+    partialsDir: [
+        path.join(__dirname, 'views/vwAdmin'),
+        path.join(__dirname, 'views/vwCustomer'),
+        
+        path.join(__dirname, 'views/vwVeterinarian/vwAppointment')
+    ],
+    
+    helpers: {
+        formatDate(date) {
+            return new Date(date).toLocaleDateString('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        },
+        eq(a, b) {
+            return a === b;
+        },
+        // Helper section (viết trực tiếp, không cần thư viện express-handlebars-sections)
+        section(name, options) {
+            if (!this._sections) this._sections = {};
+            this._sections[name] = options.fn(this);
+            return null;
+        }
+    }
 }));
 
 app.set('view engine', 'handlebars');
@@ -73,9 +90,13 @@ app.use(function (req, res, next) {
 });
 
 
-app.use('/account', accountRouter);
+
+app.use('/', accountRouter);
 
 //app.use('/veterinarian/appointments', veterinarianAppointmentRouter);
+
+
+app.use('/profile', profileRouter);
 
 // Admin Routers
 app.use('/admin/customers', userRouter);
@@ -86,5 +107,5 @@ app.use('/admin/services', serviceRouter);
 app.use('/admin/statistical', statisticRouter);
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}/admin/employees`);
+    console.log(`Server is running on http://localhost:${PORT}/signin`);
 });

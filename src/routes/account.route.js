@@ -16,18 +16,18 @@ router.post('/signup', async function (req, res) {
         phone: req.body.phone,
         email: req.body.email,
     }
-    console.log(user);
+    
     await userService.add(user);
     res.redirect('/');
 });
 
-router.get('/signin', function (req, res) {
-    res.render('vwAccounts/signin');
-})
+// router.get('/signin', function (req, res) {
+//     res.render('vwAccounts/signin');
+// })
 
 router.post('/signin', async function (req, res) {
     const email = req.body.email;
-    const user = await userService.findByEmail(email);
+    const user = await userService.getUserByEmail(email);
 
     if (!user)
     {
@@ -45,53 +45,57 @@ router.post('/signin', async function (req, res) {
             err_message: 'Invalid email or password'
         });
     }
+    console.log(user);
 
     req.session.isAuth = true;
     req.session.authUser = user;
 
-    const retUrl = req.session.retUrl || '/';
+    let url;
+    if (user.role === 'admin')
+        url = '/admin/customers';
+    else if (user.role === 'veterinarian') 
+        url = '/veterinarian/appointments';
+    else 
+        url = '/';
+    
+    const retUrl = req.session.retUrl || url;
     delete req.session.retUrl;
     res.redirect(retUrl);
-});
-
-router.get('/profile', function (req, res) {
-    res.render('vwAccounts/profile', {
-        user: req.session.authUser
-    });
 });
 
 router.post('/signout', function (req, res) {
     req.session.isAuth = false;
     delete req.session.authUser;
-    const retUrl = req.headers.referer || '/';
-    res.redirect(retUrl);
+    res.redirect('/');
 });
 
-router.get('/admin/employees', async function (req, res) {
-    const page = parseInt(req.query.page) || 1;
-    const limit = 8;
-    const offset = (page - 1) * limit;
+// router.get('/admin/employees', async function (req, res) {
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = 8;
+//     const offset = (page - 1) * limit;
 
-    const total = await userService.countByEmpID();
+//     const total = await userService.countByEmpID();
 
-    const nPages = Math.ceil(+total.count / limit);
-    const pageNumbers = [];
+//     const nPages = Math.ceil(+total.count / limit);
+//     const pageNumbers = [];
 
-    for (let i = 1; i <= nPages; i++) {
-        pageNumbers.push({
-            value: i,
-            isCurrent: i === +page,
-        });
-    }
+//     for (let i = 1; i <= nPages; i++) {
+//         pageNumbers.push({
+//             value: i,
+//             isCurrent: i === +page,
+//         });
+//     }
 
-    const list = await userService.findPageByEmpID(limit, offset);
+//     const list = await userService.findPageByEmpID(limit, offset);
 
-    res.render('vwAdmin/vwEmployee/list', {
-        employees: list,
-        pageNumbers: pageNumbers,
-    });
+//     res.render('vwAdmin/vwEmployee/list', {
+//         employees: list,
+//         pageNumbers: pageNumbers,
+//     });
+// });
+
+router.get('/', async function (req, res) {
+    res.render('vwCustomer/home');
 });
-
-
 
 export default router;
