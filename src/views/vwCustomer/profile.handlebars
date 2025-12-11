@@ -40,19 +40,32 @@
         
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link {{#if (eq activeTab 'profile')}}active{{/if}}" href="/profile/my-profile">My Profile</a>
+                <a class="nav-link {{#if (eq activeTab 'profile')}}active{{/if}}" href="/account/my-profile">My Profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{#if (eq activeTab 'pet')}}active{{/if}}" href="/profile/my-pets">My Pets</a>
+                <a class="nav-link {{#if (eq activeTab 'pet')}}active{{/if}}" href="/account/my-pets">My Pets</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{#if (eq activeTab 'appointments')}}active{{/if}}" href="/profile/my-appointments">My Appointments</a>
+                <a class="nav-link {{#if (eq activeTab 'appointments')}}active{{/if}}" href="/account/my-appointments">My Appointments</a>
             </li>
         </ul>
     </div>
 
     <div class="tab-content mt-3">
-        {{{body}}} 
+        {{#if (eq activeTab 'profile')}}
+             {{!-- Code form thông tin hoặc partial khác --}}
+             <div class="content-card">...Nội dung form profile...</div>
+        {{/if}}
+
+        {{!-- Nếu activeTab là 'pet' thì hiện partial pet --}}
+        {{#if (eq activeTab 'pet')}}
+            {{> pet}} 
+        {{/if}}
+
+        
+
+        {{!-- Nếu activeTab là 'profile' thì hiện partial form thông tin --}}
+        
     </div>
       
 

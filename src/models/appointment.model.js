@@ -10,3 +10,11 @@ export function getAllAppointments() {
             'vet.full_name as veterinarian_name',
         );
 }
+
+export function addAppointment(appointment) {
+    return db('appointments').insert(appointment).returning('appointment_id');
+}
+
+export function addServiceForAppointment(appointmentService) {
+    return db('appointment_services').insert(appointmentService);
+}   

@@ -1,29 +1,35 @@
 import express from 'express';
 import bcrypt, {compareSync, hash} from 'bcryptjs';
 import * as userService from '../models/user.model.js';
+import * as serviceService from '../models/service.model.js';
 
 const router = express.Router();
 
-router.get('/signup', function (req, res) {
-    res.render('vwAccounts/signup');
+router.get('/', async function (req, res) {
+
+    res.render('vwCustomer/home');
 });
 
-router.post('/signup', async function (req, res) {
-    const hashPassword = bcrypt.hashSync(req.body.password);
-    const user = {
-        full_name: req.body.full_name,
-        password: hashPassword,
-        phone: req.body.phone,
-        email: req.body.email,
-    }
+// router.get('/signup', function (req, res) {
+//     res.render('vwAccounts/signup');
+// });
+
+// router.post('/signup', async function (req, res) {
+//     const hashPassword = bcrypt.hashSync(req.body.password);
+//     const user = {
+//         full_name: req.body.full_name,
+//         password: hashPassword,
+//         phone: req.body.phone,
+//         email: req.body.email,
+//     }
     
-    await userService.add(user);
-    res.redirect('/');
-});
+//     await userService.add(user);
+//     res.redirect('/');
+// });
 
-// router.get('/signin', function (req, res) {
-//     res.render('vwAccounts/signin');
-// })
+router.get('/signin', function (req, res) {
+    res.render('vwAccounts/signin');
+})
 
 router.post('/signin', async function (req, res) {
     const email = req.body.email;
@@ -45,18 +51,29 @@ router.post('/signin', async function (req, res) {
             err_message: 'Invalid email or password'
         });
     }
-    console.log(user);
+
+    const serviceList = await serviceService.getAllServices();
 
     req.session.isAuth = true;
     req.session.authUser = user;
+    req.session.serviceList = serviceList;
+
+    console.log('User logged in:', req.session.authUser);
 
     let url;
-    if (user.role === 'admin')
+    if (user.role === 'admin') {
         url = '/admin/customers';
+        
+    }
     else if (user.role === 'veterinarian') 
         url = '/veterinarian/appointments';
     else 
+    {
         url = '/';
+        const pets = await userService.getPetByID(user.user_id);
+        req.session.pets = pets;
+    }
+        
     
     const retUrl = req.session.retUrl || url;
     delete req.session.retUrl;
@@ -93,9 +110,5 @@ router.post('/signout', function (req, res) {
 //         pageNumbers: pageNumbers,
 //     });
 // });
-
-router.get('/', async function (req, res) {
-    res.render('vwCustomer/home');
-});
 
 export default router;

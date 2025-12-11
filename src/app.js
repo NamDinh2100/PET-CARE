@@ -2,11 +2,13 @@ import express from 'express';
 import { engine } from 'express-handlebars';
 import expressHandlebarsSections from 'express-handlebars-sections';
 import session from 'express-session';
+import { isAuth, isAdmin, isCustomer, isVeterinarian } from './middlewares/auth.mdw.js';
+
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 // USER ROUTER
-import profileRouter from './routes/customer-profile.route.js'
+import customerRouter from './routes/customer.route.js'
 
 
 // ADMIN ROUTER
@@ -18,11 +20,9 @@ import userRouter from './routes/admin-customer.route.js';
 import medicineRouter from './routes/admin-medicine.route.js';
 import statisticRouter from './routes/admin-statistical.route.js';
 
-import veterinarianAppointmentRouter from './routes/appointment.route.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
 
 // Lấy __dirname trong ES module
 const __filename = fileURLToPath(import.meta.url);
@@ -36,14 +36,11 @@ app.use(express.urlencoded({
   extended: true,
 }));
 
-
-
 // Handlebars engine
 app.engine('handlebars', engine({
     defaultLayout: 'main',
     layoutsDir: path.join(__dirname, 'views/layouts'),
     
-    // 🎯 QUAN TRỌNG: Gộp tất cả đường dẫn partials vào 1 mảng duy nhất
     partialsDir: [
         path.join(__dirname, 'views/vwAdmin'),
         path.join(__dirname, 'views/vwCustomer'),
@@ -63,11 +60,7 @@ app.engine('handlebars', engine({
             return a === b;
         },
         // Helper section (viết trực tiếp, không cần thư viện express-handlebars-sections)
-        section(name, options) {
-            if (!this._sections) this._sections = {};
-            this._sections[name] = options.fn(this);
-            return null;
-        }
+        section: expressHandlebarsSections()
     }
 }));
 
@@ -86,25 +79,31 @@ app.use(session( {
 app.use(function (req, res, next) {
   res.locals.isAuth = req.session.isAuth;
   res.locals.authUser = req.session.authUser;
+  res.locals.serviceList = req.session.serviceList ? req.session.serviceList : null;
+  res.locals.pets = req.session.pets ? req.session.pets : null;
+
   next();
 });
 
+// Customer Routers
 
+
+app.use('/account', isAuth, isCustomer, customerRouter);
+
+// Admin Routers
+app.use('/admin/customers', isAuth, isAdmin, userRouter);
+app.use('/admin/medicines', isAuth, isAdmin, medicineRouter);
+app.use('/admin/employees', isAuth, isAdmin, employeeRouter);
+app.use('/admin/appointments', isAuth, isAdmin, appointmentRouter);
+app.use('/admin/services', isAuth, isAdmin, serviceRouter);
+app.use('/admin/statistical', isAuth, isAdmin, statisticRouter);
 
 app.use('/', accountRouter);
 
-//app.use('/veterinarian/appointments', veterinarianAppointmentRouter);
-
-
-app.use('/profile', profileRouter);
-
-// Admin Routers
-app.use('/admin/customers', userRouter);
-app.use('/admin/medicines', medicineRouter);
-app.use('/admin/employees', employeeRouter);
-app.use('/admin/appointments', appointmentRouter);
-app.use('/admin/services', serviceRouter);
-app.use('/admin/statistical', statisticRouter);
+// Route xử lý lỗi 403
+app.use((req, res) => {
+    res.status(403).render('403');
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}/signin`);

@@ -34,6 +34,10 @@ export function deleteUser(id) {
     return db('users').where('id', id).del();
 }
 
+export function getPetByID(user_id) {
+    return db('pets').where('owner_id', user_id);
+}
+
 // Employee-specific functions
 export function getAllEmployees() {
     return db('users').whereNot('role', 'owner');
