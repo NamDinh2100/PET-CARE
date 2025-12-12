@@ -22,13 +22,25 @@
 {{/section}}
 
 {{!-- 1. DANH SÁCH DỊCH VỤ (UNIFIED CONTAINER) --}}
+
+<div class="row mb-4">
+    <div class="col-md-8 mx-auto">
+        <div class="input-group">
+            <input type="text" class="form-control border-dark search-input-rounded ps-4 bg-white"
+                placeholder="SEARCH DATA..." aria-label="Search">
+            <span class="position-absolute end-0 top-50 translate-middle-y me-3 z-1 cursor-pointer text-secondary">
+                <i class="bi bi-search"></i>
+            </span>
+        </div>
+    </div>
+</div>
+
+
 <div class="card shadow-sm border-0 rounded-4">
     <div class="card-body p-4">
         
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="mb-0 brand-font fw-bold">APPOINTMENTS</h4>
-            
-            
+            <h4 class="mb-0 brand-font fw-bold text-uppercase">Appointment</h4>
         </div>
 
         <div class="table-responsive">
@@ -38,24 +50,23 @@
                         <th scope="col" class="ps-3 py-3 rounded-start-3">ID</th> 
                         <th scope="col" class="py-3">Customer</th>
                         <th scope="col" class="py-3">Veterinarian</th>
-                        <th scope="col" class="py-3">Time start</th>
-                        <th scope="col" class="py-3">Date start</th>
-                        <th scope="col" class="py-3">Date end</th>
+                        <th scope="col" class="py-3">Time</th>
+                        <th scope="col" class="py-3">Date Start</th>
                         <th scope="col" class="py-3">Status</th>
-                        <th scope="col" class="text-end pe-3 py-3 rounded-end-3">Actions</th> </tr>
+                        <th scope="col" class="text-end pe-3 py-3 rounded-end-3">Actions</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {{#each appointments}}
                     <tr>
-                        <td class="ps-3 fw-bold text-secondary">{{appointment_id}}</td>
+                        <td class="ps-3 fw-bold text-secondary">#{{appointment_id}}</td>
                         <td class="fw-semibold">{{customer_name}}</td>
                         <td class="fw-semibold">{{veterinarian_name}}</td>
-                        <td class="fw-semibold">{{time}}</td>
-                        <td class="fw-semibold">{{formatDate date_start}}</td>
-                        <td class="fw-semibold">{{formatDate date_end}}</td>
-                        <td class="fw-semibold">{{status}}</td>
+                        <td>{{time}}</td>
+                        <td class="text-muted small">{{formatDate date_start}}</td>
+                        <td class="text-muted small">{{status}}</td>
                         <td class="text-end pe-3">
-                            <a class="btn btn-sm btn-light text-primary rounded-pill border" href="/admin/services/edit?id={{service_id}}">
+                            <a class="btn btn-sm btn-outline-primary" href="/admin/appointments/edit?id={{appointment_id}}">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
                         </td>
@@ -78,30 +89,42 @@
     </div>
 </div>
 
-{{!-- 2. MODAL POPUP (Giữ nguyên logic cũ) --}}
+{{!-- 2. MODAL POPUP (Bootstrap Standard) --}}
 {{#if isAddMode}}
-<div class="modal fade" id="addServiceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="addAppointmentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content shadow-lg">
+            
             <div class="modal-header justify-content-center position-relative py-3">
-                <h4 class="modal-title brand-font fw-bold text-uppercase">New Service</h4>
-                <a href="/admin/services" class="position-absolute end-0 top-50 translate-middle-y me-3 text-danger fs-3 text-decoration-none">
+                <h4 class="modal-title brand-font fw-bold text-uppercase">New Appointment</h4>
+                <a href="/admin/appointments" class="position-absolute end-0 top-50 translate-middle-y me-3 text-danger fs-3 text-decoration-none">
                     <i class="bi bi-x-circle-fill"></i>
                 </a>
             </div>
+
             <div class="modal-body p-5">
                 <form method="POST">
                     <div class="mb-4">
-                        <input type="email" name="name" class="form-control form-control-lg rounded-pill border-2 fs-6" placeholder="EMAIL" required style="border-color: #ccc;">
+                        <input type="text" name="customer" class="form-control form-control-lg rounded-pill border-2 fs-6" placeholder="CUSTOMER" required style="border-color: #ccc;">
                     </div>
+
                     <div class="mb-4">
-                        <input type="text" name="price" class="form-control form-control-lg rounded-pill border-2 fs-6" placeholder="NAME" required style="border-color: #ccc;">
+                        <input type="text" name="veterinarian" class="form-control form-control-lg rounded-pill border-2 fs-6" placeholder="VETERINARIAN" required style="border-color: #ccc;">
                     </div>
-                    <div class="mb-4">
-                        <input type="text" name="description" class="form-control form-control-lg rounded-pill border-2 fs-6" placeholder="PHONE" required style="border-color: #ccc;">
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <input type="datetime-local" name="date_start" class="form-control form-control-lg rounded-pill border-2 fs-6" required style="border-color: #ccc;">
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <input type="datetime-local" name="date_end" class="form-control form-control-lg rounded-pill border-2 fs-6" required style="border-color: #ccc;">
+                        </div>
                     </div>
-                    <div class="text-center mt-5">
-                        <button type="submit" class="btn btn-outline-primary rounded-pill px-5 py-2 fw-bold text-uppercase border-2">Submit</button>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-outline-primary rounded-pill px-5 py-2 fw-bold text-uppercase border-2">
+                            Submit
+                        </button>
                     </div>
                 </form>
             </div>
@@ -111,10 +134,10 @@
 {{/if}}
 
 {{#section 'js'}}
-    <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var addModalElement = document.getElementById('addServiceModal');
+            // Tự động bật Modal nếu đang ở chế độ Add
+            var addModalElement = document.getElementById('addAppointmentModal');
             if (addModalElement) {
                 var myModal = new bootstrap.Modal(addModalElement);
                 myModal.show();

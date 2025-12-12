@@ -10,6 +10,8 @@ import { fileURLToPath } from 'url';
 // USER ROUTER
 import customerRouter from './routes/customer.route.js'
 
+// VERTERINARIAN ROUTER
+import veterinarianRouter from './routes/veterinarian.route.js'
 
 // ADMIN ROUTER
 import accountRouter from './routes/account.route.js';
@@ -59,6 +61,9 @@ app.engine('handlebars', engine({
         eq(a, b) {
             return a === b;
         },
+        json(context) {
+            return JSON.stringify(context);
+        },
         // Helper section (viết trực tiếp, không cần thư viện express-handlebars-sections)
         section: expressHandlebarsSections()
     }
@@ -79,9 +84,11 @@ app.use(session( {
 app.use(function (req, res, next) {
   res.locals.isAuth = req.session.isAuth;
   res.locals.authUser = req.session.authUser;
+  
   res.locals.serviceList = req.session.serviceList ? req.session.serviceList : null;
   res.locals.pets = req.session.pets ? req.session.pets : null;
-
+  res.locals.schedule = req.session.schedule ? req.session.schedule : null;
+  res.locals.medicines = req.session.medicines ? req.session.medicines : null;
   next();
 });
 
@@ -89,6 +96,9 @@ app.use(function (req, res, next) {
 
 
 app.use('/account', isAuth, isCustomer, customerRouter);
+
+// Veterinarian Routers
+app.use('/vet', isAuth, isVeterinarian, veterinarianRouter);
 
 // Admin Routers
 app.use('/admin/customers', isAuth, isAdmin, userRouter);

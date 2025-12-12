@@ -21,12 +21,24 @@
     </style>
 {{/section}}
 
+<div class="row mb-4">
+    <div class="col-md-8 mx-auto">
+        <div class="input-group">
+            <input type="text" class="form-control border-dark search-input-rounded ps-4 bg-white"
+                placeholder="SEARCH DATA..." aria-label="Search">
+            <span class="position-absolute end-0 top-50 translate-middle-y me-3 z-1 cursor-pointer text-secondary">
+                <i class="bi bi-search"></i>
+            </span>
+        </div>
+    </div>
+</div>  
+
 {{!-- 1. DANH SÁCH DỊCH VỤ (UNIFIED CONTAINER) --}}
 <div class="card shadow-sm border-0 rounded-4">
     <div class="card-body p-4">
         
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="mb-0 brand-font fw-bold text-uppercase">Service List</h4>
+            <h4 class="mb-0 brand-font fw-bold text-uppercase">Service</h4>
             
             <a class="btn btn-outline-success" href="/admin/services/add">
                 <i class="bi bi-plus-lg me-1"></i> New

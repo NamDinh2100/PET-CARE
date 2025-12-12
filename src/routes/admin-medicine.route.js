@@ -1,20 +1,15 @@
 import express from 'express';
-import * as medicineService from '../models/medicine.model.js';
 
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-    const list = await medicineService.getAllMedicines();
     res.render('vwAdmin/vwMedicine/list', { 
-        medicines: list,
         isAddMode: false
     });
 });
 
 router.get('/add', function (req, res) {
-    const list = medicineService.getAllMedicines();
     res.render('vwAdmin/vwMedicine/list', { 
-        medicines: list,
         isAddMode: true
     });
 });

@@ -116,24 +116,13 @@
 
                             {{#if (eq authUser.role 'veterinarian')}}
                                 <a href="/vet/schedule" class="list-group-item list-group-item-action border-0 rounded-3 mb-1 py-3 fw-bold text-secondary"><i class="bi bi-calendar-check me-3"></i> SCHEDULE</a>
-                                <a href="/vet/patients" class="list-group-item list-group-item-action border-0 rounded-3 mb-1 py-3 fw-bold text-secondary"><i class="bi bi-heart-pulse me-3"></i> PATIENTS</a>
-                                <a href="/vet/medical-records" class="list-group-item list-group-item-action border-0 rounded-3 mb-1 py-3 fw-bold text-secondary"><i class="bi bi-journal-medical me-3"></i> RECORDS</a>
+                                <a href="/vet/appointment" class="list-group-item list-group-item-action border-0 rounded-3 mb-1 py-3 fw-bold text-secondary"><i class="bi bi-heart-pulse me-3"></i> PATIENTS</a>
                             {{/if}}
 
                         </div>
                     </nav>
 
                     <main class="col-md-10 col-lg-10 ms-sm-auto px-md-4 py-4 bg-light">
-                        <div class="row mb-4">
-                            <div class="col-md-8 mx-auto"> 
-                                <div class="input-group">
-                                    <input type="text" class="form-control border-dark search-input-rounded ps-4 bg-white" placeholder="SEARCH DATA..." aria-label="Search">
-                                    <span class="position-absolute end-0 top-50 translate-middle-y me-3 z-1 cursor-pointer text-secondary">
-                                        <i class="bi bi-search"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
                         {{{body}}}
                     </main>
                 </div>
