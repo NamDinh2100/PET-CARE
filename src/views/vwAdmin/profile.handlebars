@@ -1,0 +1,196 @@
+{{#section 'css'}}
+<style>
+    .profile-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        padding: 40px 30px;
+        text-align: center;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        font-size: 50px;
+        border: 4px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .profile-name {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .profile-role {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 5px 20px;
+        border-radius: 20px;
+        display: inline-block;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .profile-body {
+        padding: 30px;
+    }
+
+    .form-section {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 25px;
+    }
+
+    .form-section-title {
+        font-weight: bold;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        color: #333;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-section-title i {
+        margin-right: 10px;
+        color: #667eea;
+    }
+
+    .custom-input {
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 12px 15px;
+        transition: all 0.3s;
+    }
+
+    .custom-input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+</style>
+{{/section}}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        {{!-- Success/Error Messages --}}
+        {{#if success}}
+        <div class="alert alert-success rounded-3 mb-4">
+            {{#if (eq success 'updated')}}
+            <i class="bi bi-check-circle me-2"></i> Profile updated successfully!
+            {{/if}}
+            {{#if (eq success 'password_changed')}}
+            <i class="bi bi-check-circle me-2"></i> Password changed successfully!
+            {{/if}}
+        </div>
+        {{/if}}
+
+        {{#if error}}
+        <div class="alert alert-danger rounded-3 mb-4">
+            {{#if (eq error 'wrong_password')}}
+            <i class="bi bi-exclamation-circle me-2"></i> Current password is incorrect!
+            {{/if}}
+            {{#if (eq error 'password_mismatch')}}
+            <i class="bi bi-exclamation-circle me-2"></i> New passwords do not match!
+            {{/if}}
+            {{#if (eq error 'password_short')}}
+            <i class="bi bi-exclamation-circle me-2"></i> Password must be at least 6 characters!
+            {{/if}}
+        </div>
+        {{/if}}
+
+        <div class="profile-card">
+            {{!-- Profile Header --}}
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="profile-name">{{user.full_name}}</div>
+                <span class="profile-role">{{user.role}}</span>
+            </div>
+
+            {{!-- Profile Body --}}
+            <div class="profile-body">
+                {{!-- Personal Info Form --}}
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="bi bi-person-lines-fill"></i> Personal Information
+                    </div>
+                    <form method="POST" action="/admin/profile/update">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Full Name</label>
+                                <input type="text" name="full_name" class="form-control custom-input"
+                                    value="{{user.full_name}}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Email</label>
+                                <input type="email" class="form-control custom-input" value="{{user.email}}" disabled>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Phone</label>
+                                <input type="tel" name="phone" class="form-control custom-input" value="{{user.phone}}"
+                                    placeholder="Enter phone number">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Role</label>
+                                <input type="text" class="form-control custom-input text-uppercase"
+                                    value="{{user.role}}" disabled>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                <i class="bi bi-check-lg me-2"></i>Update Profile
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                {{!-- Change Password Form --}}
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="bi bi-shield-lock"></i> Change Password
+                    </div>
+                    <form method="POST" action="/admin/profile/password">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Current Password</label>
+                                <input type="password" name="current_password" class="form-control custom-input"
+                                    required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">New Password</label>
+                                <input type="password" name="new_password" class="form-control custom-input"
+                                    minlength="6" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Confirm Password</label>
+                                <input type="password" name="confirm_password" class="form-control custom-input"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-outline-danger rounded-pill px-4">
+                                <i class="bi bi-key me-2"></i>Change Password
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
