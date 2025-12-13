@@ -6,8 +6,8 @@ export function getAllUsers() {
 
 export function countByEmpID() {
     return db('users')
-    .whereNot('role', 'owner')
-    .count('user_id as count').first();
+        .whereNot('role', 'owner')
+        .count('user_id as count').first();
 }
 
 export function findPageByEmpID(limit, offset) {
@@ -36,6 +36,11 @@ export function deleteUser(id) {
 
 export function getPetByID(user_id) {
     return db('pets').where('owner_id', user_id);
+}
+
+// Get user (customer) by ID
+export function getUserByID(id) {
+    return db('users').where('user_id', id).first();
 }
 
 // Employee-specific functions
