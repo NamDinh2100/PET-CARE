@@ -8,7 +8,7 @@ router.get('/', async function (req, res) {
     res.render('vwAdmin/vwService/list',{
         services: list,
         isAddMode: false
-    }) ;
+    });
 });
 
 router.get('/add', async function (req, res) {

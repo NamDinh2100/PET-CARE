@@ -1,5 +1,5 @@
 import express from 'express';
-import * as appointmentService from '../models/appointment.js';
+import * as appointmentService from '../models/appointment.model.js';
 
 const router = express.Router();
 
@@ -16,5 +16,6 @@ router.get('/details', async function (req, res) {
         appointment: appointment
     });
 });
+
 
 export default router;
