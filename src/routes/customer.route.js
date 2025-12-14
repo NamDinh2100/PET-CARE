@@ -15,7 +15,6 @@ router.post('/appointment/book', async function (req, res) {
             status: 'scheduled'
         });
 
-        // Chuẩn hoá danh sách services
         const servicesList = Array.isArray(req.body.services)
             ? req.body.services
             : [req.body.services];

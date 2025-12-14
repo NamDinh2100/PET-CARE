@@ -1,0 +1,44 @@
+:root {
+    --primary-blue: #2d5bff;
+}
+
+body {
+    font-family: 'Abhaya Libre', serif;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Brand Identity */
+.brand-text {
+    font-family: 'Abhaya Libre', serif;
+    font-size: 1.8rem;
+    color: #4a90e2;
+}
+
+.brand-icon {
+    transform: rotate(-20deg);
+}
+
+/* Sidebar & Active States */
+.sidebar .list-group-item.active {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: white !important;
+}
+
+.nav-link.active {
+    color: var(--primary-blue) !important;
+    font-weight: 700;
+    border-bottom: 2px solid var(--primary-blue);
+}
+
+/* Helpers */
+.search-input-rounded {
+    border-radius: 50px;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

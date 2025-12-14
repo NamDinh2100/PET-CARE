@@ -40,7 +40,7 @@ app.use(express.urlencoded({
 
 // Handlebars engine
 app.engine('handlebars', engine({
-    defaultLayout: 'main',
+    defaultLayout: 'share-layout',
     layoutsDir: path.join(__dirname, 'views/layouts'),
     
     partialsDir: [
@@ -94,6 +94,7 @@ app.use(function (req, res, next) {
 
 // Customer Routers
 
+app.use('/', accountRouter);
 
 app.use('/account', isAuth, isCustomer, customerRouter);
 
@@ -101,14 +102,14 @@ app.use('/account', isAuth, isCustomer, customerRouter);
 app.use('/vet', isAuth, isVeterinarian, veterinarianRouter);
 
 // Admin Routers
-app.use('/admin/customers', isAuth, isAdmin, userRouter);
+app.use('/admin/customers', userRouter);
 app.use('/admin/medicines', isAuth, isAdmin, medicineRouter);
 app.use('/admin/employees', isAuth, isAdmin, employeeRouter);
 app.use('/admin/appointments', isAuth, isAdmin, appointmentRouter);
 app.use('/admin/services', isAuth, isAdmin, serviceRouter);
 app.use('/admin/statistical', isAuth, isAdmin, statisticRouter);
 
-app.use('/', accountRouter);
+
 
 // Route xử lý lỗi 403
 app.use((req, res) => {
@@ -116,5 +117,5 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}/signin`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });

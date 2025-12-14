@@ -4,13 +4,15 @@ const router = express.Router();
 
 router.get('/', async function (req, res) {
     res.render('vwAdmin/vwMedicine/list', { 
-        isAddMode: false
+        isAddMode: false,
+        layout: 'admin-layout'
     });
 });
 
 router.get('/add', function (req, res) {
     res.render('vwAdmin/vwMedicine/list', { 
-        isAddMode: true
+        isAddMode: true,
+        layout: 'admin-layout'
     });
 });
 
@@ -18,7 +20,7 @@ router.post('/add', async function (req, res) {
     const medicine = {
         medicine_name: req.body.medicine_name,
         form: req.body.form,
-        cateogry: req.body.category,
+        category: req.body.category,
         description: req.body.description,
     };
 

@@ -7,7 +7,8 @@ router.get('/', async function (req, res) {
     const list = await serviceService.getAllServices();
     res.render('vwAdmin/vwService/list',{
         services: list,
-        isAddMode: false
+        isAddMode: false,
+        layout: 'admin-layout'
     });
 });
 
@@ -15,7 +16,8 @@ router.get('/add', async function (req, res) {
     const list = await serviceService.getAllServices();
     res.render('vwAdmin/vwService/add', {
         services: list,
-        isAddMode: true
+        isAddMode: true,
+        layout: 'admin-layout'
     });
 });
 
@@ -32,8 +34,9 @@ router.post('/add', async function (req, res) {
 router.get('/edit', async function (req, res) {
     const id = req.query.id;
     const service = await serviceService.getServiceByID(id);
-    res.render('vwAccounts/vwService/edit', { 
-        service: service
+    res.render('vwAdmin/vwService/edit', { 
+        service: service,
+        layout: 'admin-layout'
     });
 
 });

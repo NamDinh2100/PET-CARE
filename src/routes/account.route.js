@@ -7,10 +7,6 @@ import * as medicineService from '../models/medicine.model.js';
 
 const router = express.Router();
 
-router.get('/', async function (req, res) {
-    res.render('vwCustomer/home');
-});
-
 // router.get('/signup', function (req, res) {
 //     res.render('vwAccounts/signup');
 // });
@@ -28,8 +24,14 @@ router.get('/', async function (req, res) {
 //     res.redirect('/');
 // });
 
+router.get('/', function (req, res) {
+    res.render('vwAccounts/home');
+});
+
 router.get('/signin', function (req, res) {
-    res.render('vwAccounts/signin');
+    res.render('vwAccounts/signin',
+        { layout: 'share-layout' }
+    );
 })
 
 router.post('/signin', async function (req, res) {
@@ -96,30 +98,5 @@ router.post('/signout', function (req, res) {
     delete req.session.authUser;
     res.redirect('/');
 });
-
-// router.get('/admin/employees', async function (req, res) {
-//     const page = parseInt(req.query.page) || 1;
-//     const limit = 8;
-//     const offset = (page - 1) * limit;
-
-//     const total = await userService.countByEmpID();
-
-//     const nPages = Math.ceil(+total.count / limit);
-//     const pageNumbers = [];
-
-//     for (let i = 1; i <= nPages; i++) {
-//         pageNumbers.push({
-//             value: i,
-//             isCurrent: i === +page,
-//         });
-//     }
-
-//     const list = await userService.findPageByEmpID(limit, offset);
-
-//     res.render('vwAdmin/vwEmployee/list', {
-//         employees: list,
-//         pageNumbers: pageNumbers,
-//     });
-// });
 
 export default router;

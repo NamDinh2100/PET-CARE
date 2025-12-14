@@ -9,7 +9,8 @@ router.get('/', async function (req, res) {
     const list = await employeeService.getAllEmployees();
     res.render('vwAdmin/vwEmployee/list', {
         employees: list,
-        isAddMode: false
+        isAddMode: false,
+        layout: 'admin-layout'
     });
 });
 
@@ -17,7 +18,8 @@ router.get('/add', async function (req, res) {
     const list = await employeeService.getAllEmployees();
     res.render('vwAdmin/vwEmployee/list', {
         employees: list,
-        isAddMode: true
+        isAddMode: true,
+        layout: 'admin-layout'
     });
 });
 
@@ -78,5 +80,31 @@ router.get('/delete', async function (req, res) {
 
     res.redirect('/admin/employees');
 });
+
+
+// router.get('/admin/employees', async function (req, res) {
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = 8;
+//     const offset = (page - 1) * limit;
+
+//     const total = await userService.countByEmpID();
+
+//     const nPages = Math.ceil(+total.count / limit);
+//     const pageNumbers = [];
+
+//     for (let i = 1; i <= nPages; i++) {
+//         pageNumbers.push({
+//             value: i,
+//             isCurrent: i === +page,
+//         });
+//     }
+
+//     const list = await userService.findPageByEmpID(limit, offset);
+
+//     res.render('vwAdmin/vwEmployee/list', {
+//         employees: list,
+//         pageNumbers: pageNumbers,
+//     });
+// });
 
 export default router;

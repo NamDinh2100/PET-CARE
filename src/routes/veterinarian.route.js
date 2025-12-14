@@ -5,13 +5,15 @@ import * as prescriptionService from '../models/prescription.model.js';
 const router = express.Router();
 
 router.get('/schedule', async function (req, res) {
-    res.render('vwVeterinarian/schedule')
+    res.render('vwVeterinarian/schedule',
+        { layout: 'vet-layout' }
+    )
 });
 
 router.get('/appointment', async function (req, res) {
     const schedule = await appointmentService.getSchedule(req.session.authUser.user_id);
     //const medicines = await prescriptionService.getAllMedicines();
-    res.render('vwVeterinarian/appointment', { schedule });
+    res.render('vwVeterinarian/appointment', { schedule, layout: 'vet-layout' });
 });
 
 router.post('/appointment/prescription', async function (req, res) {
