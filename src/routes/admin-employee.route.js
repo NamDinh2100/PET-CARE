@@ -1,14 +1,27 @@
 import express from 'express';
-import bcrypt, {compareSync, hash} from 'bcryptjs';
+import bcrypt, { compareSync, hash } from 'bcryptjs';
 import * as employeeService from '../models/user.model.js';
 import * as emailService from '../models/email.model.js';
 
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-    const list = await employeeService.getAllEmployees();
+    let list = await employeeService.getAllEmployees();
+
+    // Filter by role if specified
+    const roleFilter = req.query.role || '';
+    if (roleFilter && roleFilter !== 'all') {
+        list = list.filter(emp => emp.role === roleFilter);
+    }
+
+    // Get unique roles for filter dropdown
+    const allEmployees = await employeeService.getAllEmployees();
+    const roles = [...new Set(allEmployees.map(emp => emp.role))];
+
     res.render('vwAdmin/vwEmployee/list', {
         employees: list,
+        roles: roles,
+        currentRole: roleFilter,
         isAddMode: false
     });
 });
@@ -22,7 +35,7 @@ router.get('/add', async function (req, res) {
 });
 
 router.post('/add', async function (req, res) {
-     
+
     const genPassword = emailService.generatePassword();
     try {
         const emailText = `Welcome to the our WEDSITE, ${req.body.full_name}!\nYour account has been created with the following credentials:
@@ -32,7 +45,7 @@ router.post('/add', async function (req, res) {
         \nPlease change your password after your first login.`;
         await emailService.sendEmail(req.body.email, 'Welcome to WEDSITE', emailText);
     } catch (error) {
-        console.error('Error sending email:', error);   
+        console.error('Error sending email:', error);
     }
 
     const hashPassword = bcrypt.hashSync(genPassword);
