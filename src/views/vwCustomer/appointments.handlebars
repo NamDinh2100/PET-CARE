@@ -1,0 +1,387 @@
+{{#section 'css'}}
+<style>
+    /* Profile Page Styles - Matching Prototype */
+    .profile-header-card {
+        background: white;
+        border-radius: 50px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        border: 1px solid #ddd;
+        position: relative;
+        margin-top: 60px;
+        padding: 10px 0 20px 0;
+    }
+
+    .avatar-circle {
+        width: 100px;
+        height: 100px;
+        background-color: #333;
+        border-radius: 50%;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 50px;
+        position: absolute;
+        top: -40px;
+        left: 60px;
+        border: 5px solid white;
+        z-index: 10;
+    }
+
+    .username-section {
+        margin-left: 180px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-right: 40px;
+    }
+
+    .username-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.4rem;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .username-handle {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .btn-logout {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 20px;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+    }
+
+    .btn-logout:hover {
+        background-color: #bb2d3b;
+        color: white;
+    }
+
+    .nav-tabs {
+        border-bottom: 2px solid #000;
+        width: 90%;
+        margin: 10px auto 0 auto;
+    }
+
+    .nav-tabs .nav-link {
+        border: none;
+        color: #333;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-right: 20px;
+        background: transparent;
+        padding-bottom: 10px;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .nav-tabs .nav-link.active {
+        color: #2b7de9;
+        background: transparent;
+        border-bottom: 4px solid #2b7de9 !important;
+        margin-bottom: -3px;
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: #2b7de9;
+    }
+
+    .content-card {
+        background-color: #d9d9d9;
+        border-radius: 20px;
+        padding: 30px;
+        margin-top: 30px;
+        min-height: 300px;
+    }
+
+    .content-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: bold;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+    }
+
+    /* Appointment Card Styles */
+    .appointment-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .appointment-date {
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: #2b7de9;
+    }
+
+    .appointment-info {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .status-badge {
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .status-pending {
+        background-color: #ffc107;
+        color: #333;
+    }
+
+    .status-confirmed {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .status-completed {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    .status-cancelled {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .status-scheduled {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .btn-add {
+        background-color: #2b7de9;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 25px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .btn-add:hover {
+        background-color: #1a5fc4;
+        color: white;
+    }
+
+    .btn-cancel {
+        border: 2px solid #dc3545;
+        color: #dc3545;
+        background: white;
+        border-radius: 8px;
+        padding: 6px 15px;
+        font-weight: bold;
+        font-size: 0.85rem;
+    }
+
+    .btn-cancel:hover {
+        background: #dc3545;
+        color: white;
+    }
+
+    /* Filter Buttons */
+    .filter-btn {
+        border: 2px solid #333;
+        color: #333;
+        background: white;
+        border-radius: 20px;
+        padding: 8px 20px;
+        font-weight: 600;
+        margin-right: 10px;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+        background: #333;
+        color: white;
+    }
+
+    .alert-custom {
+        border-radius: 15px;
+    }
+</style>
+{{/section}}
+
+<div class="container my-4">
+    <a href="/" class="text-dark fs-4 text-decoration-none"><i class="bi bi-arrow-left"></i> Back to Home</a>
+
+    <div class="profile-header-card">
+        <div class="avatar-circle"><i class="bi bi-person-fill"></i></div>
+        <div class="username-section">
+            <div>
+                <div class="username-title">CUSTOMER</div>
+                <div class="username-handle">@{{authUser.full_name}}</div>
+            </div>
+            <form action="/signout" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-logout">LOG OUT</button>
+            </form>
+        </div>
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="/customer/profile">PERSONAL INFORMATION</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/customer/pets">PET LIST</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/customer/appointments">APPOINTMENT HISTORY</a>
+            </li>
+        </ul>
+    </div>
+
+    {{!-- Success Messages --}}
+    {{#if success}}
+    <div class="alert alert-success alert-custom mt-4" role="alert">
+        {{#if (eq success 'cancelled')}}
+        <i class="bi bi-check-circle me-2"></i> Appointment cancelled successfully!
+        {{/if}}
+        {{#if (eq success 'booked')}}
+        <i class="bi bi-check-circle me-2"></i> Appointment booked successfully!
+        {{/if}}
+    </div>
+    {{/if}}
+
+    {{!-- Appointments Content --}}
+    <div class="content-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="content-title mb-0">DATA OF CUSTOMER'S APPOINTMENT HISTORY</h4>
+            <button type="button" class="btn btn-add" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                <i class="bi bi-plus-lg me-1"></i> ADD
+            </button>
+        </div>
+
+        {{!-- Filter Buttons --}}
+        <div class="mb-4 text-center">
+            <a href="/customer/appointments"
+                class="btn filter-btn {{#unless currentFilter}}active{{/unless}} {{#if (eq currentFilter 'all')}}active{{/if}}">All</a>
+            <a href="/customer/appointments?filter=upcoming"
+                class="btn filter-btn {{#if (eq currentFilter 'upcoming')}}active{{/if}}">Upcoming</a>
+            <a href="/customer/appointments?filter=past"
+                class="btn filter-btn {{#if (eq currentFilter 'past')}}active{{/if}}">Past</a>
+        </div>
+
+        {{#if appointments.length}}
+        <div class="row">
+            {{#each appointments}}
+            <div class="col-md-6">
+                <div class="appointment-card">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <div class="appointment-date">
+                                <i class="bi bi-calendar-event me-2"></i>{{date_start}}
+                            </div>
+                            <div class="appointment-info mt-1">
+                                <i class="bi bi-clock me-1"></i>{{time}}
+                            </div>
+                        </div>
+                        <span class="status-badge status-{{status}}">{{status}}</span>
+                    </div>
+                    <div class="appointment-info mb-2">
+                        <i class="bi bi-paw me-2"></i><strong>Pet:</strong> {{pet_name}}
+                    </div>
+                    <div class="appointment-info mb-3">
+                        <i class="bi bi-briefcase me-2"></i><strong>Service:</strong> {{#if
+                        services}}{{services}}{{else}}N/A{{/if}}
+                    </div>
+                    {{#if note}}
+                    <div class="appointment-info mb-3">
+                        <i class="bi bi-chat-left-text me-2"></i><strong>Note:</strong> {{note}}
+                    </div>
+                    {{/if}}
+                    {{#if (eq status 'scheduled')}}
+                    <form method="POST" action="/customer/appointments/cancel" class="text-end">
+                        <input type="hidden" name="appointment_id" value="{{appointment_id}}">
+                        <button type="submit" class="btn btn-cancel"
+                            onclick="return confirm('Cancel this appointment?')">
+                            <i class="bi bi-x-lg me-1"></i> Cancel
+                        </button>
+                    </form>
+                    {{/if}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        {{else}}
+        <div class="text-center py-5">
+            <i class="bi bi-calendar-x fs-1 text-muted"></i>
+            <p class="text-muted mt-3">No appointments found.</p>
+        </div>
+        {{/if}}
+    </div>
+</div>
+
+{{!-- Booking Modal --}}
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 20px; border: 3px solid #b8b8b8;">
+            <div class="modal-header" style="background-color: #d9d9d9; border-bottom: 3px solid #b8b8b8;">
+                <h5 class="modal-title fw-bold text-uppercase">Book Appointment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form method="POST" action="/customer/appointments/book">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Select Pet *</label>
+                        <select name="pet_id" class="form-select"
+                            style="border: 2px solid #000; border-radius: 25px; padding: 12px 20px;" required>
+                            <option value="">Choose your pet</option>
+                            {{#each pets}}
+                            <option value="{{pet_id}}">{{name}} ({{species}})</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Select Service *</label>
+                        <select name="service_id" class="form-select"
+                            style="border: 2px solid #000; border-radius: 25px; padding: 12px 20px;" required>
+                            <option value="">Choose a service</option>
+                            {{#each services}}
+                            <option value="{{service_id}}">{{service_name}} - ${{base_price}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Date *</label>
+                            <input type="date" name="appointment_date" class="form-control"
+                                style="border: 2px solid #000; border-radius: 25px; padding: 12px 20px;" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Time *</label>
+                            <input type="time" name="appointment_time" class="form-control"
+                                style="border: 2px solid #000; border-radius: 25px; padding: 12px 20px;" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Notes</label>
+                        <textarea name="notes" class="form-control"
+                            style="border: 2px solid #000; border-radius: 15px; padding: 12px 20px;" rows="3"
+                            placeholder="Any special requests..."></textarea>
+                    </div>
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-add px-5">BOOK NOW</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
