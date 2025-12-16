@@ -17,6 +17,24 @@ export function getAllAppointments() {
         );
 }
 
+export function countByAppointment() {
+    return db('appointments as ap')
+    .count('ap.appointment_id as count').first();
+}
+
+export function findPageByAppointment(limit, offset) {
+    return db('appointments as ap')
+        .join('users as cus', 'customer_id', 'cus.user_id')
+        .join('users as vet', 'veterinarian_id', 'vet.user_id')
+        .select(
+            'ap.*',
+            'cus.full_name as customer_name',
+            'vet.full_name as veterinarian_name',
+        )
+        .limit(limit)
+        .offset(offset);
+}
+
 export async function addAppointment(appointment) {
     const result = await db('appointments')
         .insert(appointment)

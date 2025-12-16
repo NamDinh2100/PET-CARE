@@ -4,6 +4,17 @@ export function getAllServices() {
     return db('services');
 }
 
+export function countByService() {
+    return db('services')
+    .count('service_id as count').first();
+}
+
+export function findPageByService(limit, offset) {
+    return db('services')
+        .limit(limit)
+        .offset(offset);
+}
+
 export function addService(service) {
     return db('services').insert(service);
 }

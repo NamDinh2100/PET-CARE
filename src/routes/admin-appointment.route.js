@@ -4,9 +4,27 @@ import * as appointmentService from '../models/appointment.model.js';
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-    const list = await appointmentService.getAllAppointments();
+    const page = parseInt(req.query.page) || 1;
+    const limit = 8;
+    const offset = (page - 1) * limit;
+
+    const total = await appointmentService.countByAppointment();
+
+    const nPages = Math.ceil(+total.count / limit);
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+        pageNumbers.push({
+            value: i,
+            isCurrent: i === +page,
+        });
+    }
+
+    const list = await appointmentService.findPageByAppointment(limit, offset);
+
     res.render('vwAdmin/vwAppointment/list', { 
         appointments: list,
+        pageNumbers: pageNumbers,
         layout: 'admin-layout'
     });
 });

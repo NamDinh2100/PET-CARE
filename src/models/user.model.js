@@ -4,6 +4,19 @@ export function getAllUsers() {
     return db('users').where('role', 'owner');
 }
 
+export function countByCustomer() {
+    return db('users')
+    .where('role', 'owner')
+    .count('user_id as count').first();
+}
+
+export function findPageByCustomer(limit, offset) {
+    return db('users')
+        .where('role', 'owner')
+        .limit(limit)
+        .offset(offset);
+}
+
 export function countByEmpID() {
     return db('users')
     .whereNot('role', 'owner')

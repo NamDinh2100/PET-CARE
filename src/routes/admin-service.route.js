@@ -4,17 +4,35 @@ import * as serviceService from '../models/service.model.js';
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-    const list = await serviceService.getAllServices();
+    const page = parseInt(req.query.page) || 1;
+    const limit = 8;
+    const offset = (page - 1) * limit;
+
+    const total = await serviceService.countByService();
+
+    const nPages = Math.ceil(+total.count / limit);
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+        pageNumbers.push({
+            value: i,
+            isCurrent: i === +page,
+        });
+    }
+
+    const list = await serviceService.findPageByService(limit, offset);
+
     res.render('vwAdmin/vwService/list',{
         services: list,
         isAddMode: false,
+        pageNumbers: pageNumbers,
         layout: 'admin-layout'
     });
 });
 
 router.get('/add', async function (req, res) {
     const list = await serviceService.getAllServices();
-    res.render('vwAdmin/vwService/add', {
+    res.render('vwAdmin/vwService/list', {
         services: list,
         isAddMode: true,
         layout: 'admin-layout'

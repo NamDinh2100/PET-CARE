@@ -109,8 +109,6 @@ app.use('/admin/appointments', isAuth, isAdmin, appointmentRouter);
 app.use('/admin/services', isAuth, isAdmin, serviceRouter);
 app.use('/admin/statistical', isAuth, isAdmin, statisticRouter);
 
-
-
 // Route xử lý lỗi 403
 app.use((req, res) => {
     res.status(403).render('403');

@@ -4,6 +4,17 @@ export function getAllMedicines() {
     return db('medicines');
 }
 
+export function countByMedicine() {
+    return db('medicines')
+    .count('medicine_id as count').first();
+}
+
+export function findPageByMedicine(limit, offset) {
+    return db('medicines')
+        .limit(limit)
+        .offset(offset);
+}
+
 export function addMedicine(medicine) {
     return db('medicines').insert(medicine);
 }
