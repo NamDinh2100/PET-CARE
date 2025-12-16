@@ -27,11 +27,11 @@ export function addUser(user) {
 }
 
 export function updateUser(id, user) {
-    return db('users').where('id', id).update(user);
+    return db('users').where('user_id', id).update(user);
 }
 
 export function deleteUser(id) {
-    return db('users').where('id', id).del();
+    return db('users').where('user_id', id).del();
 }
 
 export function getPetByID(user_id) {
