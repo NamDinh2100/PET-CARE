@@ -89,9 +89,15 @@
                         <td class="text-muted small">{{formatDate date_start}}</td>
                         <td class="text-muted small">{{status}}</td>
                         <td class="text-end pe-3">
-                            <a class="btn btn-sm btn-outline-primary" href="/admin/appointments/edit?id={{appointment_id}}">
-                                <i class="bi bi-pencil-square"></i> Edit
-                            </a>
+                            {{#if (or (eq status "completed") (eq status "cancelled"))}}
+                                <a class="btn btn-sm btn-outline-success" href="/admin/appointments/view?id={{appointment_id}}">
+                                    <i class="bi bi-eye"></i> View
+                                </a> 
+                            {{else}}
+                                 <a class="btn btn-sm btn-outline-primary" href="/admin/appointments/edit?id={{appointment_id}}">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                            {{/if}}  
                         </td>
                     </tr>
                     {{/each}}
@@ -113,50 +119,6 @@
 
     </div>
 </div>
-
-{{!-- 2. MODAL POPUP (Bootstrap Standard) --}}
-{{#if isAddMode}}
-<div class="modal fade" id="addAppointmentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg">
-            
-            <div class="modal-header justify-content-center position-relative py-3">
-                <h4 class="modal-title brand-font fw-bold text-uppercase">New Appointment</h4>
-                <a href="/admin/appointments" class="position-absolute end-0 top-50 translate-middle-y me-3 text-danger fs-3 text-decoration-none">
-                    <i class="bi bi-x-circle-fill"></i>
-                </a>
-            </div>
-
-            <div class="modal-body p-5">
-                <form method="POST">
-                    <div class="mb-4">
-                        <input type="text" name="customer" class="form-control form-control-lg rounded-pill border-2 fs-6" placeholder="CUSTOMER" required style="border-color: #ccc;">
-                    </div>
-
-                    <div class="mb-4">
-                        <input type="text" name="veterinarian" class="form-control form-control-lg rounded-pill border-2 fs-6" placeholder="VETERINARIAN" required style="border-color: #ccc;">
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <input type="datetime-local" name="date_start" class="form-control form-control-lg rounded-pill border-2 fs-6" required style="border-color: #ccc;">
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <input type="datetime-local" name="date_end" class="form-control form-control-lg rounded-pill border-2 fs-6" required style="border-color: #ccc;">
-                        </div>
-                    </div>
-
-                    <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-outline-primary rounded-pill px-5 py-2 fw-bold text-uppercase border-2">
-                            Submit
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-{{/if}}
 
 {{#section 'js'}}
     <script>

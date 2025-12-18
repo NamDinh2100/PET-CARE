@@ -86,6 +86,7 @@
                         <th scope="col" class="ps-3 py-3 rounded-start-3">ID</th> 
                         <th scope="col" class="py-3">Name</th>
                         <th scope="col" class="py-3">Form</th>
+                        <th scope="col" class="py-3">Category</th>
                         <th scope="col" class="py-3">Description</th>
                         <th scope="col" class="text-end pe-3 py-3 rounded-end-3">Actions</th>
                     </tr>
@@ -95,7 +96,8 @@
                     <tr>
                         <td class="ps-3 fw-bold text-secondary">#{{medicine_id}}</td>
                         <td class="fw-semibold">{{medicine_name}}</td>
-                        <td><span class="badge bg-light text-dark border rounded-pill">{{form}}</span></td>
+                        <td><span class="badge text-dark">{{form}}</span></td>
+                        <td><span class="badge text-dark">{{category}}</span></td>
                         <td class="text-muted small">{{description}}</td>
                         <td class="text-end pe-3">
                             <a class="btn btn-sm btn-outline-primary" href="/admin/medicines/edit?id={{medicine_id}}">

@@ -46,9 +46,82 @@
                 <h5 class="modal-title-custom">BOOKING FORM</h5>
                 <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
+            {{#if isAuth}}
             <div class="modal-body p-4">
-                <div class="alert alert-info">Please <a href="/signin">login</a> to book an appointment.</div>
+                <form id="bookingForm" method="POST" action="/account/appointment/book">
+                    {{!-- Pet Selection --}}
+                    <div class="mb-3">
+
+                        {{#if pets}}
+                        <select class="form-select custom-input text-uppercase text-muted fw-bold" name="pet_id"
+                            style="border-radius: 50px;" required>
+                            <option selected disabled>SELECT YOUR PET</option>
+                            {{#each pets}}
+                            <option value="{{this.pet_id}}">{{this.name}}</option>
+                            {{/each}}
+                        </select>
+                        {{else}}
+                        <div class="alert alert-warning">You have no pets registered.</div>
+                        {{/if}} 
+
+                    </div>
+
+                    {{!-- Date & Time --}}
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <input type="text" class="form-control custom-input text-uppercase text-muted fw-bold"
+                                name="date_start" placeholder="DATE" onfocus="(this.type='date')"
+                                onblur="(this.type='text')" style="border-radius: 50px;" required>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control custom-input text-uppercase text-muted fw-bold"
+                                name="time" placeholder="TIME" onfocus="(this.type='time')" onblur="(this.type='text')"
+                                style="border-radius: 50px;" required>
+                        </div>
+                    </div>
+
+                    {{!-- Services Selection (Multiple) --}}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-uppercase text-muted" style="font-size: 0.9rem;">Select
+                            Services:</label>
+                        {{#if serviceList}}
+                        <div
+                            style="border: 2px solid #000; border-radius: 20px; padding: 20px 40px; background-color: #fff; max-height: 150px; overflow-y: auto;">
+                            {{#each serviceList}}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="services"
+                                    value="{{this.service_id}}" id="service_{{this.service_id}}">
+                                <label class="form-check-label fw-bold" for="service_{{this.service_id}}">
+                                    {{this.service_name}}
+                                </label>
+                            </div>
+                            {{/each}}
+                        </div>
+                        {{else}}
+                            <div class="alert alert-warning">No services available.</div>
+                        {{/if}}
+                    </div>
+
+                    {{!-- Note --}}
+                    <div class="mb-4">
+                        <textarea class="form-control custom-input text-muted" name="note"
+                            placeholder="Note something..." rows="5"
+                            style="border-radius: 20px; resize: none;"></textarea>
+                    </div>
+
+                    {{!-- Submit Button --}}
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-outline-primary px-4 py-2 fw-bold"
+                            style="border-radius: 10px; border-width: 2px;">SUBMIT</button>
+                    </div>
+                </form>
             </div>
+            {{else}}
+                <div class="modal-body p-4">
+                    <div class="alert alert-info">Please <a href="/signin">login</a> or <a href="/signup">sign up</a> to book an appointment.</div>
+                </div>
+            {{/if}}
         </div>
     </div>
 </div>

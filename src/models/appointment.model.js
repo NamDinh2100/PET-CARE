@@ -1,20 +1,17 @@
 import db from '../config/database.js';
 
+export function getAppointmentByID(appointment_id) {
+    return db('appointments as ap')
+        .join('users as cus', 'ap.customer_id', 'cus.user_id')
+        .leftJoin('users as vet', 'ap.veterinarian_id', 'vet.user_id')
+        .select('ap.*', 'cus.full_name as customer_name', 'vet.full_name as veterinarian_name')
+        .where('appointment_id', appointment_id).first();
+}
+
 export function updateAppointmentStatus(appointment_id, status) {
     return db('appointments')
         .where('appointment_id', appointment_id)
         .update({ status: status });
-}
-
-export function getAllAppointments() {
-    return db('appointments as ap')
-        .join('users as cus', 'customer_id', 'cus.user_id')
-        .join('users as vet', 'veterinarian_id', 'vet.user_id')
-        .select(
-            'ap.*',
-            'cus.full_name as customer_name',
-            'vet.full_name as veterinarian_name',
-        );
 }
 
 export function countByAppointment() {
@@ -25,14 +22,14 @@ export function countByAppointment() {
 export function findPageByAppointment(limit, offset) {
     return db('appointments as ap')
         .join('users as cus', 'customer_id', 'cus.user_id')
-        .join('users as vet', 'veterinarian_id', 'vet.user_id')
+        .leftJoin('users as vet', 'veterinarian_id', 'vet.user_id')
         .select(
             'ap.*',
             'cus.full_name as customer_name',
             'vet.full_name as veterinarian_name',
         )
         .limit(limit)
-        .offset(offset);
+        .offset(offset).orderBy('ap.appointment_id', 'asc');
 }
 
 export async function addAppointment(appointment) {
@@ -44,7 +41,6 @@ export async function addAppointment(appointment) {
     return typeof row === 'object' ? row.appointment_id : row;
 }
 
-
 export function addServiceForAppointment(appointmentService) {
     return db('appointment_services').insert(appointmentService);
 }   
@@ -55,7 +51,7 @@ export async function getSchedule(veterinarian_id) {
         .leftJoin('appointment_services as as', 'a.appointment_id', 'as.appointment_id')
         .leftJoin('services as s', 'as.service_id', 's.service_id')
         .where('a.veterinarian_id', veterinarian_id)
-        .whereIn('a.status', ['scheduled', 'completed'])
+        .whereIn('a.status', ['confirmed', 'completed']) // Must fixed statuses
         .select(
             'a.*', 
             'cus.full_name as customer_name',
@@ -92,4 +88,10 @@ export async function getSchedule(veterinarian_id) {
     });
     
     return Array.from(appointmentMap.values());
+}
+
+export function updateAppointment(appointment_id, updatedAppointment) {
+    return db('appointments')
+        .where('appointment_id', appointment_id)
+        .update(updatedAppointment);
 }

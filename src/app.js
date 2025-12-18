@@ -21,7 +21,7 @@ import appointmentRouter from './routes/admin-appointment.route.js';
 import userRouter from './routes/admin-customer.route.js';
 import medicineRouter from './routes/admin-medicine.route.js';
 import statisticRouter from './routes/admin-statistical.route.js';
-
+import adminRouter from './routes/admin.route.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -60,6 +60,9 @@ app.engine('handlebars', engine({
         },
         eq(a, b) {
             return a === b;
+        },
+        or(a, b) {
+            return a || b;
         },
         json(context) {
             return JSON.stringify(context);
@@ -102,12 +105,13 @@ app.use('/account', isAuth, isCustomer, customerRouter);
 app.use('/vet', isAuth, isVeterinarian, veterinarianRouter);
 
 // Admin Routers
-app.use('/admin/customers', userRouter);
+app.use('/admin/customers', isAuth, isAdmin, userRouter);
 app.use('/admin/medicines', isAuth, isAdmin, medicineRouter);
 app.use('/admin/employees', isAuth, isAdmin, employeeRouter);
 app.use('/admin/appointments', isAuth, isAdmin, appointmentRouter);
 app.use('/admin/services', isAuth, isAdmin, serviceRouter);
 app.use('/admin/statistical', isAuth, isAdmin, statisticRouter);
+app.use('/admin', isAuth, isAdmin, adminRouter);
 
 // Route xử lý lỗi 403
 app.use((req, res) => {

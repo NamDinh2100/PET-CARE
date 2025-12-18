@@ -51,7 +51,10 @@ router.post('/add', async function (req, res) {
 router.get('/edit', async function (req, res) {
     const id = req.query.id;
     const medicine = await medicineService.getMedicineByID(id);
-    res.render('vwAdmin/vwMedicine/edit', { medicine });
+    res.render('vwAdmin/vwMedicine/edit', { 
+        medicine: medicine,
+        layout: 'admin-layout'
+    });
 });
 
 router.post('/edit', async function (req, res) {
@@ -63,13 +66,7 @@ router.post('/edit', async function (req, res) {
         description: req.body.description,
     };
     await medicineService.updateMedicine(id, medicine);
-    res.redirect('/admin/medicine');
-});
-
-router.get('/delete', async function (req, res) {
-    const id = req.query.id;
-    await medicineService.deleteMedicine(id);
-    res.redirect('/admin/medicine');
+    res.redirect('/admin/medicines');
 });
 
 export default router;
