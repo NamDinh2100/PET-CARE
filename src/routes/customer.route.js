@@ -44,7 +44,7 @@ router.get('/my-profile', function (req, res) {
 
 router.get('/my-pets', async function (req, res) {
     const user = req.session.authUser;
-    const list = await petService.getPetByID(user.user_id);
+    const list = await petService.getPetByUserID(user.user_id);
 
     res.render('vwCustomer/profile', {
         activeTab: 'pet',

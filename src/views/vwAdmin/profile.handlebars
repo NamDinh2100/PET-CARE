@@ -188,85 +188,19 @@
     </div>
 </div>
 
-
-{{#if changePassword}}
-<div class="modal fade" id="addMedicineModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg">
-            
-            <div class="modal-header justify-content-center position-relative py-3">
-                <h4 class="modal-title brand-font fw-bold text-uppercase">New Medicine</h4>
-                <a href="/admin/medicines" class="position-absolute end-0 top-50 translate-middle-y me-3 text-danger fs-3 text-decoration-none">
-                    <i class="bi bi-x-circle-fill"></i>
-                </a>
-            </div>
-
-            <div class="modal-body p-5">
-                <form method="POST" id="frmMedicine">
-                    <div class="mb-4">
-                        <input type="text" name="medicine_name" class="form-control form-control-lg rounded-pill border-2 fs-6" placeholder="MEDICINE NAME" required style="border-color: #ccc;">
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <select name="form" class="form-select form-select-lg rounded-pill border-2 fs-6 text-muted" style="border-color: #ccc;">
-                                <option selected disabled>FORM</option>
-                                <option value="Tablet">Tablet</option>
-                                <option value="Capsule">Capsule</option>
-                                <option value="Liquid">Liquid</option>
-                                <option value="Injection">Injection</option>
-                                <option value="Cream">Cream</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <select name="category" class="form-select form-select-lg rounded-pill border-2 fs-6 text-muted" style="border-color: #ccc;">
-                                <option selected disabled>CATEGORY</option>
-                                <option value="Antibiotic">Antibiotic</option>
-                                <option value="Pain Relief">Pain Relief</option>
-                                <option value="Vitamin">Vitamin</option>
-                                <option value="Vaccine">Vaccine</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <textarea name="description" class="form-control border-2 fs-6" placeholder="DESCRIPTION (Optional)" rows="3" style="border-color: #ccc; border-radius: 20px; padding: 15px 20px;"></textarea>
-                    </div>
-
-                    <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-outline-primary rounded-pill px-5 py-2 fw-bold text-uppercase border-2">
-                            Submit
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-{{/if}}
-
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-  document.querySelector('#frmMedicine').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    Swal.fire({
-        title: 'Success',
-        text: 'Added medicine successfully.',
-        icon: 'success'
-    }).then(() => {
-        e.target.submit();
-    });
-  })
-
-    document.addEventListener('DOMContentLoaded', function () {
-        // Tự động bật Modal Medicine
-        var addModalElement = document.getElementById('addMedicineModal');
-        if (addModalElement) {
-            var myModal = new bootstrap.Modal(addModalElement);
-            myModal.show();
-        }
+    document.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Success!',
+            text: 'Profile updated successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            e.target.submit();
+        });
     });
 </script>
 {{/section}}

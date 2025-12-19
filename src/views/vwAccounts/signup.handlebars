@@ -140,6 +140,37 @@
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    document.getElementById('frmSignup').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const password = formData.get('password');
+        const confirmPassword = formData.get('confirmPassword');
+        
+        if (password !== confirmPassword) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Passwords do not match.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+        
+        Swal.fire({
+            title: 'Success!',
+            text: 'Account created successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            e.target.submit();
+        });
+    });
+</script>
+{{/section}}
+
+{{#section 'js'}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
     // Đợi trang web tải xong hoàn toàn mới thực thi code
     document.addEventListener('DOMContentLoaded', function () {
         const registrationForm = document.querySelector('#frmSignup');

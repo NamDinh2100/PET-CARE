@@ -54,6 +54,7 @@ export async function getSchedule(veterinarian_id) {
         .whereIn('a.status', ['confirmed', 'completed']) // Must fixed statuses
         .select(
             'a.*', 
+            'cus.user_id as customer_id',
             'cus.full_name as customer_name',
             's.service_id',
             's.service_name',
@@ -95,3 +96,22 @@ export function updateAppointment(appointment_id, updatedAppointment) {
         .where('appointment_id', appointment_id)
         .update(updatedAppointment);
 }
+
+export function updateAppointmentPet(appointment_id, pet_id) {
+    return db('appointments')
+        .where('appointment_id', appointment_id)
+        .update({ pet_id: pet_id });
+}
+
+export function getMedicalHistoryByPetID(pet_id) {
+    return db('appointments as a')
+        .where('a.pet_id', pet_id)
+        .andWhere('a.status', 'completed')
+        .join('users as cus', 'a.customer_id', 'cus.user_id')
+        .join('users as vet', 'a.veterinarian_id', 'vet.user_id')
+        .select(
+            'a.*',
+            'cus.full_name as customer_name',
+            'vet.full_name as veterinarian_name',
+        );
+} 

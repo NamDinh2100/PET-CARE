@@ -56,7 +56,7 @@
                             <li><a class="dropdown-item py-2" href="/profile"><i class="bi bi-person me-2"></i>My
                                     Profile</a></li>
 
-                            <li><a class="dropdown-item py-2" href="/"><i class="bi bi-key me-2"></i>Change password</a>
+                            <li><a class="dropdown-item py-2" href="#" data-bs-toggle="modal" data-bs-target="#changePasswordModal"><i class="bi bi-key me-2"></i>Change password</a>
                             </li>
                             <li></li>
                             <hr class="dropdown-divider">
@@ -88,7 +88,7 @@
                             class="bi bi-calendar-check me-3"></i> SCHEDULE</a>
                     <a href="/vet/appointment"
                         class="list-group-item list-group-item-action border-0 rounded-3 mb-1 py-3 fw-bold text-secondary"><i
-                            class="bi bi-heart-pulse me-3"></i> PATIENTS</a>
+                            class="bi bi-hospital me-3"></i> APPOINTMENTS</a>
 
                 </div>
             </nav>
@@ -96,6 +96,48 @@
             <main class="col-md-10 col-lg-10 ms-sm-auto px-md-4 py-4 bg-light">
                 {{{body}}}
             </main>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-2">
+                <div class="modal-header bg-danger text-white rounded-top-4">
+                    <h5 class="modal-title fw-bold" id="changePasswordModalLabel" style="font-family: 'Abhaya Libre', serif;">
+                        <i class="bi bi-key me-2"></i>Change Password
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="changePasswordForm" method="POST" action="/vet/change-password">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label fw-bold" style="font-family: 'Abhaya Libre', serif;">Current Password</label>
+                            <input type="password" class="form-control rounded-pill border-2 border-dark" id="currentPassword" name="current_password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label fw-bold" style="font-family: 'Abhaya Libre', serif;">New Password</label>
+                            <input type="password" class="form-control rounded-pill border-2 border-dark" id="newPassword" name="new_password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label fw-bold" style="font-family: 'Abhaya Libre', serif;">Confirm New Password</label>
+                            <input type="password" class="form-control rounded-pill border-2 border-dark" id="confirmPassword" name="confirm_password" required>
+                        </div>
+                        <div id="passwordError" class="alert alert-danger d-none" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <span id="errorMessage"></span>
+                        </div>
+                        <div id="passwordSuccess" class="alert alert-success d-none" role="alert">
+                            <i class="bi bi-check-circle me-2"></i>
+                            Password changed successfully!
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0 px-4 pb-4">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="changePasswordForm" class="btn btn-danger rounded-pill px-4">Change Password</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -119,6 +161,70 @@
                 mainNav.querySelectorAll('.nav-link').forEach(link => {
                     if (link.getAttribute('href') === currentPath) {
                         link.classList.add('active');
+                    }
+                });
+            }
+
+            // --- Change Password Modal ---
+            const changePasswordForm = document.getElementById('changePasswordForm');
+            if (changePasswordForm) {
+                changePasswordForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+
+                    const currentPassword = document.getElementById('currentPassword').value;
+                    const newPassword = document.getElementById('newPassword').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    
+                    const errorDiv = document.getElementById('passwordError');
+                    const successDiv = document.getElementById('passwordSuccess');
+                    const errorMessage = document.getElementById('errorMessage');
+                    
+                    // Reset alerts
+                    errorDiv.classList.add('d-none');
+                    successDiv.classList.add('d-none');
+                    
+                    // Validation
+                    if (newPassword !== confirmPassword) {
+                        errorMessage.textContent = 'New password and confirmation do not match.';
+                        errorDiv.classList.remove('d-none');
+                        return;
+                    }
+                    
+                    if (newPassword.length < 6) {
+                        errorMessage.textContent = 'New password must be at least 6 characters long.';
+                        errorDiv.classList.remove('d-none');
+                        return;
+                    }
+                    
+                    try {
+                        const response = await fetch('/vet/change-password', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                currentPassword: currentPassword,
+                                newPassword: newPassword
+                            })
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (response.ok) {
+                            successDiv.classList.remove('d-none');
+                            changePasswordForm.reset();
+                            setTimeout(() => {
+                                const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+                                modal.hide();
+                                successDiv.classList.add('d-none');
+                            }, 2000);
+                        } else {
+                            errorMessage.textContent = result.message || 'Failed to change password.';
+                            errorDiv.classList.remove('d-none');
+                        }
+                    } catch (error) {
+                        errorMessage.textContent = 'An error occurred. Please try again.';
+                        errorDiv.classList.remove('d-none');
                     }
                 });
             }

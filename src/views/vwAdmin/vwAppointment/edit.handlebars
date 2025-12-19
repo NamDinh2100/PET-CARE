@@ -113,6 +113,23 @@
 </div>
 
 {{#section 'js'}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Success!',
+            text: 'Appointment updated successfully.',
+            icon: 'success',
+            confirmButtonText: 'OK'
+        }).then(() => {
+            e.target.submit();
+        });
+    });
+</script>
+{{/section}}
+
+{{#section 'js'}}
     <script>
         // You can add JavaScript code here if needed
         // Write for me check form validation

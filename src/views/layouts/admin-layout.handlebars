@@ -115,7 +115,7 @@
     <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content rounded-4 border-2">
-                <div class="modal-header bg-primary text-white rounded-top-4">
+                <div class="modal-header bg-danger text-white rounded-top-4">
                     <h5 class="modal-title fw-bold" id="changePasswordModalLabel" style="font-family: 'Abhaya Libre', serif;">
                         <i class="bi bi-key me-2"></i>Change Password
                     </h5>
@@ -146,8 +146,7 @@
                     </form>
                 </div>
                 <div class="modal-footer border-0 px-4 pb-4">
-                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" form="changePasswordForm" class="btn btn-primary rounded-pill px-4">Change Password</button>
+                    <button type="submit" form="changePasswordForm" class="btn btn-outline-danger rounded-pill px-4">Change Password</button>
                 </div>
             </div>
         </div>
@@ -215,6 +214,7 @@
             if (changePasswordForm) {
                 changePasswordForm.addEventListener('submit', async function(e) {
                     e.preventDefault();
+
                     
                     const currentPassword = document.getElementById('currentPassword').value;
                     const newPassword = document.getElementById('newPassword').value;

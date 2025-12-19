@@ -38,6 +38,8 @@ app.use(express.urlencoded({
   extended: true,
 }));
 
+app.use(express.json());
+
 // Handlebars engine
 app.engine('handlebars', engine({
     defaultLayout: 'share-layout',
@@ -53,8 +55,8 @@ app.engine('handlebars', engine({
     helpers: {
         formatDate(date) {
             return new Date(date).toLocaleDateString('vi-VN', {
-                day: '2-digit',
                 month: '2-digit',
+                day: '2-digit',
                 year: 'numeric'
             });
         },
@@ -66,6 +68,16 @@ app.engine('handlebars', engine({
         },
         json(context) {
             return JSON.stringify(context);
+        },
+        calAge(dateOfBirth) {
+            const today = new Date();
+            const birthDate = new Date(dateOfBirth);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
         },
         // Helper section (viết trực tiếp, không cần thư viện express-handlebars-sections)
         section: expressHandlebarsSections()

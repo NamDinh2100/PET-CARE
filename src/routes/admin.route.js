@@ -12,14 +12,15 @@ router.get('/profile', async function (req, res) {
 }); 
 
 router.post('/profile', async function (req, res) {
-    const id = req.body.user_id;
+    const id = req.session.authUser.user_id;
     const user = {
         full_name: req.body.full_name,
         phone: req.body.phone,
-        email: req.body.email,
         address: req.body.address,
     };
     await userService.updateUser(id, user);
+    const userUpdated = await userService.getUserByID(id);
+    req.session.authUser = userUpdated;
     res.redirect('/admin/profile');
 });
 
@@ -32,14 +33,13 @@ router.get('/change-password', function (req, res) {
 
 router.post('/change-password', async function (req, res) {
     try {
-        const currentPassword = req.body.current_password;
-        const newPassword = req.body.new_password;
+        const currentPassword = req.body.currentPassword;
+        const newPassword = req.body.newPassword;
         const userId = req.session.authUser.user_id;
 
-        console.log('Received password change request for user ID:', req.body.current_password);
         
         // Get current user
-        const user = await userService.findById(userId);
+        const user = await userService.getUserByID(userId);
         if (!user) {
             return res.status(404).json({ message: 'User not found.' });
         }
