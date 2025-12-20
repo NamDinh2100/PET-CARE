@@ -15,7 +15,6 @@ router.post('/appointment/book', async function (req, res) {
             status: 'scheduled'
         });
 
-        // Chuẩn hoá danh sách services
         const servicesList = Array.isArray(req.body.services)
             ? req.body.services
             : [req.body.services];
@@ -45,7 +44,7 @@ router.get('/my-profile', function (req, res) {
 
 router.get('/my-pets', async function (req, res) {
     const user = req.session.authUser;
-    const list = await petService.getPetByID(user.user_id);
+    const list = await petService.getPetByUserID(user.user_id);
 
     res.render('vwCustomer/profile', {
         activeTab: 'pet',
