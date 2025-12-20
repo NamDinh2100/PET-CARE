@@ -1,27 +1,32 @@
-{{#section 'css'}}
-    <style>
-        .modal-content {
-            border: 3px solid #a58f8f;
-            border-radius: 25px;
-        }
-        .modal-header {
-            background-color: #d9d9d9;
-            border-bottom: 3px solid #a58f8f;
-            border-radius: 22px 22px 0 0;
-        }
+{{!-- 1. DANH SÁCH KHÁCH HÀNG --}}
 
-        .modal-backdrop.show {
-            backdrop-filter: blur(5px);
-            opacity: 0.5;
-        }
-        
-        /* Tùy chỉnh màu pagination cho hợp tông đen trắng nếu cần */
-        .page-link { color: #333; }
-        .page-item.active .page-link { background-color: #2d5bff; border-color: #2d5bff; }
-    </style>
-{{/section}}
-
-{{!-- 1. DANH SÁCH DỊCH VỤ (UNIFIED CONTAINER) --}}
+<style>
+    .table-container {
+        min-height: 450px;
+    }
+    .pagination .page-link {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        padding: 0;
+        border: 2px solid #2d5bff;
+        color: #2d5bff;
+        font-weight: bold;
+    }
+    .pagination .page-item.active .page-link {
+        background-color: #2d5bff;
+        color: white;
+        border-color: #2d5bff;
+    }
+    .pagination .page-link:hover {
+        background-color: #2d5bff;
+        color: white;
+        border-color: #2d5bff;
+    }
+</style>
 
 <div class="row mb-4">
     <div class="col-md-8 mx-auto">
@@ -40,13 +45,9 @@
         
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="mb-0 brand-font fw-bold text-uppercase">Customer</h4>
-            
-            <a class="btn btn-outline-success" href="/admin/customers/add">
-                <i class="bi bi-plus-lg me-1"></i> New
-            </a>
         </div>
 
-        <div class="table-responsive">
+        <div class="table-responsive table-container">
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
@@ -55,9 +56,8 @@
                         <th scope="col" class="py-3">Email</th>
                         <th scope="col" class="py-3">Phone</th>
                         <th scope="col" class="py-3">Address</th>
-                        <th scope="col" class="text-end pe-3 py-3 rounded-end-3">Actions</th>
                     </tr>
-                </thead>
+                </thead> 
                 <tbody>
                     {{#each customers}}
                     <tr>
@@ -66,23 +66,20 @@
                         <td>{{email}}</td>
                         <td>{{phone}}</td>
                         <td class="text-muted small">{{address}}</td>
-                        <td class="text-end pe-3">
-                            <a class="btn btn-sm btn-outline-primary" href="/admin/customers/edit?id={{user_id}}">
-                                <i class="bi bi-pencil-square"></i> Edit
-                            </a>
-                        </td>
                     </tr>
                     {{/each}}
                 </tbody>
             </table>
-        </div>
+        </div>   
 
-        <div class="d-flex justify-content-end mt-4">
+        <div class="d-flex justify-content-start mt-4">
             <nav aria-label="Page navigation">
                 <ul class="pagination mb-0">
-                    <li class="page-item active"><a class="page-link rounded-circle mx-1 shadow-sm" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link rounded-circle mx-1 text-dark border-0 bg-light" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link rounded-circle mx-1 text-dark border-0 bg-light" href="#">3</a></li>
+                    {{#each pageNumbers}}
+                    <li class="page-item {{#if isCurrent}}active{{/if}}">
+                        <a class="page-link" href="?page={{value}}">{{value}}</a>
+                    </li>
+                    {{/each}}
                 </ul>
             </nav>
         </div>
@@ -90,7 +87,7 @@
     </div>
 </div>
 
-{{!-- 2. MODAL POPUP (Bootstrap Standard) --}}
+{{!-- 2. MODAL THÊM KHÁCH HÀNG --}}
 {{#if isAddMode}}
 <div class="modal fade" id="addCustomerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -131,18 +128,25 @@
             </div>
         </div>
     </div>
-</div>
-{{/if}}
 
 {{#section 'js'}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Tự động bật Modal nếu đang ở chế độ Add
-            var addModalElement = document.getElementById('addCustomerModal');
-            if (addModalElement) {
-                var myModal = new bootstrap.Modal(addModalElement);
-                myModal.show();
-            }
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Success!',
+                text: 'Customer information updated successfully.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                e.target.submit();
+            });
         });
-    </script>
+    }
+</script>
 {{/section}}
+</div>
+{{/if}}

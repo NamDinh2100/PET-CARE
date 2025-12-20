@@ -9,7 +9,9 @@ export function isAuth(req, res, next) {
 // Authorization middlewares
 export function isCustomer(req, res, next) {
     if (req.session.authUser.role !== 'owner') {
-        return res.render('403');
+        return res.render('403', 
+            
+        );
     }
     next();
 }
