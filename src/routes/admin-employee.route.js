@@ -1,36 +1,39 @@
 import express from 'express';
-import bcrypt, { compareSync, hash } from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import * as employeeService from '../models/user.model.js';
 import * as emailService from '../models/email.model.js';
 
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-    let list = await employeeService.getAllEmployees();
+    const page = parseInt(req.query.page) || 1;
+    const limit = 8;
+    const offset = (page - 1) * limit;
 
-    // Filter by role if specified
-    const roleFilter = req.query.role || '';
-    if (roleFilter && roleFilter !== 'all') {
-        list = list.filter(emp => emp.role === roleFilter);
+    const total = await employeeService.countByEmpID();
+
+    const nPages = Math.ceil(+total.count / limit);
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+        pageNumbers.push({
+            value: i,
+            isCurrent: i === +page,
+        });
     }
 
-    // Get unique roles for filter dropdown
-    const allEmployees = await employeeService.getAllEmployees();
-    const roles = [...new Set(allEmployees.map(emp => emp.role))];
+    const list = await employeeService.findPageByEmpID(limit, offset);
 
     res.render('vwAdmin/vwEmployee/list', {
         employees: list,
-        roles: roles,
-        currentRole: roleFilter,
-        isAddMode: false
+        pageNumbers: pageNumbers,
+        layout: 'admin-layout'
     });
 });
 
 router.get('/add', async function (req, res) {
-    const list = await employeeService.getAllEmployees();
-    res.render('vwAdmin/vwEmployee/list', {
-        employees: list,
-        isAddMode: true
+    res.render('vwAdmin/vwEmployee/add', {
+        layout: 'admin-layout'
     });
 });
 
@@ -59,8 +62,6 @@ router.post('/add', async function (req, res) {
         status: 'active'
     };
 
-    console.log(employee);
-
     await employeeService.addEmployee(employee);
     res.redirect('/admin/employees');
 });
@@ -69,12 +70,14 @@ router.get('/edit', async function (req, res) {
     const id = req.query.id;
     const employee = await employeeService.getEmployeeByID(id);
     res.render('vwAdmin/vwEmployee/edit', {
-        employee: employee
+        employee: employee,
+        layout: 'admin-layout'
     });
 });
 
 router.post('/edit', async function (req, res) {
     const id = req.query.id;
+
     const employee = {
         full_name: req.body.full_name,
         email: req.body.email,
@@ -82,13 +85,6 @@ router.post('/edit', async function (req, res) {
         role: req.body.role
     };
     await employeeService.updateEmployee(id, employee);
-    res.redirect('/admin/employees');
-});
-
-router.get('/delete', async function (req, res) {
-    const id = req.query.id;
-    await employeeService.deleteEmployee(id);
-
     res.redirect('/admin/employees');
 });
 

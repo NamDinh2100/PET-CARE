@@ -4,18 +4,38 @@ import * as serviceService from '../models/service.model.js';
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-    const list = await serviceService.getAllServices();
+    const page = parseInt(req.query.page) || 1;
+    const limit = 8;
+    const offset = (page - 1) * limit;
+
+    const total = await serviceService.countByService();
+
+    const nPages = Math.ceil(+total.count / limit);
+    const pageNumbers = [];
+
+    for (let i = 1; i <= nPages; i++) {
+        pageNumbers.push({
+            value: i,
+            isCurrent: i === +page,
+        });
+    }
+
+    const list = await serviceService.findPageByService(limit, offset);
+
     res.render('vwAdmin/vwService/list',{
         services: list,
-        isAddMode: false
+        isAddMode: false,
+        pageNumbers: pageNumbers,
+        layout: 'admin-layout'
     });
 });
 
 router.get('/add', async function (req, res) {
     const list = await serviceService.getAllServices();
-    res.render('vwAdmin/vwService/add', {
+    res.render('vwAdmin/vwService/list', {
         services: list,
-        isAddMode: true
+        isAddMode: true,
+        layout: 'admin-layout'
     });
 });
 
@@ -32,10 +52,11 @@ router.post('/add', async function (req, res) {
 router.get('/edit', async function (req, res) {
     const id = req.query.id;
     const service = await serviceService.getServiceByID(id);
-    res.render('vwAccounts/vwService/edit', { 
-        service: service
+    res.render('vwAdmin/vwService/edit', { 
+        service: service,
+        layout: 'admin-layout'
     });
-
+    
 });
 
 router.post('/edit', async function (req, res) {
