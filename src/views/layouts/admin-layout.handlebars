@@ -24,7 +24,7 @@
     {{!-- ================= 1. HEADER DÙNG CHUNG ================= --}}
     <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top py-3 px-4 shadow-sm">
         <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center fw-bold brand-text" href="/admin/dashboard">
+            <a class="navbar-brand d-flex align-items-center fw-bold brand-text" href="#">
                 <img src="/static/images/logo.png" alt="Logo" width="40" height="40" class="me-2">
                 PetCareUS
             </a>
@@ -97,7 +97,7 @@
                     <a href="/admin/services"
                         class="list-group-item list-group-item-action border-0 rounded-3 mb-1 py-3 fw-bold text-secondary"><i
                             class="bi bi-tools me-3"></i> SERVICE</a>
-                    <a href="/admin/statistical"
+                    <a href="/admin/statistics"
                         class="list-group-item list-group-item-action border-0 rounded-3 mb-1 py-3 fw-bold text-secondary"><i
                             class="bi bi-graph-up me-3"></i> STATISTICAL</a>
                 </div>
@@ -120,7 +120,7 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <form id="changePasswordForm" method="POST" action="/admin/change-password">
+                    <form id="changePasswordForm" method="POST" action="/change-password">
                         <div class="mb-3">
                             <label for="currentPassword" class="form-label fw-bold" style="font-family: 'Abhaya Libre', serif;">Current Password</label>
                             <input type="password" class="form-control rounded-pill border-2 border-dark" id="currentPassword" name="current_password" required>

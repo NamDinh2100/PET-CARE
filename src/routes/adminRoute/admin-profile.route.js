@@ -1,28 +1,11 @@
-/**
- * Admin Profile Route - Branch Hop
- * Quản lý profile cho Admin
- */
-
 import express from 'express';
 import bcrypt from 'bcryptjs';
-import * as userService from '../models/user.model.js';
+import * as userService from '../../models/user.model.js';
 
 const router = express.Router();
 
-// Middleware to check if user is admin
-function isAdmin(req, res, next) {
-    if (!req.session.isAuth) {
-        req.session.retUrl = req.originalUrl;
-        return res.redirect('/account/signin');
-    }
-    if (req.session.authUser.role !== 'admin') {
-        return res.status(403).render('403');
-    }
-    next();
-}
-
 // GET /admin/profile - View admin profile
-router.get('/', isAdmin, async function (req, res) {
+router.get('/', async function (req, res) {
     const user = await userService.getUserByEmail(req.session.authUser.email);
     const success = req.query.success;
     const error = req.query.error;
@@ -35,7 +18,7 @@ router.get('/', isAdmin, async function (req, res) {
 });
 
 // POST /admin/profile/update - Update admin profile
-router.post('/update', isAdmin, async function (req, res) {
+router.post('/update', async function (req, res) {
     const userId = req.session.authUser.user_id;
     const updatedUser = {
         full_name: req.body.full_name,
@@ -52,7 +35,7 @@ router.post('/update', isAdmin, async function (req, res) {
 });
 
 // POST /admin/profile/password - Change admin password
-router.post('/password', isAdmin, async function (req, res) {
+router.post('/password', async function (req, res) {
     const user = await userService.getUserByEmail(req.session.authUser.email);
 
     const isMatch = bcrypt.compareSync(req.body.current_password, user.password);

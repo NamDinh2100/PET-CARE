@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import * as userService from '../models/user.model.js';
 import * as serviceService from '../models/service.model.js';
 import * as appointmentService from '../models/appointment.model.js';
+import * as petService from '../models/pet.model.js';
 import * as medicineService from '../models/medicine.model.js';
 import * as emailService from '../models/email.model.js';
 
@@ -23,7 +24,7 @@ router.post('/signup', async function (req, res) {
         password: hashPassword,
         phone: req.body.phone,
         email: req.body.email,
-        role: 'owner',
+        role: 'customer',
         status: 'active'
     }
     
@@ -65,7 +66,7 @@ router.post('/signin', async function (req, res) {
     console.log('User logged in:', req.session.authUser);
 
     let url;
-    if (user.role !== 'owner')
+    if (user.role !== 'customer')
     {
         const medicines = await medicineService.getAllMedicines();
         req.session.medicines = medicines;
@@ -84,7 +85,7 @@ router.post('/signin', async function (req, res) {
     else
     {
         url = '/';
-        const pets = await userService.getPetByID(user.user_id);
+        const pets = await petService.getPetByOwnerID(user.user_id);
         req.session.pets = pets;
     }
         

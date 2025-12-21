@@ -67,7 +67,7 @@ router.get('/appointment/pet-info', async function (req, res) {
 router.post('/appointment/pet-info', async function (req, res) {
     const pet_id = req.query.pet_id;
     const updatedPet = {
-        pet_name: req.body.pet_name,
+        name: req.body.pet_name,
         species: req.body.species,
         sex: req.body.sex,
         weight: req.body.weight,

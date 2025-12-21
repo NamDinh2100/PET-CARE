@@ -1,29 +1,12 @@
-/**
- * Admin Search Route - Branch Hop
- * Tìm kiếm chung cho Admin interface
- */
-
 import express from 'express';
-import * as userService from '../models/user.model.js';
-import * as serviceService from '../models/service.model.js';
-import * as medicineService from '../models/medicine.model.js';
+import * as userService from '../../models/customer.model.js';
+import * as serviceService from '../../models/service.model.js';
+import * as medicineService from '../../models/medicine.model.js';
 
 const router = express.Router();
 
-// Middleware to check if user is admin
-function isAdmin(req, res, next) {
-    if (!req.session.isAuth) {
-        req.session.retUrl = req.originalUrl;
-        return res.redirect('/account/signin');
-    }
-    if (req.session.authUser.role !== 'admin') {
-        return res.status(403).render('403');
-    }
-    next();
-}
-
 // GET /admin/search - Search across all modules
-router.get('/', isAdmin, async function (req, res) {
+router.get('/', async function (req, res) {
     const query = req.query.q || '';
     const type = req.query.type || 'all';
 

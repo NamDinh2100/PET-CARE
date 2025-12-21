@@ -1,7 +1,7 @@
 import db from '../config/database.js'
 
-export function getPetByUserID(cus_id) {
-    return db('pets').where('owner_id', cus_id);
+export function getPetByOwnerID(owner_id) {
+    return db('pets').where('owner_id', owner_id);
 }
 
 export function getPetByID(pet_id) {
@@ -14,4 +14,9 @@ export function addPet(pet) {
 
 export function updatePetInfo(pet_id, pet) {
     return db('pets').where('pet_id', pet_id).update(pet);
+}
+
+// Delete pet
+export function deletePet(pet_id) {
+    return db('pets').where('pet_id', pet_id).del();
 }

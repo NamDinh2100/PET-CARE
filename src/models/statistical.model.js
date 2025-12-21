@@ -10,6 +10,6 @@ export function getRevenueByService() {
       's.service_name',
       db.raw('SUM(s.base_price) as Revenue')
     )
-    .groupBy('s.service_id')
-    .orderBy('s.service_id');
+    .groupBy('s.service_id', 's.service_name')
+    .orderBy(db.raw('SUM(s.base_price)'), 'desc');
 }
