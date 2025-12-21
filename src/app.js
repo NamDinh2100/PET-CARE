@@ -7,26 +7,27 @@ import { isAuth, isAdmin, isCustomer, isVeterinarian } from './middlewares/auth.
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// ACCOUNT ROUTER
+import accountRouter from './routes/account.route.js';
+
 // USER ROUTER
-import customerRouter from './routes/customer.route.js'
+import petCustomerRouter from './routes/customerRoute/pet.route.js'
+import profileCustomerRouter from './routes/customerRoute/profile.route.js'
+import appointmentCustomerRouter from './routes/customerRoute/appointment.route.js'
 
 // VERTERINARIAN ROUTER
 import veterinarianRouter from './routes/veterinarian.route.js'
 
 // ADMIN ROUTER
-import accountRouter from './routes/account.route.js';
-import employeeRouter from './routes/admin-employee.route.js';
-import serviceRouter from './routes/admin-service.route.js';
-import appointmentRouter from './routes/admin-appointment.route.js';
-import userRouter from './routes/admin-customer.route.js';
-import medicineRouter from './routes/admin-medicine.route.js';
-import statisticRouter from './routes/admin-statistical.route.js';
+import employeeRouter from './routes/adminRoute/admin-employee.route.js';
+import serviceRouter from './routes/adminRoute/admin-service.route.js';
+import appointmentRouter from './routes/adminRoute/admin-appointment.route.js';
+import userRouter from './routes/adminRoute/admin-customer.route.js';
+import medicineRouter from './routes/adminRoute/admin-medicine.route.js';
+import statisticRouter from './routes/adminRoute/admin-statistical.route.js';
 
-import hopCustomerRouter from './routes/hop-customer.route.js';
-import adminSearchRouter from './routes/admin-search.route.js';
-import adminProfileRouter from './routes/admin-profile.route.js';
-
-import adminRouter from './routes/admin.route.js';
+import adminSearchRouter from './routes/adminRoute/admin-search.route.js';
+import adminProfileRouter from './routes/adminRoute/admin-profile.route.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -53,7 +54,6 @@ app.engine('handlebars', engine({
     partialsDir: [
         path.join(__dirname, 'views/vwAdmin'),
         path.join(__dirname, 'views/vwCustomer'),
-
         path.join(__dirname, 'views/vwVeterinarian/vwAppointment')
     ],
 
@@ -112,29 +112,29 @@ app.use(function (req, res, next) {
     next();
 });
 
-// Customer Routers
-
+// Public Routers
 app.use('/', accountRouter);
 
-app.use('/account', isAuth, isCustomer, customerRouter);
+// Customer Routers
+app.use('/profile', isAuth, isCustomer, profileCustomerRouter);
+app.use('/pets', isAuth, isCustomer, petCustomerRouter);
+app.use('/appointments', isAuth, isCustomer, appointmentCustomerRouter);
 
-// Veterinarian Routers
-app.use('/vet', isAuth, isVeterinarian, veterinarianRouter);
-
-// Admin Routers
+// Admin Routers  
+app.use('/admin/profile', isAuth, isAdmin, adminProfileRouter);
 app.use('/admin/customers', isAuth, isAdmin, userRouter);
 app.use('/admin/medicines', isAuth, isAdmin, medicineRouter);
 app.use('/admin/employees', isAuth, isAdmin, employeeRouter);
 app.use('/admin/appointments', isAuth, isAdmin, appointmentRouter);
 app.use('/admin/services', isAuth, isAdmin, serviceRouter);
-app.use('/admin/statistical', isAuth, isAdmin, statisticRouter);
-
-app.use('/customer', hopCustomerRouter);
+app.use('/admin/statistics', isAuth, isAdmin, statisticRouter);
 app.use('/admin/search', isAuth, isAdmin, adminSearchRouter);
-app.use('/admin/profile', isAuth, isAdmin, adminProfileRouter);
 
-app.use('/', accountRouter);
-app.use('/admin', isAuth, isAdmin, adminRouter);
+// Veterinarian Routers
+app.use('/vet', isAuth, isVeterinarian, veterinarianRouter);
+app.use('/vet/search', isAuth, isVeterinarian, adminSearchRouter); // Vet có thể search medicines
+
+//app.use('/customer', hopCustomerRouter);
 
 // Route xử lý lỗi 403
 app.use((req, res) => {

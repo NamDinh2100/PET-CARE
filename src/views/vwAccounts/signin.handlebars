@@ -93,16 +93,18 @@
         }
         
         // For demo purposes - you can remove this and let form submit naturally
-        Swal.fire({
-            title: 'Signing in...',
-            text: 'Please wait while we verify your credentials.',
-            icon: 'info',
-            timer: 1000,
-            timerProgressBar: true,
-            showConfirmButton: false
-        }).then(() => {
-            e.target.submit();
-        });
+        //Swal.fire({
+        //    title: 'Signing in...',
+        //    text: 'Please wait while we verify your credentials.',
+        //    icon: 'info',
+         //   timer: 1000,
+        //    timerProgressBar: true,
+         //   showConfirmButton: false
+        //}).then(() => {
+         //   e.target.submit();
+        //});
+
+        e.target.submit();
     });
 </script>
 {{/section}}

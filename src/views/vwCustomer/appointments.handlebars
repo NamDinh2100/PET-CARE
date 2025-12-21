@@ -221,7 +221,7 @@
 {{/section}}
 
 <div class="container my-4">
-    <a href="/" class="text-dark fs-4 text-decoration-none"><i class="bi bi-arrow-left"></i> Back to Home</a>
+    <a href="/" class="text-dark fs-4 text-decoration-none"><i class="bi bi-arrow-left"></i></a>
 
     <div class="profile-header-card">
         <div class="avatar-circle"><i class="bi bi-person-fill"></i></div>
@@ -237,13 +237,13 @@
 
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link" href="/customer/profile">PERSONAL INFORMATION</a>
+                <a class="nav-link" href="/profile">PERSONAL INFORMATION</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/customer/pets">PET LIST</a>
+                <a class="nav-link" href="/pets">PET LIST</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="/customer/appointments">APPOINTMENT HISTORY</a>
+                <a class="nav-link active" href="/appointments">APPOINTMENT HISTORY</a>
             </li>
         </ul>
     </div>
@@ -332,53 +332,77 @@
 {{!-- Booking Modal --}}
 <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="border-radius: 20px; border: 3px solid #b8b8b8;">
-            <div class="modal-header" style="background-color: #d9d9d9; border-bottom: 3px solid #b8b8b8;">
-                <h5 class="modal-title fw-bold text-uppercase">Book Appointment</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <div class="modal-content modal-content-custom" style="max-width: 500px; margin: auto;">
+            <div class="modal-header modal-header-custom">
+                <h5 class="modal-title-custom">BOOKING FORM</h5>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4">
-                <form method="POST" action="/customer/appointments/book">
+                <form id="bookingForm" method="POST" action="/account/appointment/book">
+                    {{!-- Pet Selection --}}
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Select Pet *</label>
-                        <select name="pet_id" class="form-select"
-                            style="border: 2px solid #000; border-radius: 25px; padding: 12px 20px;" required>
-                            <option value="">Choose your pet</option>
+
+                        {{#if pets}}
+                        <select class="form-select custom-input text-uppercase text-muted fw-bold" name="pet_id"
+                            style="border-radius: 50px;" required>
+                            <option selected disabled>SELECT YOUR PET</option>
                             {{#each pets}}
-                            <option value="{{pet_id}}">{{name}} ({{species}})</option>
+                            <option value="{{this.pet_id}}">{{this.name}}</option>
                             {{/each}}
                         </select>
+                        {{else}}
+                        <div class="alert alert-warning">No pets found. Please add a pet first.</div>
+                        {{/if}}
+
                     </div>
+
+                    {{!-- Date & Time --}}
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <input type="text" class="form-control custom-input text-uppercase text-muted fw-bold"
+                                name="date_start" placeholder="DATE" onfocus="(this.type='date')"
+                                onblur="(this.type='text')" style="border-radius: 50px;" required>
+                        </div>
+                        <div class="col-6">
+                            <input type="text" class="form-control custom-input text-uppercase text-muted fw-bold"
+                                name="time" placeholder="TIME" onfocus="(this.type='time')" onblur="(this.type='text')"
+                                style="border-radius: 50px;" required>
+                        </div>
+                    </div>
+
+                    {{!-- Services Selection (Multiple) --}}
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Select Service *</label>
-                        <select name="service_id" class="form-select"
-                            style="border: 2px solid #000; border-radius: 25px; padding: 12px 20px;" required>
-                            <option value="">Choose a service</option>
-                            {{#each services}}
-                            <option value="{{service_id}}">{{service_name}} - ${{base_price}}</option>
+                        <label class="form-label fw-bold text-uppercase text-muted" style="font-size: 0.9rem;">Select
+                            Services:</label>
+                        {{#if serviceList}}
+                        <div
+                            style="border: 2px solid #000; border-radius: 20px; padding: 20px 40px; background-color: #fff; max-height: 150px; overflow-y: auto;">
+                            {{#each serviceList}}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="services"
+                                    value="{{this.service_id}}" id="service_{{this.service_id}}">
+                                <label class="form-check-label fw-bold" for="service_{{this.service_id}}">
+                                    {{this.service_name}}
+                                </label>
+                            </div>
                             {{/each}}
-                        </select>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Date *</label>
-                            <input type="date" name="appointment_date" class="form-control"
-                                style="border: 2px solid #000; border-radius: 25px; padding: 12px 20px;" required>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Time *</label>
-                            <input type="time" name="appointment_time" class="form-control"
-                                style="border: 2px solid #000; border-radius: 25px; padding: 12px 20px;" required>
-                        </div>
+                        {{else}}
+                        <div class="alert alert-warning">No services available.</div>
+                        {{/if}}
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Notes</label>
-                        <textarea name="notes" class="form-control"
-                            style="border: 2px solid #000; border-radius: 15px; padding: 12px 20px;" rows="3"
-                            placeholder="Any special requests..."></textarea>
+
+                    {{!-- Note --}}
+                    <div class="mb-4">
+                        <textarea class="form-control custom-input text-muted" name="note"
+                            placeholder="Note something..." rows="5"
+                            style="border-radius: 20px; resize: none;"></textarea>
                     </div>
-                    <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-add px-5">BOOK NOW</button>
+
+                    {{!-- Submit Button --}}
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-outline-primary px-4 py-2 fw-bold"
+                            style="border-radius: 10px; border-width: 2px;">SUBMIT</button>
                     </div>
                 </form>
             </div>

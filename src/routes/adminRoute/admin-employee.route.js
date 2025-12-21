@@ -1,7 +1,8 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
-import * as employeeService from '../models/user.model.js';
-import * as emailService from '../models/email.model.js';
+import * as userService from '../../models/user.model.js';
+import * as emailService from '../../models/email.model.js';
+import * as employeeService from '../../models/employee.model.js';
 
 const router = express.Router();
 
@@ -62,13 +63,13 @@ router.post('/add', async function (req, res) {
         status: 'active'
     };
 
-    await employeeService.addEmployee(employee);
+    await userService.addUser(employee);
     res.redirect('/admin/employees');
 });
 
 router.get('/edit', async function (req, res) {
     const id = req.query.id;
-    const employee = await employeeService.getEmployeeByID(id);
+    const employee = await userService.getUserByID(id);
     res.render('vwAdmin/vwEmployee/edit', {
         employee: employee,
         layout: 'admin-layout'
@@ -84,7 +85,7 @@ router.post('/edit', async function (req, res) {
         phone: req.body.phone,
         role: req.body.role
     };
-    await employeeService.updateEmployee(id, employee);
+    await userService.updateUser(id, employee);
     res.redirect('/admin/employees');
 });
 

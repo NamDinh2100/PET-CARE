@@ -1,5 +1,5 @@
 import express from 'express';
-import * as statisticalService from '../models/statistical.model.js';
+import * as statisticalService from '../../models/statistical.model.js';
 
 const router = express.Router();
 

@@ -1,5 +1,6 @@
 import express from 'express';
-import * as userService from '../models/user.model.js';
+import * as customerService from '../../models/customer.model.js';
+import * as userService from '../../models/user.model.js';
 
 const router = express.Router();
 
@@ -8,7 +9,7 @@ router.get('/', async function (req, res) {
     const limit = 8;
     const offset = (page - 1) * limit;
 
-    const total = await userService.countByCustomer();
+    const total = await customerService.countByCustomer();
 
     const nPages = Math.ceil(+total.count / limit);
     const pageNumbers = [];
@@ -20,7 +21,7 @@ router.get('/', async function (req, res) {
         });
     }
 
-    const list = await userService.findPageByCustomer(limit, offset);
+    const list = await customerService.findPageByCustomer(limit, offset);
 
     res.render('vwAdmin/vwCustomer/list', { 
         customers: list,

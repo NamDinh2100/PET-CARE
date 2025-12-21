@@ -1,7 +1,8 @@
 import express from 'express';
-import * as appointmentService from '../models/appointment.model.js';
-import * as userService from '../models/user.model.js';
-import * as serviceService from '../models/service.model.js';
+import * as appointmentService from '../../models/appointment.model.js';
+import * as userService from '../../models/user.model.js';
+import * as serviceService from '../../models/service.model.js';
+import * as employeeService from '../../models/employee.model.js';
 
 const router = express.Router();
 
@@ -34,7 +35,7 @@ router.get('/', async function (req, res) {
 router.get('/edit', async function (req, res) {
     const id = req.query.id;
     const appointment = await appointmentService.getAppointmentByID(id);
-    const vetList = await userService.getAllVeterinarians();
+    const vetList = await employeeService.getAllVeterinarians();
 
     const serviceList = await serviceService.getServiceByAppointmentID(id);
     res.render('vwAdmin/vwAppointment/edit', {
