@@ -32,6 +32,111 @@ export function findPageByAppointment(limit, offset) {
         .offset(offset).orderBy('ap.appointment_id', 'asc');
 }
 
+export function countByStatus(status) {
+    return db('appointments')
+        .where('status', status)
+        .count('appointment_id as count').first();
+}
+
+export function findPageByStatus(status, limit, offset) {
+    return db('appointments as ap')
+        .join('users as cus', 'ap.customer_id', 'cus.user_id')
+        .leftJoin('users as vet', 'ap.veterinarian_id', 'vet.user_id')
+        .select(
+            'ap.*',
+            'cus.full_name as customer_name',
+            'vet.full_name as veterinarian_name',
+        )
+        .where('ap.status', status)
+        .limit(limit)
+        .offset(offset).orderBy('ap.appointment_id', 'asc');
+}
+
+export function searchAppointments(field, query, limit, offset) {
+    const baseQuery = db('appointments as ap')
+        .join('users as cus', 'ap.customer_id', 'cus.user_id')
+        .leftJoin('users as vet', 'ap.veterinarian_id', 'vet.user_id')
+        .select(
+            'ap.*',
+            'cus.full_name as customer_name',
+            'vet.full_name as veterinarian_name',
+        );
+
+    switch (field) {
+        case 'id':
+            return baseQuery
+                .where('ap.appointment_id', '=', query)
+                .limit(limit)
+                .offset(offset)
+                .orderBy('ap.appointment_id', 'asc');
+        case 'customer':
+            return baseQuery
+                .where('cus.full_name', 'ilike', `%${query}%`)
+                .limit(limit)
+                .offset(offset)
+                .orderBy('ap.appointment_id', 'asc');
+        case 'veterinarian':
+            return baseQuery
+                .where('vet.full_name', 'ilike', `%${query}%`)
+                .limit(limit)
+                .offset(offset)
+                .orderBy('ap.appointment_id', 'asc');
+        case 'status':
+            return baseQuery
+                .where('ap.status', 'ilike', `%${query}%`)
+                .limit(limit)
+                .offset(offset)
+                .orderBy('ap.appointment_id', 'asc');
+        default:
+            // Search all fields
+            return baseQuery
+                .where(function() {
+                    this.where('ap.appointment_id', '=', query)
+                        .orWhere('cus.full_name', 'ilike', `%${query}%`)
+                        .orWhere('vet.full_name', 'ilike', `%${query}%`)
+                        .orWhere('ap.status', 'ilike', `%${query}%`);
+                })
+                .limit(limit)
+                .offset(offset)
+                .orderBy('ap.appointment_id', 'asc');
+    }
+}
+
+export function countSearchAppointments(field, query) {
+    const baseQuery = db('appointments as ap')
+        .join('users as cus', 'ap.customer_id', 'cus.user_id')
+        .leftJoin('users as vet', 'ap.veterinarian_id', 'vet.user_id');
+
+    switch (field) {
+        case 'id':
+            return baseQuery
+                .where('ap.appointment_id', '=', query)
+                .count('ap.appointment_id as count').first();
+        case 'customer':
+            return baseQuery
+                .where('cus.full_name', 'ilike', `%${query}%`)
+                .count('ap.appointment_id as count').first();
+        case 'veterinarian':
+            return baseQuery
+                .where('vet.full_name', 'ilike', `%${query}%`)
+                .count('ap.appointment_id as count').first();
+        case 'status':
+            return baseQuery
+                .where('ap.status', 'ilike', `%${query}%`)
+                .count('ap.appointment_id as count').first();
+        default:
+            // Count all fields
+            return baseQuery
+                .where(function() {
+                    this.where('ap.appointment_id', '=', query)
+                        .orWhere('cus.full_name', 'ilike', `%${query}%`)
+                        .orWhere('vet.full_name', 'ilike', `%${query}%`)
+                        .orWhere('ap.status', 'ilike', `%${query}%`);
+                })
+                .count('ap.appointment_id as count').first();
+    }
+}
+
 export async function addAppointment(appointment) {
     const result = await db('appointments')
         .insert(appointment)
@@ -43,6 +148,19 @@ export async function addAppointment(appointment) {
 
 export function addServiceForAppointment(appointmentService) {
     return db('appointment_services').insert(appointmentService);
+}
+
+// Get services for a specific appointment
+export function getServicesForAppointment(appointment_id) {
+    return db('appointment_services as aps')
+        .join('services as s', 'aps.service_id', 's.service_id')
+        //.join('pets as p', 'aps.pet_id', 'p.pet_id')
+        .where('aps.appointment_id', appointment_id)
+        .select(
+            's.service_id',
+            's.service_name',
+            's.base_price as price'
+        );
 }   
 
 export async function getSchedule(veterinarian_id) {

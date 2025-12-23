@@ -2,6 +2,8 @@ import express from 'express';
 import * as appointmentService from '../../models/appointment.model.js';
 import * as petService from '../../models/pet.model.js';
 import * as serviceService from '../../models/service.model.js';
+import * as invoiceService from '../../models/invoice.model.js';
+import * as medicineService from '../../models/medicine.model.js';  
 
 const router = express.Router();
 
@@ -68,6 +70,103 @@ router.post('/cancel', async function (req, res) {
     await appointmentService.cancelAppointment(appointmentId, req.session.authUser.user_id);
 
     res.redirect('/appointments?success=cancelled');
+});
+
+// Get invoice data for completed appointment
+router.get('/:id/invoice', async function (req, res) {
+    try {
+        const appointmentId = req.params.id;
+        
+        // Get appointment details
+        const appointment = await appointmentService.getAppointmentByID(appointmentId);
+        const invoice = await invoiceService.getInvoiceByAppointmentID(appointmentId);
+        
+        if (!appointment) {
+            return res.json({
+                success: false,
+                message: 'Appointment not found'
+            });
+        }
+        
+        // Verify appointment belongs to current user
+        if (appointment.customer_id !== req.session.authUser.user_id) {
+            return res.json({
+                success: false,
+                message: 'Unauthorized'
+            });
+        }
+        
+        // Get services for this appointment
+        const services = await appointmentService.getServicesForAppointment(appointmentId);
+        
+        // Calculate totals
+        let subtotal = 0;
+        services.forEach(service => {
+            subtotal += parseFloat(service.price) || 0;
+        });
+
+        console.log('Invoice details:', invoice);
+        
+        const discount = invoice.discount ? parseFloat(invoice.discount) : 0; // Can be customized based on your business logic
+        const total = subtotal - (subtotal * discount / 100);
+        
+        res.json({
+            success: true,
+            appointment: {
+                appointment_id: appointment.appointment_id,
+                date_start: appointment.date_start,
+                time: appointment.time,
+                customer_name: appointment.customer_name,
+                veterinarian_name: appointment.veterinarian_name,
+                pet_name: appointment.pet_name,
+                status: appointment.status
+            },
+            services: services,
+            summary: {
+                subtotal: subtotal,
+                discount: discount,
+                total: total
+            },
+            payment: {
+                id: invoice.invoice_id,
+                method: invoice.payment_method || 'N/A',
+                status: invoice.payment_status || 'N/A'
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching invoice:', error);
+        res.json({
+            success: false,
+            message: 'Error loading invoice'
+        });
+    }
+});
+
+router.get('/:id/record', async function (req, res) {   
+    const appointmentId = req.params.id;
+
+    const medicine_records = await medicineService.getMedicineRecords(appointmentId);
+    const medicines = await medicineService.getMedicineByRecordID(medicine_records.record_id);
+
+    res.json({
+        success: true,
+        medicines: medicines,
+        medicine_records: medicine_records
+    });
+});
+
+router.post('/invoice/pay/:id', async function (req, res) {
+    try {
+        const paymentMethod = req.body.payment_method;
+        const invoice_id = req.params.id;
+        // Update payment status and method
+        await invoiceService.payInvoice(invoice_id, paymentMethod);
+
+        res.redirect('/appointments?success=paid');
+    } catch (error) {
+        console.error('Error processing payment:', error);
+        res.redirect('/appointments?error=payment_failed');
+    }
 });
 
 export default router;

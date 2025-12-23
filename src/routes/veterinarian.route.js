@@ -2,6 +2,7 @@ import express from 'express';
 import * as appointmentService from '../models/appointment.model.js';
 import * as prescriptionService from '../models/prescription.model.js';
 import * as petService from '../models/pet.model.js';
+import * as invoiceService from '../models/invoice.model.js';
 
 const router = express.Router();
 
@@ -28,10 +29,10 @@ router.post('/appointment/prescription', async function (req, res) {
         symptoms: req.body.symptoms,
         treatment: req.body.treatment,
         diagnosis: req.body.diagnosis,
-        instruction: req.body.instruction
+        instruction: req.body.instruction,
+        visitDate: new Date()
     };
 
-    console.log(record);
     const record_id = await prescriptionService.addMedicalRecord(record);
     const prescription_id = await prescriptionService.addPrescription(record_id);
 
@@ -43,6 +44,22 @@ router.post('/appointment/prescription', async function (req, res) {
     }
 
     await appointmentService.updateAppointmentStatus(req.body.appointment_id, 'completed');
+
+    const serviceList = await appointmentService.getServicesForAppointment(req.body.appointment_id);
+    let totalCost = 0;
+    for (const service of serviceList) {
+        totalCost += service.price;
+    }
+
+    console.log('Total cost for appointment', req.body.appointment_id, ':', totalCost);
+
+    await invoiceService.addInvoice({
+        appointment_id: req.body.appointment_id,
+        total_price: totalCost,
+        payment_status: 'unpaid',
+        payment_method: null,                                           
+        discount: 0,
+    });
 
     res.redirect('/vet/appointment');
 });

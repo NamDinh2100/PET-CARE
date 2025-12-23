@@ -4,28 +4,57 @@ import * as medicineService from '../../models/medicine.model.js';
 const router = express.Router();
 
 router.get('/', async function (req, res) {
+    const searchQuery = req.query.q;
+    const searchField = req.query.field || 'all';
     const page = parseInt(req.query.page) || 1;
     const limit = 8;
     const offset = (page - 1) * limit;
 
-    const total = await medicineService.countByMedicine();
+    let total;
+    let list;
+    let isSearchMode = false;
+
+    if (searchQuery && searchQuery.trim()) {
+        // Search mode
+        isSearchMode = true;
+        
+        // Validate ID/quantity search - must be a number
+        if ((searchField === 'id' || searchField === 'quantity') && isNaN(searchQuery)) {
+            total = { count: 0 };
+            list = [];
+        } else {
+            total = await medicineService.countSearchMedicines(searchField, searchQuery);
+            list = await medicineService.searchMedicines(searchField, searchQuery, limit, offset);
+        }
+    } else {
+        // Show all medicines
+        total = await medicineService.countByMedicine();
+        list = await medicineService.findPageByMedicine(limit, offset);
+    }
 
     const nPages = Math.ceil(+total.count / limit);
     const pageNumbers = [];
 
     for (let i = 1; i <= nPages; i++) {
+        let href = `?page=${i}`;
+        if (isSearchMode) {
+            href = `?q=${encodeURIComponent(searchQuery)}&field=${searchField}&page=${i}`;
+        }
+        
         pageNumbers.push({
             value: i,
             isCurrent: i === +page,
+            href: href
         });
     }
-
-    const list = await medicineService.findPageByMedicine(limit, offset);
 
     res.render('vwAdmin/vwMedicine/list', { 
         medicines: list,
         isAddMode: false,
         pageNumbers: pageNumbers,
+        searchQuery: searchQuery,
+        searchField: searchField,
+        isSearchMode: isSearchMode,
         layout: 'admin-layout'
     });
 });

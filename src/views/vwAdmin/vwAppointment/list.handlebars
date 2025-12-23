@@ -41,20 +41,111 @@
             color: white;
             border-color: #2d5bff;
         }
+
+        /* Status Badge Styling */
+        .status-badge {
+            min-width: 100px;
+            padding: 8px 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+
+        /* Confirmed - Blue */
+        .status-confirmed {
+            background-color: #e7f1ff;
+            color: #0d6efd;
+            border: 1px solid #0d6efd;
+        }
+
+        /* Completed - Green */
+        .status-completed {
+            background-color: #e8f5e9;
+            color: #198754;
+            border: 1px solid #198754;
+        }
+
+        /* Cancelled - Red */
+        .status-cancelled {
+            background-color: #ffe5e5;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+
+        /* Pending - Orange */
+        .status-pending {
+            background-color: #fff3cd;
+            color: #fd7e14;
+            border: 1px solid #fd7e14;
+        }
+
+        /* Scheduled - Purple */
+        .status-scheduled {
+            background-color: #f3e8ff;
+            color: #6f42c1;
+            border: 1px solid #6f42c1;
+        }
+
+        /* Advanced Search Styling */
+        .search-form .form-select {
+            border-right: none;
+            font-weight: 600;
+            background-color: #f8f9fa;
+        }
+
+        .search-form .form-control {
+            border-left: none;
+            border-radius: 0 25px 25px 0 !important;
+        }
+
+        .search-form .input-group-prepend .form-select {
+            border-radius: 25px 0 0 25px !important;
+        }
+
+        .search-input-rounded {
+            border-radius: 0 25px 25px 0;
+        }
     </style>
 {{/section}}
 
-{{!-- 1. DANH SÁCH DỊCH VỤ (UNIFIED CONTAINER) --}}
-
+{{!-- Advanced Search Section --}}
 <div class="row mb-4">
-    <div class="col-md-8 mx-auto">
-        <div class="input-group">
-            <input type="text" class="form-control border-dark search-input-rounded ps-4 bg-white"
-                placeholder="SEARCH DATA..." aria-label="Search">
-            <span class="position-absolute end-0 top-50 translate-middle-y me-3 z-1 cursor-pointer text-secondary">
-                <i class="bi bi-search"></i>
-            </span>
-        </div>
+    <div class="col-md-10 mx-auto">
+        <form action="/admin/appointments" method="GET" class="search-form">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <select name="field" class="form-select border-dark" style="max-width: 150px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                        <option value="all" {{#if (eq searchField 'all')}}selected{{/if}}>All Fields</option>
+                        <option value="id" {{#if (eq searchField 'id')}}selected{{/if}}>ID</option>
+                        <option value="customer" {{#if (eq searchField 'customer')}}selected{{/if}}>Customer</option>
+                        <option value="veterinarian" {{#if (eq searchField 'veterinarian')}}selected{{/if}}>Veterinarian</option>
+                        <option value="status" {{#if (eq searchField 'status')}}selected{{/if}}>Status</option>
+                    </select>
+                </div>
+                <input type="text" name="q" class="form-control border-dark search-input-rounded ps-4 bg-white"
+                    placeholder="SEARCH APPOINTMENTS..." aria-label="Search" value="{{searchQuery}}">
+                <button type="submit" class="position-absolute end-0 top-50 translate-middle-y me-3 z-1 cursor-pointer text-secondary btn btn-link p-0">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+            {{#if isSearchMode}}
+            <div class="mt-2">
+                <span class="badge bg-info me-2">
+                    <i class="bi bi-search me-1"></i>
+                    Search: "{{searchQuery}}" in 
+                    {{#if (eq searchField 'all')}}All Fields{{/if}}
+                    {{#if (eq searchField 'id')}}ID{{/if}}
+                    {{#if (eq searchField 'customer')}}Customer{{/if}}
+                    {{#if (eq searchField 'veterinarian')}}Veterinarian{{/if}}
+                    {{#if (eq searchField 'status')}}Status{{/if}}
+                </span>
+                <a href="/admin/appointments" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-x me-1"></i>Clear Search
+                </a>
+            </div>
+            {{/if}}
+        </form>
     </div>
 </div>
 
@@ -63,7 +154,44 @@
     <div class="card-body p-4">
         
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="mb-0 brand-font fw-bold text-uppercase">Appointment</h4>
+            <div>
+                <h4 class="mb-0 brand-font fw-bold text-uppercase">Appointment</h4>
+                {{#if isSearchMode}}
+                <small class="text-muted">
+                    {{appointments.length}} result(s) found for "{{searchQuery}}"
+                    {{#unless (eq searchField 'all')}}
+                        in {{#if (eq searchField 'customer')}}Customer{{/if}}{{#if (eq searchField 'veterinarian')}}Veterinarian{{/if}}{{#if (eq searchField 'id')}}ID{{/if}}{{#if (eq searchField 'status')}}Status{{/if}}
+                    {{/unless}}
+                </small>
+                {{/if}}
+            </div>
+            
+            <div class="d-flex align-items-center gap-3">
+                {{!-- Status Filter Dropdown --}}
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-funnel me-1"></i>
+                        {{#if currentStatus}}
+                            {{#if (eq currentStatus 'confirmed')}}Confirmed{{/if}}
+                            {{#if (eq currentStatus 'completed')}}Completed{{/if}}
+                            {{#if (eq currentStatus 'cancelled')}}Cancelled{{/if}}
+                            {{#if (eq currentStatus 'scheduled')}}Scheduled{{/if}}
+                        {{else}}All Status{{/if}}
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item {{#unless currentStatus}}active{{/unless}}"
+                                href="/admin/appointments">All Status</a></li>
+                        <li><a class="dropdown-item {{#if (eq 'confirmed' currentStatus)}}active{{/if}}"
+                                href="/admin/appointments?status=confirmed">Confirmed</a></li>
+                        <li><a class="dropdown-item {{#if (eq 'completed' currentStatus)}}active{{/if}}"
+                                href="/admin/appointments?status=completed">Completed</a></li>
+                        <li><a class="dropdown-item {{#if (eq 'cancelled' currentStatus)}}active{{/if}}"
+                                href="/admin/appointments?status=cancelled">Cancelled</a></li>
+                        <li><a class="dropdown-item {{#if (eq 'scheduled' currentStatus)}}active{{/if}}"
+                                href="/admin/appointments?status=scheduled">Scheduled</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <div class="table-responsive table-container">
@@ -87,12 +215,33 @@
                         <td class="fw-semibold">{{veterinarian_name}}</td>
                         <td>{{time}}</td>
                         <td class="text-muted small">{{formatDate date_start}}</td>
-                        <td class="text-muted small">{{status}}</td>
+                        <td>
+                            <span class="badge rounded-pill status-badge status-{{status}}">
+                                {{#if (eq status 'confirmed')}}
+                                    <i class="bi bi-check-circle me-1"></i>Confirmed
+                                {{else if (eq status 'completed')}}
+                                    <i class="bi bi-check-circle-fill me-1"></i>Completed
+                                {{else if (eq status 'cancelled')}}
+                                    <i class="bi bi-x-circle me-1"></i>Cancelled
+                                {{else if (eq status 'scheduled')}}
+                                    <i class="bi bi-calendar-check me-1"></i>Scheduled
+                                {{else}}
+                                    {{status}}
+                                {{/if}}
+                            </span>
+                        </td>
                         <td class="text-end pe-3">
-                            {{#if (or (eq status "completed") (eq status "cancelled"))}}
+                            {{#if (or (eq status "confirmed") (eq status "cancelled"))}}
                                 <a class="btn btn-sm btn-outline-success" href="/admin/appointments/view?id={{appointment_id}}">
                                     <i class="bi bi-eye"></i> View
                                 </a> 
+                            {{else if (eq status "completed")}}
+                                <a class="btn btn-sm btn-outline-success me-2" href="/admin/appointments/view?id={{appointment_id}}">
+                                    <i class="bi bi-eye"></i> Invoice
+                                </a>
+                                <a class="btn btn-sm btn-outline-success me-2" href="/admin/appointments/view?id={{appointment_id}}">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
                             {{else}}
                                  <a class="btn btn-sm btn-outline-primary" href="/admin/appointments/edit?id={{appointment_id}}">
                                     <i class="bi bi-pencil-square"></i> Edit
@@ -110,7 +259,7 @@
                 <ul class="pagination mb-0">
                     {{#each pageNumbers}}
                     <li class="page-item {{#if isCurrent}}active{{/if}}">
-                        <a class="page-link" href="?page={{value}}">{{value}}</a>
+                        <a class="page-link" href="{{#if href}}{{href}}{{else}}?page={{value}}{{/if}}">{{value}}</a>
                     </li>
                     {{/each}}
                 </ul>

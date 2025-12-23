@@ -25,6 +25,7 @@ import appointmentRouter from './routes/adminRoute/admin-appointment.route.js';
 import userRouter from './routes/adminRoute/admin-customer.route.js';
 import medicineRouter from './routes/adminRoute/admin-medicine.route.js';
 import statisticRouter from './routes/adminRoute/admin-statistical.route.js';
+import invoiceRouter from './routes/adminRoute/admin-invoice.route.js';
 
 import adminSearchRouter from './routes/adminRoute/admin-search.route.js';
 import adminProfileRouter from './routes/adminRoute/admin-profile.route.js';
@@ -60,10 +61,25 @@ app.engine('handlebars', engine({
     helpers: {
         formatDate(date) {
             return new Date(date).toLocaleDateString('vi-VN', {
-                month: '2-digit',
                 day: '2-digit',
+                month: '2-digit',
                 year: 'numeric'
             });
+        },
+        formatDateForInput(date) {
+            if (!date) return '';
+            const d = new Date(date);
+            if (isNaN(d.getTime())) return '';
+            
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            
+            return `${year}-${month}-${day}`;
+        },
+        getInitial(name) {
+            if (!name || !name.trim()) return 'U';
+            return name.trim().charAt(0).toUpperCase();
         },
         eq(a, b) {
             return a === b;
@@ -83,6 +99,18 @@ app.engine('handlebars', engine({
                 age--;
             }
             return age;
+        },
+        add(a, b) {
+            return a + b;
+        },
+        subtract(a, b) {
+            return a - b;
+        },
+        multiply(a, b) {
+            return a * b;
+        },
+        divide(a, b) {
+            return a / b;
         },
         // Helper section (viết trực tiếp, không cần thư viện express-handlebars-sections)
         section: expressHandlebarsSections()
@@ -127,6 +155,7 @@ app.use('/admin/medicines', isAuth, isAdmin, medicineRouter);
 app.use('/admin/employees', isAuth, isAdmin, employeeRouter);
 app.use('/admin/appointments', isAuth, isAdmin, appointmentRouter);
 app.use('/admin/services', isAuth, isAdmin, serviceRouter);
+app.use('/admin/invoices', isAuth, isAdmin, invoiceRouter);
 app.use('/admin/statistics', isAuth, isAdmin, statisticRouter);
 app.use('/admin/search', isAuth, isAdmin, adminSearchRouter);
 

@@ -7,30 +7,67 @@ import * as employeeService from '../../models/employee.model.js';
 const router = express.Router();
 
 router.get('/', async function (req, res) {
+    const role = req.query.role;
+    const searchQuery = req.query.q;
+    const searchField = req.query.field || 'all';
     const page = parseInt(req.query.page) || 1;
     const limit = 8;
     const offset = (page - 1) * limit;
 
-    const total = await employeeService.countByEmpID();
+    let total;
+    let list;
+    let isSearchMode = false;
+
+    if (searchQuery && searchQuery.trim()) {
+        // Search mode
+        isSearchMode = true;
+        
+        // Validate ID search - must be a number
+        if (searchField === 'id' && isNaN(searchQuery)) {
+            total = { count: 0 };
+            list = [];
+        } else {
+            total = await employeeService.countSearchEmployees(searchField, searchQuery);
+            list = await employeeService.searchEmployees(searchField, searchQuery, limit, offset);
+        }
+    } else if (role) {
+        // Filter by role
+        total = await employeeService.countByRole(role);
+        list = await employeeService.findPageByRole(role, limit, offset);
+    } else {
+        // Show all employees (except customers)
+        total = await employeeService.countByEmpID();
+        list = await employeeService.findPageByEmpID(limit, offset);
+    }
 
     const nPages = Math.ceil(+total.count / limit);
     const pageNumbers = [];
 
     for (let i = 1; i <= nPages; i++) {
+        let href = `?page=${i}`;
+        if (isSearchMode) {
+            href = `?q=${encodeURIComponent(searchQuery)}&field=${searchField}&page=${i}`;
+        } else if (role) {
+            href = `?role=${role}&page=${i}`;
+        }
+        
         pageNumbers.push({
             value: i,
             isCurrent: i === +page,
+            href: href
         });
     }
-
-    const list = await employeeService.findPageByEmpID(limit, offset);
 
     res.render('vwAdmin/vwEmployee/list', {
         employees: list,
         pageNumbers: pageNumbers,
+        currentRole: role,
+        searchQuery: searchQuery,
+        searchField: searchField,
+        isSearchMode: isSearchMode,
         layout: 'admin-layout'
     });
-});
+}); 
 
 router.get('/add', async function (req, res) {
     res.render('vwAdmin/vwEmployee/add', {

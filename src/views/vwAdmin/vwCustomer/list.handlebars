@@ -1,6 +1,18 @@
 {{!-- 1. DANH SÁCH KHÁCH HÀNG --}}
-{{#section 'styles'}}
+{{#section 'css'}}
 <style>
+    /* --- GIỮ LẠI STYLE RIÊNG CHO MODAL --- */
+    .modal-content {
+        border: 3px solid #a58f8f;
+        border-radius: 25px;
+    }
+    .modal-header {
+        background-color: #d9d9d9;
+        border-bottom: 3px solid #a58f8f;
+        border-radius: 22px 22px 0 0;
+    }
+    
+    /* Tùy chỉnh màu pagination */
     .table-container {
         min-height: 450px;
     }
@@ -26,21 +38,81 @@
         color: white;
         border-color: #2d5bff;
     }
+
+    /* Hiệu ứng làm mờ nền khi Modal hiện lên */
+    .modal-backdrop.show {
+        backdrop-filter: blur(5px);
+        opacity: 0.5;
+    }
+
+    /* Tùy chỉnh màu pagination */
+    .page-link {
+        color: #333;
+    }
+
+    .page-item.active .page-link {
+        background-color: #2d5bff;
+        border-color: #2d5bff;
+    }
+
+    /* Advanced Search Styling */
+    .search-form .form-select {
+        border-right: none;
+        font-weight: 600;
+        background-color: #f8f9fa;
+    }
+
+    .search-form .form-control {
+        border-left: none;
+        border-radius: 0 25px 25px 0 !important;
+    }
+
+    .search-form .input-group-prepend .form-select {
+        border-radius: 25px 0 0 25px !important;
+    }
+
+    .search-input-rounded {
+        border-radius: 0 25px 25px 0;
+    }
 </style>
 {{/section}}
 
+{{!-- Advanced Search Section --}}
 <div class="row mb-4">
-    <div class="col-md-8 mx-auto">
-        <form action="/admin/search" method="GET">
-            <input type="hidden" name="type" value="customers">
+    <div class="col-md-10 mx-auto">
+        <form action="/admin/customers" method="GET" class="search-form">
             <div class="input-group">
+                <div class="input-group-prepend">
+                    <select name="field" class="form-select border-dark" style="max-width: 150px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                        <option value="all" {{#if (eq searchField 'all')}}selected{{/if}}>All Fields</option>
+                        <option value="id" {{#if (eq searchField 'id')}}selected{{/if}}>ID</option>
+                        <option value="name" {{#if (eq searchField 'name')}}selected{{/if}}>Name</option>
+                        <option value="email" {{#if (eq searchField 'email')}}selected{{/if}}>Email</option>
+                        <option value="phone" {{#if (eq searchField 'phone')}}selected{{/if}}>Phone</option>
+                    </select>
+                </div>
                 <input type="text" name="q" class="form-control border-dark search-input-rounded ps-4 bg-white"
-                    placeholder="SEARCH CUSTOMERS..." aria-label="Search">
-                <button type="submit"
-                    class="position-absolute end-0 top-50 translate-middle-y me-3 z-1 cursor-pointer text-secondary btn btn-link p-0">
+                    placeholder="SEARCH CUSTOMERS..." aria-label="Search" value="{{searchQuery}}">
+                <button type="submit" class="position-absolute end-0 top-50 translate-middle-y me-3 z-1 cursor-pointer text-secondary btn btn-link p-0">
                     <i class="bi bi-search"></i>
                 </button>
             </div>
+            {{#if isSearchMode}}
+            <div class="mt-2">
+                <span class="badge bg-info me-2">
+                    <i class="bi bi-search me-1"></i>
+                    Search: "{{searchQuery}}" in 
+                    {{#if (eq searchField 'all')}}All Fields{{/if}}
+                    {{#if (eq searchField 'id')}}ID{{/if}}
+                    {{#if (eq searchField 'name')}}Name{{/if}}
+                    {{#if (eq searchField 'email')}}Email{{/if}}
+                    {{#if (eq searchField 'phone')}}Phone{{/if}}
+                </span>
+                <a href="/admin/customers" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-x me-1"></i>Clear Search
+                </a>
+            </div>
+            {{/if}}
         </form>
     </div>
 </div>
@@ -49,7 +121,17 @@
     <div class="card-body p-4">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="mb-0 brand-font fw-bold text-uppercase">Customer</h4>
+            <div>
+                <h4 class="mb-0 brand-font fw-bold text-uppercase">Customer</h4>
+                {{#if isSearchMode}}
+                <small class="text-muted">
+                    {{customers.length}} result(s) found for "{{searchQuery}}"
+                    {{#unless (eq searchField 'all')}}
+                        in {{#if (eq searchField 'name')}}Name{{/if}}{{#if (eq searchField 'email')}}Email{{/if}}{{#if (eq searchField 'id')}}ID{{/if}}{{#if (eq searchField 'phone')}}Phone{{/if}}
+                    {{/unless}}
+                </small>
+                {{/if}}
+            </div>
         </div>
 
         <div class="table-responsive table-container">
@@ -82,7 +164,7 @@
                 <ul class="pagination mb-0">
                     {{#each pageNumbers}}
                     <li class="page-item {{#if isCurrent}}active{{/if}}">
-                        <a class="page-link" href="?page={{value}}">{{value}}</a>
+                        <a class="page-link" href="{{#if href}}{{href}}{{else}}?page={{value}}{{/if}}">{{value}}</a>
                     </li>
                     {{/each}}
                 </ul>

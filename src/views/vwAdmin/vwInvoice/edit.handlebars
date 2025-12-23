@@ -1,0 +1,121 @@
+{{#section 'css'}}
+    <style>
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card {
+            border: 2px solid #dee2e6;
+        }
+        
+        .btn-primary {
+            background-color: #2d5bff;
+            border-color: #2d5bff;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1a3fd4;
+            border-color: #1a3fd4;
+        }
+    </style>
+{{/section}}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="d-flex align-items-center mb-4">
+                <a href="/admin/invoices" class="btn btn-outline-secondary rounded-circle me-3">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                <h2 class="fw-bold mb-0" style="font-family: 'Abhaya Libre', serif;">EDIT INVOICE #{{invoice.invoice_id}}</h2>
+            </div>
+
+            <div class="card rounded-4 shadow-sm">
+                <div class="card-body p-4">
+                    <form method="POST" action="/admin/invoices/edit/{{invoice.invoice_id}}">
+                        <!-- Invoice Information (Read-only) -->
+                        <div class="mb-4 p-3 bg-light rounded-3">
+                            <h5 class="fw-bold mb-3">Invoice Information</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="mb-2"><strong>Invoice ID:</strong> #{{invoice.invoice_id}}</p>
+                                    <p class="mb-2"><strong>Appointment ID:</strong> #{{invoice.appointment_id}}</p>
+                                    <p class="mb-0"><strong>Customer:</strong> {{invoice.customer_name}}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="mb-2"><strong>Veterinarian:</strong> {{invoice.veterinarian_name}}</p>
+                                    <p class="mb-2"><strong>Invoice Date:</strong> {{formatDate invoice.invoice_date}}</p>
+                                    {{#if invoice.payment_date}}
+                                    <p class="mb-0"><strong>Payment Date:</strong> {{formatDate invoice.payment_date}}</p>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Amount (Read-only) -->
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="bi bi-currency-dollar me-2"></i>Total Amount
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-2">$</span>
+                                <input type="text" class="form-control border-2 bg-light" value="{{invoice.total_price}}" disabled>
+                            </div>
+                            <small class="text-muted">This amount is calculated from the appointment services</small>
+                        </div>
+
+                        <!-- Discount -->
+                        <div class="mb-4">
+                            <label for="discount" class="form-label">
+                                <i class="bi bi-percent me-2"></i>Discount (%)
+                            </label>
+                            <div class="input-group">
+                                <input type="number" step="0.01" min="0" max="100" class="form-control border-2" id="discount" name="discount" value="{{invoice.discount}}" placeholder="0">
+                                <span class="input-group-text bg-light border-2">%</span>
+                            </div>
+                            <small class="text-muted">Enter discount percentage (0-100)</small>
+                        </div>
+
+                        <!-- Payment Status -->
+                        <div class="mb-4">
+                            <label for="payment_status" class="form-label">
+                                <i class="bi bi-cash-stack me-2"></i>Payment Status
+                            </label>
+                            <select class="form-select rounded-pill border-2" id="payment_status" name="payment_status" required>
+                                <option value="unpaid" {{#if (eq invoice.payment_status 'unpaid')}}selected{{/if}}>Unpaid</option>
+                                <option value="paid" {{#if (eq invoice.payment_status 'paid')}}selected{{/if}}>Paid</option>
+                                <option value="partial" {{#if (eq invoice.payment_status 'partial')}}selected{{/if}}>Partial Payment</option>
+                            </select>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="mb-4">
+                            <label for="payment_method" class="form-label">
+                                <i class="bi bi-credit-card me-2"></i>Payment Method
+                            </label>
+                            <select class="form-select rounded-pill border-2" id="payment_method" name="payment_method">
+                                <option value="">-- Select payment method --</option>
+                                <option value="cash" {{#if (eq invoice.payment_method 'cash')}}selected{{/if}}>Cash</option>
+                                <option value="credit_card" {{#if (eq invoice.payment_method 'credit_card')}}selected{{/if}}>Credit Card</option>
+                                <option value="debit_card" {{#if (eq invoice.payment_method 'debit_card')}}selected{{/if}}>Debit Card</option>
+                                <option value="bank_transfer" {{#if (eq invoice.payment_method 'bank_transfer')}}selected{{/if}}>Bank Transfer</option>
+                                <option value="e_wallet" {{#if (eq invoice.payment_method 'e_wallet')}}selected{{/if}}>E-Wallet</option>
+                            </select>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="/admin/invoices" class="btn btn-outline-secondary rounded-pill px-4">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                <i class="bi bi-check-circle me-2"></i>Update Invoice
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

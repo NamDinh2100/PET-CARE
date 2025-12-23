@@ -49,7 +49,10 @@
                                 <div class="fw-bold small text-uppercase">{{authUser.role}}</div>
                                 <div class="text-secondary" style="font-size: 0.8rem;">{{authUser.full_name}}</div>
                             </div>
-                            <i class="bi bi-person-circle fs-2 text-primary"></i>
+                            <div id="vetAvatar" class="shadow-sm"
+                                style="width: 40px; height: 40px; background-color: #007bff; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2rem; font-family: 'Abhaya Libre', serif; border: 2px solid #000000;">
+                                {{getInitial authUser.full_name}}
+                            </div>
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2 rounded-3">
