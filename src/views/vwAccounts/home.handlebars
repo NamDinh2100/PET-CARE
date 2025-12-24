@@ -145,6 +145,25 @@
         color: white;
     }
 
+    .expert-item {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+        transition: background 0.2s;
+    }
+    .expert-item:hover {
+        background-color: #f8f9fa;
+    }
+    .expert-avatar {
+        width: 40px;
+        height: 40px;
+        background: #eef7f9;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2d5bff;
+    }
+
     @media (max-width: 768px) {
         .service-card {
             margin-bottom: 30px;
@@ -273,105 +292,99 @@
         </p>
         
         <div class="row g-4">
-            <!-- Veterinary Consultation -->
             <div class="col-lg-4 col-md-6">
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-stethoscope"></i>
-                    </div>
+                    <div class="service-icon"><i class="fas fa-stethoscope"></i></div>
                     <h4 class="service-title">Veterinary Consultation</h4>
-                    <p class="service-description">
-                        Comprehensive health checkups and medical consultations by our experienced veterinarians to ensure your pet's optimal health.
-                    </p>
+                    <p class="service-description">Comprehensive health checkups and medical consultations by our experienced veterinarians to ensure your pet's optimal health.</p>
+                    <div class="mb-3">
+                        <button class="btn btn-sm btn-outline-info rounded-pill fw-bold" 
+                                onclick="showExperts('Veterinary Consultation', ['Dr. Harrison Wells', 'Dr. Caitlin Snow', 'Dr. Barry Allen'], 5)">
+                            <i class="fas fa-users me-1"></i> 5 Specialists
+                        </button>
+                    </div>
                     <div class="service-price">From $50</div>
-                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        <i class="bi bi-calendar-plus me-2"></i>Book Now
-                    </button>
+                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">Book Now</button>
                 </div>
             </div>
 
-            <!-- Pet Grooming -->
             <div class="col-lg-4 col-md-6">
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-cut"></i>
-                    </div>
+                    <div class="service-icon"><i class="fas fa-cut"></i></div>
                     <h4 class="service-title">Professional Grooming</h4>
-                    <p class="service-description">
-                        Complete grooming services including bathing, nail trimming, hair cutting, and styling to keep your pet looking and feeling great.
-                    </p>
+                    <p class="service-description">Complete grooming services including bathing, nail trimming, hair cutting, and styling to keep your pet looking and feeling great.</p>
+                    <div class="mb-3">
+                        <button class="btn btn-sm btn-outline-info rounded-pill fw-bold" 
+                                onclick="showExperts('Professional Grooming', ['Specialist Sarah Jenkins', 'Specialist Mike Ross'], 8)">
+                            <i class="fas fa-users me-1"></i> 8 Groomers
+                        </button>
+                    </div>
                     <div class="service-price">From $35</div>
-                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        <i class="bi bi-calendar-plus me-2"></i>Book Now
-                    </button>
+                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">Book Now</button>
                 </div>
             </div>
 
-            <!-- Vaccination -->
             <div class="col-lg-4 col-md-6">
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-syringe"></i>
-                    </div>
+                    <div class="service-icon"><i class="fas fa-syringe"></i></div>
                     <h4 class="service-title">Vaccination Program</h4>
-                    <p class="service-description">
-                        Complete vaccination schedules and preventive care to protect your pet from common diseases and maintain their immunity.
-                    </p>
+                    <p class="service-description">Complete vaccination schedules and preventive care to protect your pet from common diseases and maintain their immunity.</p>
+                    <div class="mb-3">
+                        <button class="btn btn-sm btn-outline-info rounded-pill fw-bold" 
+                                onclick="showExperts('Vaccination Program', ['Dr. Iris West', 'Dr. Joe West'], 3)">
+                            <i class="fas fa-users me-1"></i> 3 Specialists
+                        </button>
+                    </div>
                     <div class="service-price">From $25</div>
-                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        <i class="bi bi-calendar-plus me-2"></i>Book Now
-                    </button>
+                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">Book Now</button>
                 </div>
             </div>
 
-            <!-- Emergency Care -->
             <div class="col-lg-4 col-md-6">
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-ambulance"></i>
-                    </div>
+                    <div class="service-icon"><i class="fas fa-ambulance"></i></div>
                     <h4 class="service-title">Emergency Care</h4>
-                    <p class="service-description">
-                        24/7 emergency veterinary services for urgent medical situations. Our team is always ready to help in critical moments.
-                    </p>
+                    <p class="service-description">24/7 emergency veterinary services for urgent medical situations. Our team is always ready to help in critical moments.</p>
+                    <div class="mb-3">
+                        <button class="btn btn-sm btn-outline-info rounded-pill fw-bold" 
+                                onclick="showExperts('Emergency Care', ['Dr. Gregory House', 'Dr. James Wilson', 'Dr. Lisa Cuddy'], 10)">
+                            <i class="fas fa-users me-1"></i> 10 ER Staff
+                        </button>
+                    </div>
                     <div class="service-price">From $100</div>
-                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        <i class="bi bi-calendar-plus me-2"></i>Book Now
-                    </button>
+                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">Book Now</button>
                 </div>
             </div>
 
-            <!-- Surgery -->
             <div class="col-lg-4 col-md-6">
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-user-md"></i>
-                    </div>
+                    <div class="service-icon"><i class="fas fa-user-md"></i></div>
                     <h4 class="service-title">Surgical Procedures</h4>
-                    <p class="service-description">
-                        Advanced surgical procedures performed by skilled veterinary surgeons with modern equipment and sterile environments.
-                    </p>
+                    <p class="service-description">Advanced surgical procedures performed by skilled veterinary surgeons with modern equipment and sterile environments.</p>
+                    <div class="mb-3">
+                        <button class="btn btn-sm btn-outline-info rounded-pill fw-bold" 
+                                onclick="showExperts('Surgical Procedures', ['Dr. Derek Shepherd', 'Dr. Meredith Grey'], 4)">
+                            <i class="fas fa-users me-1"></i> 4 Surgeons
+                        </button>
+                    </div>
                     <div class="service-price">From $200</div>
-                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        <i class="bi bi-calendar-plus me-2"></i>Book Now
-                    </button>
+                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">Book Now</button>
                 </div>
             </div>
 
-            <!-- Dental Care -->
             <div class="col-lg-4 col-md-6">
                 <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-tooth"></i>
-                    </div>
+                    <div class="service-icon"><i class="fas fa-tooth"></i></div>
                     <h4 class="service-title">Dental Care</h4>
-                    <p class="service-description">
-                        Complete dental health services including cleaning, tooth extraction, and oral health maintenance for optimal pet wellness.
-                    </p>
+                    <p class="service-description">Complete dental health services including cleaning, tooth extraction, and oral health maintenance for optimal pet wellness.</p>
+                    <div class="mb-3">
+                        <button class="btn btn-sm btn-outline-info rounded-pill fw-bold" 
+                                onclick="showExperts('Dental Care', ['Dr. April Kepner', 'Dr. Jackson Avery'], 2)">
+                            <i class="fas fa-users me-1"></i> 2 Specialists
+                        </button>
+                    </div>
                     <div class="service-price">From $75</div>
-                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        <i class="bi bi-calendar-plus me-2"></i>Book Now
-                    </button>
+                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">Book Now</button>
                 </div>
             </div>
         </div>
@@ -458,9 +471,60 @@
     </div>
 </div>
 
+<div class="modal fade" id="expertsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-custom" style="max-width: 450px; margin: auto;">
+            <div class="modal-header modal-header-custom text-center">
+                <h5 class="modal-title-custom w-100">Team of Specialists</h5>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <h6 id="serviceNameDisplay" class="text-center mb-4" style="color: #2d5bff; font-weight: 800; letter-spacing: 1px;"></h6>
+                <div id="expertsList">
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    function showExperts(serviceName, experts, totalCount) {
+        // 1. Cập nhật tiêu đề
+        document.getElementById('serviceNameDisplay').innerText = serviceName;
+        
+        // 2. Xóa danh sách cũ và tạo mới
+        const listContainer = document.getElementById('expertsList');
+        listContainer.innerHTML = '';
+        
+        // 3. Hiển thị danh sách bác sĩ tiêu biểu
+        experts.forEach(name => {
+            const div = document.createElement('div');
+            div.className = 'expert-item d-flex align-items-center';
+            div.innerHTML = `
+                <div class="expert-avatar me-3"><i class="fas fa-user-md"></i></div>
+                <div>
+                    <div class="fw-bold text-dark">${name}</div>
+                    <small class="text-muted">Available Specialist</small>
+                </div>
+            `;
+            listContainer.appendChild(div);
+        });
+
+        // 4. Hiển thị tổng số nếu có
+        if(totalCount > experts.length) {
+            const more = document.createElement('p');
+            more.className = 'text-center text-muted small mt-3';
+            more.innerText = `... and ${totalCount - experts.length} other experts`;
+            listContainer.appendChild(more);
+        }
+        
+        // 5. Mở Modal
+        const myModal = new bootstrap.Modal(document.getElementById('expertsModal'));
+        myModal.show();
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         // 1. Lấy tất cả các section cần theo dõi
         const sections = document.querySelectorAll("section, footer");
