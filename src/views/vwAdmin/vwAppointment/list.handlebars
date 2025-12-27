@@ -29,7 +29,8 @@
             padding: 0;
             border: 2px solid #2d5bff;
             color: #2d5bff;
-            font-weight: bold;
+            margin: 0 3px;
+            font-weight: 600;
         }
         .pagination .page-item.active .page-link {
             background-color: #2d5bff;
@@ -106,6 +107,12 @@
         .search-input-rounded {
             border-radius: 0 25px 25px 0;
         }
+
+        /* Action Buttons */
+        .btn-action-fixed {
+            min-width: 90px;
+            text-align: center;
+        }
     </style>
 {{/section}}
 
@@ -115,7 +122,7 @@
         <form action="/admin/appointments" method="GET" class="search-form">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <select name="field" class="form-select border-dark" style="max-width: 150px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                    <select name="field" class="form-select border-dark" style="min-width: 180px; max-width: 180px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
                         <option value="all" {{#if (eq searchField 'all')}}selected{{/if}}>All Fields</option>
                         <option value="id" {{#if (eq searchField 'id')}}selected{{/if}}>ID</option>
                         <option value="customer" {{#if (eq searchField 'customer')}}selected{{/if}}>Customer</option>
@@ -231,19 +238,13 @@
                             </span>
                         </td>
                         <td class="text-end pe-3">
-                            {{#if (or (eq status "confirmed") (eq status "cancelled"))}}
-                                <a class="btn btn-sm btn-outline-success" href="/admin/appointments/view?id={{appointment_id}}">
+                            {{#if (or (eq status "completed") (eq status "cancelled"))}}
+                                <a class="btn btn-outline-success btn-action-fixed" href="/admin/appointments/view?id={{appointment_id}}">
                                     <i class="bi bi-eye"></i> View
                                 </a> 
-                            {{else if (eq status "completed")}}
-                                <a class="btn btn-sm btn-outline-success me-2" href="/admin/appointments/view?id={{appointment_id}}">
-                                    <i class="bi bi-eye"></i> Invoice
-                                </a>
-                                <a class="btn btn-sm btn-outline-success me-2" href="/admin/appointments/view?id={{appointment_id}}">
-                                    <i class="bi bi-eye"></i> View
-                                </a>
+                            
                             {{else}}
-                                 <a class="btn btn-sm btn-outline-primary" href="/admin/appointments/edit?id={{appointment_id}}">
+                                 <a class="btn btn-outline-primary btn-action-fixed" href="/admin/appointments/edit?id={{appointment_id}}">
                                     <i class="bi bi-pencil-square"></i> Edit
                                 </a>
                             {{/if}}  
@@ -277,6 +278,64 @@
             if (addModalElement) {
                 var myModal = new bootstrap.Modal(addModalElement);
                 myModal.show();
+            }
+            
+            // Handle search form submission validation
+            const searchForm = document.querySelector('.search-form');
+            if (searchForm) {
+                searchForm.addEventListener('submit', function(e) {
+                    const searchField = document.querySelector('select[name="field"]').value;
+                    const searchQuery = document.querySelector('input[name="q"]').value.trim();
+                    
+                    // Check if trying to search with "All Fields"
+                    if (searchField === 'all' && searchQuery !== '') {
+                        e.preventDefault();
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Invalid Search',
+                            text: 'Please select a specific field to search. Search with "All Fields" is not allowed.',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            }
+                        });
+                        return false;
+                    }
+                    
+                    // Check if search query is empty
+                    if (searchQuery === '') {
+                        e.preventDefault();
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Empty Search',
+                            text: 'Please enter a search term.',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                confirmButton: 'btn btn-primary'
+                            }
+                        });
+                        return false;
+                    }
+                });
+            }
+            
+            // Show success notifications
+            const urlParams = new URLSearchParams(window.location.search);
+            const success = urlParams.get('success');
+            
+            if (success === 'edit') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Appointment updated successfully.',
+                    timer: 3000,
+                    showConfirmButton: false,
+                    customClass: {
+                        popup: 'swal2-popup'
+                    }
+                });
+                // Clean URL
+                window.history.replaceState({}, '', '/admin/appointments');
             }
         });
     </script>

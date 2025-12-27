@@ -22,6 +22,11 @@ router.get('/', async function (req, res) {
         // Search mode
         isSearchMode = true;
         
+        // Block search with 'all' fields
+        if (searchField === 'all') {
+            return res.redirect('back');
+        }
+        
         // Validate ID search - must be a number
         if (searchField === 'id' && isNaN(searchQuery)) {
             // If searching by ID but query is not a number, return no results
@@ -66,6 +71,7 @@ router.get('/', async function (req, res) {
         searchQuery: searchQuery,
         searchField: searchField,
         isSearchMode: isSearchMode,
+        success: req.query.success,
         layout: 'admin-layout'
     });
 });
@@ -92,7 +98,7 @@ router.post('/edit', async function (req, res) {
     };
 
     await appointmentService.updateAppointment(id, updatedAppointment);
-    res.redirect('/admin/appointments');
+    res.redirect('/admin/appointments?success=edit');
 });
 
 router.get('/view', async function (req, res) {

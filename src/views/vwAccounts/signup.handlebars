@@ -2,7 +2,6 @@
 <style>
     .login-container {
         min-height: 85vh;
-        /* Giữ background cũ của bạn */
         background-image: url('/static/images/bg.png');
         background-size: cover;
         background-position: center center;
@@ -11,24 +10,22 @@
         justify-content: center;
     }
 
-    /* Nâng cấp hiệu ứng kính (Glassmorphism) */
     .glass-card {
-        background: rgba(255, 255, 255, 0.85); /* Tăng độ đục nhẹ để dễ đọc chữ hơn */
-        backdrop-filter: blur(16px); /* Blur mạnh hơn để nền mượt */
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(255, 255, 255, 0.9);
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); /* Bóng đổ mềm hơn */
-        border-radius: 30px; /* Bo góc tròn hơn */
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        border-radius: 30px;
     }
 
-    /* Custom Input Group để tạo hình viên thuốc (Pill shape) liền mạch */
     .custom-input-group {
         background: rgba(255, 255, 255, 0.9);
         border: 2px solid transparent;
         border-radius: 50px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
         transition: all 0.3s ease;
-        overflow: hidden; /* Đảm bảo con không bị lòi ra khỏi bo góc */
+        overflow: hidden;
     }
 
     .custom-input-group:focus-within {
@@ -37,27 +34,25 @@
         background: #fff;
     }
 
-  .form-control-custom {
-    border: none;
-    background: transparent;
-    padding: 10px 10px; /* Giảm từ 14px xuống 10px */
-    font-size: 0.95rem; /* Giảm nhẹ size chữ nếu cần */
-    font-weight: 500;
-    color: #333;
-}
+    .form-control-custom {
+        border: none;
+        background: transparent;
+        padding: 10px 10px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #333;
+    }
 
-/* Điều chỉnh lại vị trí icon cho khớp với độ cao mới */
-.input-icon {
-    background: transparent;
-    border: none;
-    color: #2d5bff;
-    padding-left: 15px;
-    font-size: 1rem; /* Giảm size icon trong input */
-    display: flex;
-    align-items: center;
-}
+    .input-icon {
+        background: transparent;
+        border: none;
+        color: #2d5bff;
+        padding-left: 15px;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+    }
 
-    
     .form-control-custom:focus {
         box-shadow: none;
         background: transparent;
@@ -68,7 +63,6 @@
         font-weight: 400;
     }
 
-    /* Button Gradient */
     .btn-gradient {
         background: linear-gradient(135deg, #2d5bff 0%, #1a45d6 100%);
         border: none;
@@ -86,50 +80,63 @@
         letter-spacing: 1px;
         color: #333;
     }
+
+    .auth-logo {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #2d5bff 0%, #1a45d6 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 32px;
+        box-shadow: 0 8px 20px rgba(45, 91, 255, 0.3);
+        margin: 0 auto 20px;
+    }
 </style>
 {{/section}}
 
 <div class="login-container px-3">
     <div class="card glass-card p-3 p-md-4" style="max-width: 450px; width: 100%;">
         
-        <div class="text-center mb-3">
-            <div class="mb-2 d-inline-block p-2 rounded-circle bg-white shadow-sm">
-                <i class="bi bi-paw-fill text-primary fs-2"></i> </div>
-            <h4 class="fw-bold title-text text-uppercase mb-1">Create Account</h4>
+        <div class="text-center mb-4">
+          
+            <h4 class="fw-bold title-text text-uppercase mb-1" style="font-family: 'Abhaya Libre', serif; font-size: 1.8rem; letter-spacing: 2px;">Create Account</h4>
             <p class="text-secondary small mb-0">Join our community today</p>
         </div>
 
         <form id="frmSignup" method="POST">
-            <div class="mb-2 custom-input-group d-flex align-items-center">
+            <div class="mb-3 custom-input-group d-flex align-items-center">
                 <span class="input-icon"><i class="bi bi-envelope"></i></span>
-                <input type="email" class="form-control form-control-custom w-100" id="email" name="email" placeholder="Email Address" >
-            </div>
-
-            <div class="mb-2 custom-input-group d-flex align-items-center">
-                <span class="input-icon"><i class="bi bi-person"></i></span>
-                <input type="text" class="form-control form-control-custom w-100" id="full_name" name="full_name" placeholder="Full Name" >
-            </div>
-
-            <div class="mb-2 custom-input-group d-flex align-items-center">
-                <span class="input-icon"><i class="bi bi-telephone"></i></span>
-                <input type="tel" class="form-control form-control-custom w-100" id="phone" name="phone" placeholder="Phone Number" >
-            </div>
-
-            <div class="mb-2 custom-input-group d-flex align-items-center">
-                <span class="input-icon"><i class="bi bi-lock"></i></span>
-                <input type="password" class="form-control form-control-custom w-100" id="password" name="password" placeholder="Password" >
+                <input type="email" class="form-control form-control-custom w-100" id="email" name="email" placeholder="Email Address" required>
             </div>
 
             <div class="mb-3 custom-input-group d-flex align-items-center">
+                <span class="input-icon"><i class="bi bi-person"></i></span>
+                <input type="text" class="form-control form-control-custom w-100" id="full_name" name="full_name" placeholder="Full Name" required>
+            </div>
+
+            <div class="mb-3 custom-input-group d-flex align-items-center">
+                <span class="input-icon"><i class="bi bi-telephone"></i></span>
+                <input type="tel" class="form-control form-control-custom w-100" id="phone" name="phone" placeholder="Phone Number" required>
+            </div>
+
+            <div class="mb-3 custom-input-group d-flex align-items-center">
+                <span class="input-icon"><i class="bi bi-lock"></i></span>
+                <input type="password" class="form-control form-control-custom w-100" id="password" name="password" placeholder="Password" required>
+            </div>
+
+            <div class="mb-4 custom-input-group d-flex align-items-center">
                 <span class="input-icon"><i class="bi bi-shield-check"></i></span>
-                <input type="password" class="form-control form-control-custom w-100" id="confirmpassword" name="confirmPassword" placeholder="Confirm Password" >
+                <input type="password" class="form-control form-control-custom w-100" id="confirmpassword" name="confirmPassword" placeholder="Confirm Password" required>
             </div>
             
-            <button type="submit" class="btn btn-gradient rounded-pill w-100 py-2 fw-bold shadow-sm mb-3 fs-6 text-uppercase">
+            <button type="submit" class="btn btn-gradient rounded-pill w-100 py-3 fw-bold shadow-sm mb-3 fs-6 text-uppercase">
                 Sign Up
             </button>
 
-            <div class="text-center">
+            <div class="text-center border-top pt-3 border-secondary-subtle">
                 <span class="text-secondary small">Already have an account?</span>
                 <a href="/signin" class="text-primary text-decoration-none fw-bold small ms-1">Sign In</a>
             </div>

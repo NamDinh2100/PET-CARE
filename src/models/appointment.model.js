@@ -4,7 +4,8 @@ export function getAppointmentByID(appointment_id) {
     return db('appointments as ap')
         .join('users as cus', 'ap.customer_id', 'cus.user_id')
         .leftJoin('users as vet', 'ap.veterinarian_id', 'vet.user_id')
-        .select('ap.*', 'cus.full_name as customer_name', 'vet.full_name as veterinarian_name')
+        .join('pets as p', 'ap.pet_id', 'p.pet_id')
+        .select('ap.*', 'cus.full_name as customer_name', 'vet.full_name as veterinarian_name', 'p.name as pet_name')
         .where('appointment_id', appointment_id).first();
 }
 
@@ -154,12 +155,11 @@ export function addServiceForAppointment(appointmentService) {
 export function getServicesForAppointment(appointment_id) {
     return db('appointment_services as aps')
         .join('services as s', 'aps.service_id', 's.service_id')
-        //.join('pets as p', 'aps.pet_id', 'p.pet_id')
         .where('aps.appointment_id', appointment_id)
         .select(
             's.service_id',
             's.service_name',
-            's.base_price as price'
+            's.base_price'
         );
 }   
 
@@ -275,14 +275,25 @@ export function getUpcomingAppointments(customer_id) {
     return db('appointments as ap')
         .leftJoin('users as vet', 'ap.veterinarian_id', 'vet.user_id')
         .leftJoin('pets as p', 'ap.pet_id', 'p.pet_id')
+        .leftJoin('appointment_services as aps', 'ap.appointment_id', 'aps.appointment_id')
+        .leftJoin('services as s', 'aps.service_id', 's.service_id')
         .where('ap.customer_id', customer_id)
         .where('ap.status', 'scheduled')
         .where('ap.date_start', '>=', db.fn.now())
         .select(
-            'ap.*',
+            'ap.appointment_id',
+            'ap.customer_id',
+            'ap.pet_id',
+            'ap.veterinarian_id',
+            'ap.status',
+            'ap.time',
+            'ap.note',
+            db.raw("TO_CHAR(ap.date_start, 'DD/MM/YYYY') as date_start"),
             'vet.full_name as veterinarian_name',
-            'p.name as pet_name'
+            'p.name as pet_name',
+            db.raw('STRING_AGG(s.service_name, \', \') as services')
         )
+        .groupBy('ap.appointment_id', 'vet.full_name', 'p.name')
         .orderBy('ap.date_start', 'asc');
 }
 
@@ -291,13 +302,173 @@ export function getPastAppointments(customer_id) {
     return db('appointments as ap')
         .leftJoin('users as vet', 'ap.veterinarian_id', 'vet.user_id')
         .leftJoin('pets as p', 'ap.pet_id', 'p.pet_id')
+        .leftJoin('appointment_services as aps', 'ap.appointment_id', 'aps.appointment_id')
+        .leftJoin('services as s', 'aps.service_id', 's.service_id')
         .where('ap.customer_id', customer_id)
         .whereIn('ap.status', ['completed', 'cancelled'])
         .select(
-            'ap.*',
+            'ap.appointment_id',
+            'ap.customer_id',
+            'ap.pet_id',
+            'ap.veterinarian_id',
+            'ap.status',
+            'ap.time',
+            'ap.note',
+            db.raw("TO_CHAR(ap.date_start, 'DD/MM/YYYY') as date_start"),
             'vet.full_name as veterinarian_name',
-            'p.name as pet_name'
+            'p.name as pet_name',
+            db.raw('STRING_AGG(s.service_name, \', \') as services')
         )
+        .groupBy('ap.appointment_id', 'vet.full_name', 'p.name')
         .orderBy('ap.date_start', 'desc');
+}
+
+// VET SCHEDULE WITH PAGINATION AND FILTERS
+export async function getScheduleWithPagination(veterinarian_id, limit, offset) {
+    const rows = await db('appointments as a')
+        .join('users as cus', 'a.customer_id', 'cus.user_id')
+        .leftJoin('appointment_services as as', 'a.appointment_id', 'as.appointment_id')
+        .leftJoin('services as s', 'as.service_id', 's.service_id')
+        .where('a.veterinarian_id', veterinarian_id)
+        .select(
+            'a.*', 
+            'cus.user_id as customer_id',
+            'cus.full_name as customer_name',
+            's.service_id',
+            's.service_name',
+            's.base_price'
+        )
+        .limit(limit)
+        .offset(offset);
+    
+    return groupAppointmentServices(rows);
+}
+
+export function countVetSchedule(veterinarian_id) {
+    return db('appointments')
+        .where('veterinarian_id', veterinarian_id)
+        .count('* as count')
+        .first();
+}
+
+export async function getScheduleByStatus(veterinarian_id, status, limit, offset) {
+    const rows = await db('appointments as a')
+        .join('users as cus', 'a.customer_id', 'cus.user_id')
+        .leftJoin('appointment_services as as', 'a.appointment_id', 'as.appointment_id')
+        .leftJoin('services as s', 'as.service_id', 's.service_id')
+        .where('a.veterinarian_id', veterinarian_id)
+        .where('a.status', status)
+        .select(
+            'a.*', 
+            'cus.user_id as customer_id',
+            'cus.full_name as customer_name',
+            's.service_id',
+            's.service_name',
+            's.base_price'
+        )
+        .limit(limit)
+        .offset(offset);
+    
+    return groupAppointmentServices(rows);
+}
+
+export function countVetScheduleByStatus(veterinarian_id, status) {
+    return db('appointments')
+        .where('veterinarian_id', veterinarian_id)
+        .where('status', status)
+        .count('* as count')
+        .first();
+}
+
+export async function searchVetSchedule(veterinarian_id, field, query, limit, offset) {
+    let queryBuilder = db('appointments as a')
+        .join('users as cus', 'a.customer_id', 'cus.user_id')
+        .leftJoin('appointment_services as as', 'a.appointment_id', 'as.appointment_id')
+        .leftJoin('services as s', 'as.service_id', 's.service_id')
+        .where('a.veterinarian_id', veterinarian_id);
+
+    if (field === 'id') {
+        queryBuilder = queryBuilder.where('a.appointment_id', query);
+    } else if (field === 'customer') {
+        queryBuilder = queryBuilder.where('cus.full_name', 'ilike', `%${query}%`);
+    } else if (field === 'status') {
+        queryBuilder = queryBuilder.where('a.status', 'ilike', `%${query}%`);
+    } else {
+        // Search all fields
+        queryBuilder = queryBuilder.where(function() {
+            this.where('a.appointment_id', 'ilike', `%${query}%`)
+                .orWhere('cus.full_name', 'ilike', `%${query}%`)
+                .orWhere('a.status', 'ilike', `%${query}%`);
+        });
+    }
+
+    const rows = await queryBuilder
+        .select(
+            'a.*', 
+            'cus.user_id as customer_id',
+            'cus.full_name as customer_name',
+            's.service_id',
+            's.service_name',
+            's.base_price'
+        )
+        .limit(limit)
+        .offset(offset);
+
+    return groupAppointmentServices(rows);
+}
+
+export function countSearchVetSchedule(veterinarian_id, field, query) {
+    let queryBuilder = db('appointments as a')
+        .join('users as cus', 'a.customer_id', 'cus.user_id')
+        .where('a.veterinarian_id', veterinarian_id);
+
+    if (field === 'id') {
+        queryBuilder = queryBuilder.where('a.appointment_id', query);
+    } else if (field === 'customer') {
+        queryBuilder = queryBuilder.where('cus.full_name', 'ilike', `%${query}%`);
+    } else if (field === 'status') {
+        queryBuilder = queryBuilder.where('a.status', 'ilike', `%${query}%`);
+    } else {
+        queryBuilder = queryBuilder.where(function() {
+            this.where('a.appointment_id', 'ilike', `%${query}%`)
+                .orWhere('cus.full_name', 'ilike', `%${query}%`)
+                .orWhere('a.status', 'ilike', `%${query}%`);
+        });
+    }
+
+    return queryBuilder.count('* as count').first();
+}
+
+// Helper function to group appointments with their services
+function groupAppointmentServices(rows) {
+    const appointmentMap = new Map();
+    
+    rows.forEach(row => {
+        if (!appointmentMap.has(row.appointment_id)) {
+            appointmentMap.set(row.appointment_id, {
+                appointment_id: row.appointment_id,
+                customer_id: row.customer_id,
+                pet_id: row.pet_id,
+                customer_name: row.customer_name,
+                veterinarian_id: row.veterinarian_id,
+                date_start: row.date_start,
+                date_end: row.date_end,
+                time: row.time,
+                status: row.status,
+                note: row.note,
+                services: []
+            });
+        }
+        
+        if (row.service_id) {
+            appointmentMap.get(row.appointment_id).services.push({
+                service_id: row.service_id,
+                service_name: row.service_name,
+                price: row.base_price
+            });
+        }
+    });
+    
+    return Array.from(appointmentMap.values());
 }
 

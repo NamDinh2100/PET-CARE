@@ -10,14 +10,15 @@
     }
 
     .modal-content {
-        border: 2px solid #a58f8f; /* Viền modal nâu nhạt */
+        border: 2px solid #4c00ff; /* Viền modal nâu nhạt */
         border-radius: 15px;
         overflow: hidden;
     }
 
     .modal-header {
-        background-color: #d9d9d9; /* Màu nền xám */
+        background-color: #3900e3; /* Màu nền xám */
         border-bottom: 2px solid #a58f8f;
+        border-radius: 0px 0px 0 0;
         padding-top: 15px;
         padding-bottom: 15px;
     }
@@ -39,7 +40,7 @@
         <div class="modal-content shadow-lg">
 
             <div class="modal-header justify-content-center position-relative">
-                <h4 class="modal-title brand-font fw-bold text-uppercase" style="letter-spacing: 1px;">
+                <h4 class="modal-title brand-font fw-bold text-uppercase text-white" style="letter-spacing: 1px;">
                     SERVICE - EDIT
                 </h4>
                 <a href="/admin/services"           
@@ -94,21 +95,53 @@
 <script>
     document.querySelector('form').addEventListener('submit', function(e) {
         e.preventDefault();
+        const form = e.target;
+        const serviceName = form.querySelector('[name="service_name"]').value.trim();
+        const basePrice = form.querySelector('[name="base_price"]').value.trim();
+        
+        // Validation checks
+        if (!serviceName) {
+            Swal.fire({
+                title: 'Validation Error!',
+                text: 'Service name is required.',
+                icon: 'error',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        if (!basePrice || isNaN(basePrice) || parseFloat(basePrice) < 0) {
+            Swal.fire({
+                title: 'Validation Error!',
+                text: 'Please enter a valid price (must be a positive number).',
+                icon: 'error',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        // Confirmation before submit
         Swal.fire({
-            title: 'Success!',
-            text: 'Service updated successfully.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        }).then(() => {
-            e.target.submit();
+            title: 'Confirm Update',
+            text: 'Are you sure you want to update this service?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, Update!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Service updated successfully.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    form.submit();
+                });
+            }
         });
     });
 </script>
-{{/section}}
-
-{{#section 'js'}}
-    <script>
-        // You can add JavaScript code here if needed
-        // Write for me check form validation
-    </script>
 {{/section}}

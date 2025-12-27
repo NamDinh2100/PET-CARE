@@ -1,13 +1,12 @@
 {{#section 'css'}}
 <style>
-    /* --- 1. CSS CHO NAVBAR CHUẨN KHI SCROLL --- */
-    /* Để khi click menu, nội dung không bị che bởi navbar sticky */
+    /* --- 1. CSS CHO NAVBAR & SCROLL --- */
     html {
         scroll-behavior: smooth;
         scroll-padding-top: 85px;
     }
 
-    /* --- 2. HERO & SECTIONS STYLE --- */
+    /* --- 2. HERO SECTION --- */
     .hero-section {
         background-color: #eef7f9;
         padding: 80px 0;
@@ -27,210 +26,366 @@
         box-shadow: 20px 20px 0px rgba(45, 91, 255, 0.1);
     }
 
-    .section-padding {
+    /* --- 3. ABOUT US SECTION --- */
+    .about-section {
+        background: white;
         padding: 80px 0;
+    }
+
+    .about-container {
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .about-title {
+        font-family: 'Abhaya Libre', serif;
+        font-weight: 800;
+        font-size: 2.5rem;
+        color: #212529;
+        margin-bottom: 30px;
+        position: relative;
+        display: inline-block;
+    }
+
+    .about-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: #2d5bff;
+        border-radius: 2px;
+    }
+
+    .about-text {
+        color: #6c757d;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        margin-bottom: 30px;
+    }
+
+    .about-features {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+        margin-top: 40px;
+    }
+
+    .about-feature {
+        text-align: center;
+    }
+
+    .about-feature-icon {
+        width: 70px;
+        height: 70px;
+        background: #2d5bff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        color: white;
+        font-size: 1.8rem;
+    }
+
+    .about-feature-title {
+        font-weight: 700;
+        color: #212529;
+        font-size: 1.1rem;
+    }
+
+    .about-feature-text {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+
+    /* --- 4. CAROUSEL SECTIONS --- */
+    .carousel-section {
+        padding: 60px 0;
+        overflow: hidden;
+    }
+
+    .carousel-section.services-bg {
+        background: #f8f9fa;
+    }
+
+    .carousel-section.team-bg {
+        background: #f8f9fa;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 40px;
     }
 
     .section-title {
         font-family: 'Abhaya Libre', serif;
         font-weight: 800;
-        font-size: 2.5rem;
-        text-align: center;
-        margin-bottom: 3rem;
-        color: #2d5bff;
+        font-size: 2.2rem;
+        color: #212529;
+        margin-bottom: 10px;
     }
 
-    /* --- 3. SERVICES SECTION STYLES --- */
-    .services-section {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    .section-title.text-white {
+        color: white;
     }
 
-    .service-card {
-        background: white;
-        border-radius: 20px;
-        padding: 30px;
-        text-align: center;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        border: none;
-        height: 100%;
+    .section-subtitle {
+        color: #6c757d;
+        font-size: 1rem;
+    }
+
+    .section-subtitle.text-light {
+        color: #adb5bd;
+    }
+
+    /* Carousel Wrapper */
+    .carousel-wrapper {
         overflow: hidden;
         position: relative;
+        padding: 10px 0;
     }
 
-    .service-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #2d5bff, #17a2b8, #28a745);
-        transform: scaleX(0);
-        transition: transform 0.3s ease;
+    .carousel-track {
+        display: flex;
+        gap: 25px;
+        animation: scrollCarousel 25s linear infinite;
+        width: max-content;
     }
 
-    .service-card:hover::before {
-        transform: scaleX(1);
+    .carousel-track:hover {
+        animation-play-state: paused;
+    }
+
+    @keyframes scrollCarousel {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    /* Service Card */
+    .service-card {
+        flex: 0 0 300px;
+        background: white;
+        border-radius: 16px;
+        padding: 25px;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }
 
     .service-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(45, 91, 255, 0.2);
+        transform: translateY(-8px);
+        border-color: #2d5bff;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
     }
 
     .service-icon {
-        width: 80px;
-        height: 80px;
-        margin: 0 auto 20px;
-        background: linear-gradient(135deg, #2d5bff 0%, #17a2b8 100%);
-        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        background: #2d5bff;
+        border-radius: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 2.5rem;
+        margin-bottom: 18px;
         color: white;
-        box-shadow: 0 8px 25px rgba(45, 91, 255, 0.3);
-        transition: all 0.3s ease;
+        font-size: 1.6rem;
     }
 
-    .service-card:hover .service-icon {
-        transform: scale(1.1);
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        box-shadow: 0 12px 35px rgba(40, 167, 69, 0.4);
-    }
-
-    .service-title {
+    .service-name {
         font-family: 'Abhaya Libre', serif;
-        font-size: 1.3rem;
         font-weight: 700;
-        color: #2c3e50;
-        margin-bottom: 15px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        font-size: 1.2rem;
+        color: #212529;
+        margin-bottom: 10px;
     }
 
     .service-description {
         color: #6c757d;
-        font-size: 0.95rem;
-        line-height: 1.6;
-        margin-bottom: 25px;
+        font-size: 0.85rem;
+        line-height: 1.5;
+        margin-bottom: 15px;
     }
 
     .service-price {
-        font-family: 'Abhaya Libre', serif;
-        font-size: 1.4rem;
+        display: inline-block;
+        background: #e8f4fd;
+        color: #2d5bff;
+        font-weight: 700;
+        font-size: 1rem;
+        padding: 6px 16px;
+        border-radius: 20px;
+    }
+
+    /* Employee Card */
+    .employee-card {
+        flex: 0 0 280px;
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .employee-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .employee-header {
+        background: #2d5bff;
+        padding: 25px;
+        text-align: center;
+    }
+
+    .employee-avatar {
+        width: 80px;
+        height: 80px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        font-size: 2rem;
         font-weight: 800;
         color: #2d5bff;
-        margin-bottom: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
     }
 
-    .service-btn {
-        background: linear-gradient(135deg, #2d5bff 0%, #17a2b8 100%);
-        border: none;
-        border-radius: 25px;
-        padding: 10px 25px;
+    .employee-body {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .employee-name {
+        font-family: 'Abhaya Libre', serif;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #212529;
+        margin-bottom: 8px;
+    }
+
+    .employee-role {
+        display: inline-block;
+        background: #2d5bff;
         color: white;
-        font-weight: 600;
+        font-size: 0.7rem;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 1px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(45, 91, 255, 0.3);
+        padding: 5px 14px;
+        border-radius: 15px;
+        margin-bottom: 12px;
     }
 
-    .service-btn:hover {
-        background: linear-gradient(135deg, #17a2b8 0%, #2d5bff 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(45, 91, 255, 0.4);
-        color: white;
+    .employee-email {
+        color: #6c757d;
+        font-size: 0.85rem;
     }
 
-    @media (max-width: 768px) {
-        .service-card {
-            margin-bottom: 30px;
-        }
-        
-        .service-icon {
-            width: 60px;
-            height: 60px;
-            font-size: 2rem;
-        }
-        
-        .service-title {
-            font-size: 1.1rem;
-        }
+    .employee-email i {
+        color: #2d5bff;
+        margin-right: 6px;
     }
 
-    /* --- 4. BOOKING MODAL STYLES --- */
+    /* Employee Grid Layout */
+    .employee-grid {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        flex-wrap: wrap;
+        padding: 10px 20px;
+    }
+
+    .employee-grid .employee-card {
+        flex: 0 0 280px;
+        max-width: 280px;
+    }
+
+    /* --- 5. MODAL STYLES --- */
     .modal-content-custom {
-        border: 4px solid #b1a4a4;
-        border-radius: 25px;
+        border-radius: 20px;
+        border: 3px solid #2d5bff;
         overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header-custom-list {
+        background: #2d5bff;
+        color: white;
+        border-bottom: none;
+        text-align: center;
+        padding: 20px 30px;
+    }
+
+    .modal-header-custom-list .modal-title {
+        width: 100%;
+        text-align: center;
     }
 
     .modal-header-custom {
-        background-color: #d9d9d9;
-        border-bottom: 3px solid #b1a4a4;
-        padding: 15px;
-        position: relative;
-        justify-content: center;
+        background: #2d5bff;
+        border-bottom: 3px solid #2d5bff;
+        padding: 20px 30px;
+        border-radius: 0px 0px 0 0;
+        text-align: center;
+    }
+
+    .modal-header-custom .modal-title-custom {
+        width: 100%;
+        text-align: center;
     }
 
     .modal-title-custom {
         font-family: 'Abhaya Libre', serif;
-        font-weight: 900;
-        font-size: 1.5rem;
+        font-weight: 800;
         text-transform: uppercase;
-        color: #222;
+        color: white;
     }
 
     .btn-close-custom {
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23a33'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
-        border: 3px solid #a33;
+        background: #dc3545;
+        border: none;
         border-radius: 50%;
-        opacity: 1;
-        padding: 0.5rem;
-        width: 2.5rem;
-        height: 2.5rem;
-        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        transition: none;
     }
 
-    .btn-close-custom:hover {
-        opacity: 0.7;
+    .btn-close-custom:hover,
+    .btn-close-custom:focus {
+        background: #dc3545;
+        box-shadow: none;
+        color: white;
     }
 
-    .custom-input {
-        border: 2px solid #000;
-        border-radius: 50px;
-        padding: 10px 15px;
-    }
-
-    /* --- 5. CHECKBOX STYLES --- */
-    .form-check {
-        margin-bottom: 8px;
-        padding: 5px 0;
-    }
-
-    .form-check-input {
-        border: 2px solid #000;
-        cursor: pointer;
-        accent-color: #2d5bff;
-    }
-
-    .form-check-input:checked {
-        background-color: #2d5bff;
-        border-color: #2d5bff;
-    }
-
-    .form-check-label {
-        cursor: pointer;
-        margin-left: 8px;
-        color: #333;
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .about-features {
+            gap: 20px;
+        }
+        
+        .about-title,
+        .section-title {
+            font-size: 1.8rem;
+        }
     }
 </style>
 {{/section}}
@@ -241,197 +396,211 @@
             <div class="col-lg-6">
                 <h1 class="hero-title mb-4">Professional Pet Care <br>You Can Trust</h1>
                 <p class="lead text-secondary mb-4">
-                    Expert veterinary services, professional grooming, and comprehensive health care for your beloved pets. 
-                    Your furry family members deserve the best care available.
+                    Expert veterinary services, professional grooming, and comprehensive health care for your beloved
+                    pets.
                 </p>
-                <div class="d-flex gap-3 flex-wrap">
-                    <button class="btn btn-primary btn-lg rounded-pill px-5 fw-bold"
-                        style="background: linear-gradient(135deg, #2d5bff 0%, #17a2b8 100%); border: none; box-shadow: 0 8px 25px rgba(45, 91, 255, 0.3);" 
-                        data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        <i class="bi bi-calendar-heart me-2"></i>Book Appointment
-                    </button>
-                    
-                </div>
+                <button class="btn btn-primary btn-lg rounded-pill px-5 fw-bold" style="background: #2d5bff;"
+                    data-bs-toggle="modal" data-bs-target="#bookingModal">
+                    <i class="bi bi-calendar-heart me-2"></i>Book Appointment
+                </button>
             </div>
-            <div class="col-lg-6 text-center mt-5 mt-lg-0">
-                <div class="position-relative">
-                    <img src="https://img.freepik.com/free-photo/group-portrait-adorable-puppies_53876-64778.jpg" 
-                         alt="Professional Pet Care" class="hero-img">
-                    
-                    
-                </div>
+            <div class="col-lg-6 mt-5 mt-lg-0">
+                <img src="https://img.freepik.com/free-photo/group-portrait-adorable-puppies_53876-64778.jpg"
+                    alt="Pet Care" class="hero-img">
             </div>
         </div>
     </div>
 </section>
 
-<section id="about" class="services-section section-padding">
+<!-- About Us Section -->
+<section id="about" class="about-section">
     <div class="container">
-        <h2 class="section-title">Our Premium Services</h2>
-        <p class="text-center text-secondary mb-5" style="font-size: 1.1rem;">
-            Comprehensive pet care services designed to keep your furry friends healthy and happy
-        </p>
-        
-        <div class="row g-4">
-            <!-- Veterinary Consultation -->
-            <div class="col-lg-4 col-md-6">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-stethoscope"></i>
+        <div class="about-container">
+            <h2 class="about-title">About Us</h2>
+            <p class="about-text">
+                Welcome to <strong>PetCareUS</strong> – your trusted partner in providing exceptional care for your beloved pets. 
+                Founded with a passion for animals and a commitment to excellence, we offer comprehensive veterinary services, 
+                professional grooming, and personalized health care solutions. Our team of experienced veterinarians and pet care 
+                specialists work tirelessly to ensure your furry friends receive the love and attention they deserve.
+            </p>
+            <p class="about-text">
+                At PetCareUS, we believe every pet is family. That's why we've created a warm, welcoming environment where 
+                both pets and their owners feel comfortable. From routine check-ups to emergency care, we're here for you 24/7.
+            </p>
+            <div class="about-features">
+                <div class="about-feature">
+                    <div class="about-feature-icon">
+                        <i class="bi bi-award"></i>
                     </div>
-                    <h4 class="service-title">Veterinary Consultation</h4>
-                    <p class="service-description">
-                        Comprehensive health checkups and medical consultations by our experienced veterinarians to ensure your pet's optimal health.
-                    </p>
-                    <div class="service-price">From $50</div>
-                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        <i class="bi bi-calendar-plus me-2"></i>Book Now
-                    </button>
+                    <div class="about-feature-title">10+ Years Experience</div>
+                    <div class="about-feature-text">Trusted by thousands</div>
                 </div>
-            </div>
-
-            <!-- Pet Grooming -->
-            <div class="col-lg-4 col-md-6">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-cut"></i>
+                <div class="about-feature">
+                    <div class="about-feature-icon">
+                        <i class="bi bi-people"></i>
                     </div>
-                    <h4 class="service-title">Professional Grooming</h4>
-                    <p class="service-description">
-                        Complete grooming services including bathing, nail trimming, hair cutting, and styling to keep your pet looking and feeling great.
-                    </p>
-                    <div class="service-price">From $35</div>
-                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        <i class="bi bi-calendar-plus me-2"></i>Book Now
-                    </button>
+                    <div class="about-feature-title">Expert Team</div>
+                    <div class="about-feature-text">Certified professionals</div>
                 </div>
-            </div>
-
-            <!-- Vaccination -->
-            <div class="col-lg-4 col-md-6">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-syringe"></i>
+                <div class="about-feature">
+                    <div class="about-feature-icon">
+                        <i class="bi bi-clock"></i>
                     </div>
-                    <h4 class="service-title">Vaccination Program</h4>
-                    <p class="service-description">
-                        Complete vaccination schedules and preventive care to protect your pet from common diseases and maintain their immunity.
-                    </p>
-                    <div class="service-price">From $25</div>
-                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        <i class="bi bi-calendar-plus me-2"></i>Book Now
-                    </button>
+                    <div class="about-feature-title">24/7 Support</div>
+                    <div class="about-feature-text">Always available</div>
                 </div>
-            </div>
-
-            <!-- Emergency Care -->
-            <div class="col-lg-4 col-md-6">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-ambulance"></i>
+                <div class="about-feature">
+                    <div class="about-feature-icon">
+                        <i class="bi bi-heart"></i>
                     </div>
-                    <h4 class="service-title">Emergency Care</h4>
-                    <p class="service-description">
-                        24/7 emergency veterinary services for urgent medical situations. Our team is always ready to help in critical moments.
-                    </p>
-                    <div class="service-price">From $100</div>
-                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        <i class="bi bi-calendar-plus me-2"></i>Book Now
-                    </button>
-                </div>
-            </div>
-
-            <!-- Surgery -->
-            <div class="col-lg-4 col-md-6">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-user-md"></i>
-                    </div>
-                    <h4 class="service-title">Surgical Procedures</h4>
-                    <p class="service-description">
-                        Advanced surgical procedures performed by skilled veterinary surgeons with modern equipment and sterile environments.
-                    </p>
-                    <div class="service-price">From $200</div>
-                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        <i class="bi bi-calendar-plus me-2"></i>Book Now
-                    </button>
-                </div>
-            </div>
-
-            <!-- Dental Care -->
-            <div class="col-lg-4 col-md-6">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <i class="fas fa-tooth"></i>
-                    </div>
-                    <h4 class="service-title">Dental Care</h4>
-                    <p class="service-description">
-                        Complete dental health services including cleaning, tooth extraction, and oral health maintenance for optimal pet wellness.
-                    </p>
-                    <div class="service-price">From $75</div>
-                    <button class="service-btn" data-bs-toggle="modal" data-bs-target="#bookingModal">
-                        <i class="bi bi-calendar-plus me-2"></i>Book Now
-                    </button>
+                    <div class="about-feature-title">5000+ Happy Pets</div>
+                    <div class="about-feature-text">And counting</div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
+<!-- Services Carousel Section -->
+<section id="services" class="carousel-section services-bg">
+    <div class="container-fluid px-0">
+        <div class="section-header">
+            <h2 class="section-title">Our Services</h2>
+            <p class="section-subtitle">Comprehensive care solutions for your beloved pets</p>
+        </div>
+
+        {{#if services}}
+        <div class="carousel-wrapper">
+            <div class="carousel-track" id="servicesCarousel">
+                {{#each services}}
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="bi bi-heart-pulse-fill"></i>
+                    </div>
+                    <h4 class="service-name">{{this.service_name}}</h4>
+                    <p class="service-description">
+                        {{#if this.description}}{{this.description}}{{else}}Professional pet care service with expert attention.{{/if}}
+                    </p>
+                    <span class="service-price">${{this.base_price}}</span>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        {{else}}
+        <div class="container">
+            <div class="empty-state">
+                <i class="bi bi-emoji-frown"></i>
+                <p>No services available at the moment.</p>
+            </div>
+        </div>
+        {{/if}}
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="carousel-section team-bg">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Our outstanding veterinarian</h2>
+            <p class="section-subtitle">Dedicated professionals who love what they do</p>
+        </div>
+
+        {{#if employees}}
+        <div class="employee-grid">
+            {{#each (limit employees 4)}}
+            <div class="employee-card">
+                <div class="employee-header">
+                    <div class="employee-avatar">{{substring this.full_name 0 1}}</div>
+                </div>
+                <div class="employee-body">
+                    <h4 class="employee-name">{{this.full_name}}</h4>
+                    <span class="employee-role">{{this.role}}</span>
+                    <div class="employee-email">
+                        <i class="bi bi-envelope-fill"></i>{{this.email}}
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        
+        {{else}}
+        <div class="container">
+            <div class="empty-state" style="background: #343a40;">
+                <i class="bi bi-people" style="color: #6c757d;"></i>
+                <p style="color: #adb5bd;">Our team information is being updated.</p>
+            </div>
+        </div>
+        {{/if}}
+    </div>
+</section>
+
+<!-- All Employees Modal -->
+<div class="modal fade" id="allEmployeesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content modal-content-custom">
+            <div class="modal-header modal-header-custom-list">
+                <h5 class="modal-title fw-bold"><i class="bi bi-people-fill me-2"></i>Our Team Members</h5>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal">✕</button>
+            </div>
+            <div class="modal-body p-4">
+                {{#if employees}}
+                <div class="employee-modal-grid">
+                    {{#each employees}}
+                    <div class="employee-card">
+                        <div class="employee-header">
+                            <div class="employee-avatar">{{substring this.full_name 0 1}}</div>
+                        </div>
+                        <div class="employee-body">
+                            <h4 class="employee-name">{{this.full_name}}</h4>
+                            <span class="employee-role">{{this.role}}</span>
+                            <div class="employee-email">
+                                <i class="bi bi-envelope-fill"></i>{{this.email}}
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+                {{else}}
+                <div class="text-center py-4">
+                    <p class="text-muted">No team members available.</p>
+                </div>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Booking Modal -->
 <div class="modal fade" id="bookingModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-content-custom" style="max-width: 500px; margin: auto;">
             <div class="modal-header modal-header-custom">
-                <h5 class="modal-title-custom">BOOKING FORM</h5>
-                <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title-custom m-0">BOOKING FORM</h5>
+                <button type="button" class="btn-close-custom" data-bs-dismiss="modal">✕</button>
             </div>
             <div class="modal-body p-4">
+                {{#if isAuth}}
                 <form id="bookingForm" method="POST" action="/appointments/book">
-                    {{!-- Pet Selection --}}
                     <div class="mb-3">
-
-                        {{#if pets}}
-                        <select class="form-select custom-input text-uppercase text-muted fw-bold" name="pet_id"
-                            style="border-radius: 50px;" required>
+                        <select class="form-select rounded-pill px-3" name="pet_id" required>
                             <option selected disabled>SELECT YOUR PET</option>
                             {{#each pets}}
                             <option value="{{this.pet_id}}">{{this.name}}</option>
                             {{/each}}
                         </select>
-                        {{else}}
-                        <div class="alert alert-warning">No pets found. Please add a pet first.</div>
-                        {{/if}}
-
                     </div>
-
-                    {{!-- Date & Time --}}
                     <div class="row mb-3">
-                        <div class="col-6">
-                            <input type="text" class="form-control custom-input text-uppercase text-muted fw-bold"
-                                name="date_start" placeholder="DATE" onfocus="(this.type='date')"
-                                onblur="(this.type='text')" style="border-radius: 50px;" required>
-                        </div>
-                        <div class="col-6">
-                            <input type="text" class="form-control custom-input text-uppercase text-muted fw-bold"
-                                name="time" placeholder="TIME" onfocus="(this.type='time')" onblur="(this.type='text')"
-                                style="border-radius: 50px;" required>
-                        </div>
+                        <div class="col-6"><input type="date" class="form-control rounded-pill" name="date_start" required></div>
+                        <div class="col-6"><input type="time" class="form-control rounded-pill" name="time" required></div>
                     </div>
-
-                    {{!-- Services Selection (Multiple) --}}
                     <div class="mb-3">
-                        <label class="form-label fw-bold text-uppercase text-muted" style="font-size: 0.9rem;">Select
-                            Services:</label>
+                        <label class="form-label fw-bold text-uppercase text-muted" style="font-size: 0.9rem;">Select Services:</label>
                         {{#if serviceList}}
-                        <div
-                            style="border: 2px solid #000; border-radius: 20px; padding: 20px 40px; background-color: #fff; max-height: 150px; overflow-y: auto;">
+                        <div style="border: 2px solid #000; border-radius: 20px; padding: 20px 40px; background-color: #fff; max-height: 150px; overflow-y: auto;">
                             {{#each serviceList}}
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="services"
-                                    value="{{this.service_id}}" id="service_{{this.service_id}}">
-                                <label class="form-check-label fw-bold" for="service_{{this.service_id}}">
-                                    {{this.service_name}}
-                                </label>
+                                <input class="form-check-input" type="checkbox" name="services" value="{{this.service_id}}" id="service_{{this.service_id}}">
+                                <label class="form-check-label fw-bold" for="service_{{this.service_id}}">{{this.service_name}}</label>
                             </div>
                             {{/each}}
                         </div>
@@ -439,78 +608,168 @@
                         <div class="alert alert-warning">No services available.</div>
                         {{/if}}
                     </div>
-
-                    {{!-- Note --}}
-                    <div class="mb-4">
-                        <textarea class="form-control custom-input text-muted" name="note"
-                            placeholder="Note something..." rows="5"
-                            style="border-radius: 20px; resize: none;"></textarea>
-                    </div>
-
-                    {{!-- Submit Button --}}
+                    <textarea class="form-control mb-4" name="note" placeholder="Note something..." rows="3" style="border-radius: 15px;"></textarea>
                     <div class="text-end">
-                        <button type="submit" class="btn btn-outline-primary px-4 py-2 fw-bold"
-                            style="border-radius: 10px; border-width: 2px;">SUBMIT</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">SUBMIT</button>
                     </div>
                 </form>
+                {{else}}
+                <div class="text-center py-4">
+                    <p class="mb-3">Please <a href="/signin" class="text-decoration-none fw-bold">sign in</a> or <a href="/signup" class="text-decoration-none fw-bold">sign up</a> to book an appointment.</p>
+                </div>
+                {{/if}}
             </div>
         </div>
     </div>
 </div>
 
-{{#section 'js'}}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // 1. Lấy tất cả các section cần theo dõi
-        const sections = document.querySelectorAll("section, footer");
-        const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
+<footer id="contact" class="footer-custom">
+        <div class="container">
 
-        // KIỂM TRA QUAN TRỌNG:
-        // Chỉ chạy tính năng này nếu trang hiện tại có section #home (tức là trang chủ)
-        const homeSection = document.querySelector("#home");
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-5">
+                    <a href="#home" class="footer-brand"><i class="bi bi-paw-fill me-2 text-primary"></i>PetCareUS</a>
+                    <p class="mb-4 lh-lg">
+                        We are dedicated to providing the highest quality care for your pets. Our team of experts is
+                        here
+                        24/7 to ensure your furry friends are healthy and happy.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a href="#"
+                            class="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 40px; height: 40px;"><i class="bi bi-facebook"></i></a>
+                        <a href="#"
+                            class="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 40px; height: 40px;"><i class="bi bi-twitter"></i></a>
+                        <a href="#"
+                            class="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
+                            style="width: 40px; height: 40px;"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
 
-        if (!homeSection) {
-            // Nếu không phải trang chủ, xóa class active khỏi tất cả link menu
-            navLinks.forEach(link => link.classList.remove("active"));
-            return; // Dừng script tại đây
-        }
+                <div class="col-lg-3 col-md-6 mb-5 ps-lg-5">
+                    <h5 class="footer-heading">Quick Links</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="#home"><i class="bi bi-chevron-right me-2"></i> Home</a></li>
+                        <li><a href="#about"><i class="bi bi-chevron-right me-2"></i> About Us</a></li>
+                        <li><a href="#contact"><i class="bi bi-chevron-right me-2"></i> Contact</a></li>
+                    </ul>
+                </div>
 
-        // Nếu là trang chủ, tiếp tục chạy logic ScrollSpy cũ
-        window.addEventListener("scroll", () => {
-            let current = "";
-            sections.forEach((section) => {
-                const sectionTop = section.offsetTop;
-                // Tinh chỉnh offset một chút (-150) cho mượt
-                if (pageYOffset >= sectionTop - 150) {
-                    current = section.getAttribute("id");
-                }
-            });
+                <div class="col-lg-3 col-md-6 mb-5">
+                    <h5 class="footer-heading">Opening Hours</h5>
+                    <ul class="list-unstyled opening-hours-list mt-3">
+                        <li>Monday - Friday <span>08:00 - 20:00</span></li>
+                        <li>Saturday <span>09:00 - 18:00</span></li>
+                        <li>Sunday <span>09:00 - 16:00</span></li>
+                        <li>Emergency <span>24/7 Open</span></li>
+                    </ul>
+                </div>
 
-            navLinks.forEach((link) => {
-                link.classList.remove("active");
-                // Kiểm tra nếu link có chứa id của section hiện tại
-                if (link.getAttribute("href").includes(current)) {
-                    link.classList.add("active");
-                }
-            });
-        });
+                <div class="col-lg-3 col-md-12 mb-5">
+                    <h5 class="footer-heading">Contact Info</h5>
+                    <div class="contact-info-item mt-3">
+                        <i class="bi bi-geo-alt-fill"></i>
+                        <div>
+                            <strong class="text-white d-block mb-1">Location:</strong>
+                            227 Nguyen Van Cu, Ward 1,<br> Dist 5, HCMC
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <i class="bi bi-telephone-fill"></i>
+                        <div>
+                            <strong class="text-white d-block mb-1">Phone:</strong>
+                            +84 123 456 789
+                        </div>
+                    </div>
 
-        // Booking form SweetAlert
-        const bookingForm = document.getElementById('bookingForm');
-        if (bookingForm) {
-            bookingForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'Appointment booked successfully.',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    e.target.submit();
+                    <div class="map-container">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.669726937899!2d106.68006841533416!3d10.759917092332677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f1b7c3ed289%3A0xa0665189479a30f1!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBLaG9hIGjhu41jIFThu7Egbmhpw6puIC0gxJDhuqFpIGjhu41jIFF14buRYyBnaWEgVFAuSENN!5e0!3m2!1svi!2s!4v1647424567890!5m2!1svi!2s"
+                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="copyright-area">
+            <div class="container text-center">
+                <p class="mb-0">&copy; 2025 <strong class="text-white">PetCareUS</strong>. Designed with <i
+                        class="bi bi-heart-fill text-danger"></i> for Pets.</p>
+            </div>
+        </div>
+    </footer>
+
+    {{#section 'js'}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // --- 1. SCROLLSPY LOGIC ---
+            const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
+            window.addEventListener("scroll", () => {
+                let current = "";
+                const sections = document.querySelectorAll("section, footer"); // Bao gồm cả footer
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 150) {
+                        current = section.getAttribute("id");
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove("active");
+                    if (link.getAttribute("href") && link.getAttribute("href").includes(current)) {
+                        link.classList.add("active");
+                    }
                 });
             });
-        }
-    });
-</script>
-{{/section}}
+
+            // --- 2. CAROUSEL AUTO-SCROLL LOGIC ---
+            function initCarousel(carouselId, speed = 25) {
+                const track = document.getElementById(carouselId);
+                if (!track) return;
+
+                const items = track.children;
+                if (items.length === 0) return;
+
+                // Clone items for infinite scroll
+                if (items.length > 2) {
+                    const originalItems = Array.from(items);
+                    originalItems.forEach(item => {
+                        const clone = item.cloneNode(true);
+                        track.appendChild(clone);
+                    });
+                    
+                    // Adjust animation duration based on content
+                    track.style.animationDuration = speed + 's';
+                } else {
+                    // If few items, center them
+                    track.style.animation = 'none';
+                    track.style.justifyContent = 'center';
+                    track.parentElement.style.display = 'flex';
+                    track.parentElement.style.justifyContent = 'center';
+                }
+            }
+
+            // Initialize carousels
+            setTimeout(() => {
+                initCarousel('servicesCarousel', 100);
+                initCarousel('employeesCarousel', 40);
+            }, 100);
+
+            // --- 3. BOOKING FORM ---
+            const bookingForm = document.getElementById('bookingForm');
+            if (bookingForm) {
+                bookingForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Appointment booked successfully.',
+                        icon: 'success',
+                        confirmButtonColor: '#2d5bff'
+                    }).then(() => { e.target.submit(); });
+                });
+            }
+        });
+    </script>
+    {{/section}}

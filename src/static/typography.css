@@ -1,0 +1,339 @@
+/* ========================================
+   TYPOGRAPHY & LAYOUT STYLES
+   ======================================== */
+
+/* --- 1. HEADINGS --- */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-gray-text);
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: var(--font-size-h1);
+    font-weight: var(--font-weight-extrabold);
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+    font-weight: var(--font-weight-extrabold);
+}
+
+h3 {
+    font-size: var(--font-size-h3);
+    font-weight: var(--font-weight-bold);
+}
+
+h4 {
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-bold);
+}
+
+h5 {
+    font-size: 1.2rem;
+    font-weight: var(--font-weight-bold);
+}
+
+h6 {
+    font-size: 1rem;
+    font-weight: var(--font-weight-semibold);
+}
+
+/* --- 2. HERO SECTION --- */
+.hero-section {
+    background-color: var(--color-light-bg-hero);
+    padding: 80px 0;
+    border-bottom-right-radius: 100px;
+    position: relative;
+}
+
+.hero-title {
+    font-family: var(--font-primary);
+    font-size: 3.5rem;
+    font-weight: var(--font-weight-extrabold);
+    color: #222;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--color-gray-medium);
+    margin: 15px 0;
+}
+
+.hero-img {
+    max-width: 100%;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-blue);
+}
+
+/* --- 3. SECTION STYLES --- */
+.section {
+    padding: var(--spacing-6xl) 0;
+}
+
+.section-title {
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-extrabold);
+    font-size: var(--font-size-h2);
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--primary-blue);
+}
+
+.section-subtitle {
+    text-align: center;
+    color: var(--color-gray-medium);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+/* --- 4. PROFILE STYLES --- */
+.profile-header-card {
+    background: var(--color-white);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-md);
+    border: 1px solid #ddd;
+    position: relative;
+    margin-top: 60px;
+    padding: 10px 0 20px 0;
+}
+
+.username-section {
+    margin-left: 180px;
+    margin-top: 20px;
+}
+
+.username-title {
+    font-family: var(--font-primary);
+    font-size: var(--font-size-h4);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    color: var(--color-gray-text);
+}
+
+.username-subtitle {
+    color: var(--color-gray-medium);
+    font-size: var(--font-size-sm);
+    margin-top: 2px;
+}
+
+.username-actions {
+    margin-left: auto;
+    margin-top: 20px;
+    margin-right: 50px;
+}
+
+/* --- 5. NAV SECTION --- */
+.nav-section {
+    border-top: 3px solid var(--color-gray-text);
+    margin-top: 20px;
+    padding-top: 15px;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.nav-section .nav-link {
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    font-size: var(--font-size-xs);
+    color: var(--color-gray-medium);
+    border: none;
+    padding-bottom: 10px;
+    transition: all var(--transition-default);
+    display: block;
+}
+
+.nav-section .nav-link:hover,
+.nav-section .nav-link.active {
+    color: var(--primary-blue);
+    border-bottom: 2px solid var(--primary-blue);
+}
+
+/* --- 6. MAIN LAYOUT --- */
+main {
+    flex: 1;
+    min-height: auto !important;
+}
+
+.container-fluid.flex-grow-1 {
+    flex: 1;
+    display: flex;
+}
+
+/* --- 7. SIDEBAR --- */
+.sidebar {
+    height: 100% !important;
+    overflow-y: auto;
+    display: block !important;
+    background-color: var(--color-light-bg);
+    padding: 20px 0;
+}
+
+.sidebar .list-group-item {
+    border-radius: var(--radius-md);
+    margin-bottom: 8px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border: none;
+}
+
+.sidebar .list-group-item.active {
+    background-color: var(--primary-blue);
+    color: var(--color-white) !important;
+}
+
+.sidebar .list-group-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* --- 8. INVOICE STYLES --- */
+.invoice-brand {
+    color: var(--primary-blue);
+    font-weight: var(--font-weight-extrabold);
+    font-size: 2rem;
+    margin-bottom: 0;
+    font-family: var(--font-primary);
+}
+
+.invoice-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin: 30px 0;
+    padding: 25px;
+    background: #fafafa;
+    border-radius: var(--radius-md);
+}
+
+.info-label {
+    font-size: 0.7rem;
+    color: #888;
+    text-transform: uppercase;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 5px;
+}
+
+.info-value {
+    font-size: 1.1rem;
+    color: var(--color-gray-text);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* --- 9. CHART STYLES --- */
+.chart-wrapper {
+    position: relative;
+    height: 350px;
+    width: 100%;
+}
+
+.stat-number {
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-extrabold);
+    color: var(--primary-blue);
+}
+
+.total-revenue-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-medium);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: var(--font-weight-bold);
+}
+
+/* --- 10. ERROR PAGE --- */
+.error-page-wrapper {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.error-code {
+    font-family: var(--font-primary);
+    font-size: 8rem;
+    font-weight: var(--font-weight-extrabold);
+    color: var(--primary-blue);
+    line-height: 1;
+    opacity: 0.2;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    user-select: none;
+}
+
+.error-content {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+}
+
+.error-img {
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 2rem;
+}
+
+.error-title {
+    font-size: 2rem;
+    font-weight: var(--font-weight-extrabold);
+    color: var(--color-gray-text);
+}
+
+.error-message {
+    color: var(--color-gray-medium);
+    margin: 15px 0;
+}
+
+/* --- 11. CALENDAR STYLES --- */
+.calendar-grid-custom {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+.day-col {
+    flex-basis: calc(100% / 7);
+    max-width: calc(100% / 7);
+    padding: 5px;
+}
+
+.calendar-day-custom {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+    transition: var(--transition-default);
+}
+
+/* --- 12. RESPONSIVE LAYOUT --- */
+@media (max-width: 768px) {
+    .username-section {
+        margin-left: 20px;
+    }
+    
+    .username-actions {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .invoice-details-grid {
+        grid-template-columns: 1fr;
+    }
+}

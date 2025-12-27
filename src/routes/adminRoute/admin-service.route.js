@@ -18,6 +18,11 @@ router.get('/', async function (req, res) {
         // Search mode
         isSearchMode = true;
         
+        // Block search with 'all' fields
+        if (searchField === 'all') {
+            return res.redirect('back');
+        }
+        
         // Validate ID/price search - must be a number
         if ((searchField === 'id' || searchField === 'price') && isNaN(searchQuery)) {
             total = { count: 0 };
@@ -55,6 +60,7 @@ router.get('/', async function (req, res) {
         searchQuery: searchQuery,
         searchField: searchField,
         isSearchMode: isSearchMode,
+        success: req.query.success,
         layout: 'admin-layout'
     });
 });
@@ -75,7 +81,7 @@ router.post('/add', async function (req, res) {
         description: req.body.description,
     };
     await serviceService.addService(service);
-    res.redirect('/admin/services');
+    res.redirect('/admin/services?success=add');
 });
 
 router.get('/edit', async function (req, res) {
@@ -96,7 +102,7 @@ router.post('/edit', async function (req, res) {
         description: req.body.description,
     };
     await serviceService.updateService(id, service);
-    res.redirect('/admin/services');
+    res.redirect('/admin/services?success=edit');
 });
 
 export default router;

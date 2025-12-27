@@ -10,14 +10,15 @@
     }
 
     .modal-content {
-        border: 2px solid #a58f8f; /* Viền modal */
+        border: 2px solid #000dff; /* Viền modal */
         border-radius: 15px;
         overflow: hidden; /* Để bo góc header không bị che */
     }
 
     .modal-header {
-        background-color: #d9d9d9; /* Màu nền xám header */
+        background-color: #0900b8; /* Màu nền xám header */
         border-bottom: 2px solid #a58f8f;
+        border-radius: 0px 0px 0 0;
         padding-top: 15px;
         padding-bottom: 15px;
     }
@@ -38,7 +39,7 @@
         <div class="modal-content shadow-lg">
 
             <div class="modal-header justify-content-center position-relative">
-                <h4 class="modal-title brand-font fw-bold text-uppercase" style="letter-spacing: 1px;">Medicine</h4>
+                <h4 class="modal-title brand-font fw-bold text-uppercase text-white" style="letter-spacing: 1px;">Medicine</h4>
                 <a href="/admin/medicines"
                     class="position-absolute end-0 top-50 translate-middle-y me-3 text-danger fs-3 text-decoration-none">
                     <i class="bi bi-x-circle-fill" style="color: #a94442;"></i>
@@ -111,13 +112,63 @@
 <script>
     document.querySelector('form').addEventListener('submit', function(e) {
         e.preventDefault();
+        const form = e.target;
+        const medicineName = form.querySelector('[name="medicine_name"]').value.trim();
+        const medicineForm = form.querySelector('[name="form"]').value;
+        const category = form.querySelector('[name="category"]').value;
+        
+        // Validation checks
+        if (!medicineName) {
+            Swal.fire({
+                title: 'Validation Error!',
+                text: 'Medicine name is required.',
+                icon: 'error',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        if (!medicineForm) {
+            Swal.fire({
+                title: 'Validation Error!',
+                text: 'Please select a form.',
+                icon: 'error',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        if (!category) {
+            Swal.fire({
+                title: 'Validation Error!',
+                text: 'Please select a category.',
+                icon: 'error',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        // Confirmation before submit
         Swal.fire({
-            title: 'Success!',
-            text: 'Medicine updated successfully.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        }).then(() => {
-            e.target.submit();
+            title: 'Confirm Update',
+            text: 'Are you sure you want to update this medicine?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, Update!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Medicine updated successfully.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    form.submit();
+                });
+            }
         });
     });
 </script>

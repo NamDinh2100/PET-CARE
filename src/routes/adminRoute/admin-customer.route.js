@@ -19,6 +19,11 @@ router.get('/', async function (req, res) {
         // Search mode
         isSearchMode = true;
         
+        // Block search with 'all' fields
+        if (searchField === 'all') {
+            return res.redirect('back');
+        }
+        
         // Validate ID search - must be a number
         if (searchField === 'id' && isNaN(searchQuery)) {
             total = { count: 0 };
@@ -56,6 +61,7 @@ router.get('/', async function (req, res) {
         searchQuery: searchQuery,
         searchField: searchField,
         isSearchMode: isSearchMode,
+        success: req.query.success,
         layout: 'admin-layout'
     });
 });
@@ -72,7 +78,7 @@ router.get('/edit', async function (req, res) {
 router.get('/delete', async function (req, res) {
     const id = req.query.id;
     await userService.deleteUser(id);
-    res.redirect('/admin/customers');
+    res.redirect('/admin/customers?success=delete');
 });
 
 

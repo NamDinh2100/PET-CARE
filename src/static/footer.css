@@ -1,0 +1,206 @@
+/* ========================================
+   FOOTER STYLES
+   ======================================== */
+
+/* --- 1. FOOTER BASE --- */
+.footer-custom {
+    background-color: var(--color-dark-bg);
+    color: var(--color-gray-light);
+    padding-top: 120px;
+    padding-bottom: 40px;
+    font-family: var(--font-primary);
+}
+
+/* --- 2. FOOTER BRAND --- */
+.footer-brand {
+    font-family: var(--font-primary);
+    font-size: 2.2rem;
+    color: var(--color-white);
+    text-decoration: none;
+    display: block;
+    margin-bottom: var(--spacing-xl);
+}
+
+.footer-brand:hover {
+    color: var(--primary-blue);
+}
+
+/* --- 3. FOOTER HEADINGS --- */
+.footer-heading {
+    color: var(--color-white);
+    font-size: 1.3rem;
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-2xl);
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-heading::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--primary-blue);
+}
+
+/* --- 4. FOOTER LINKS --- */
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 15px;
+}
+
+.footer-links a {
+    color: var(--color-gray-light);
+    text-decoration: none;
+    transition: var(--transition-default);
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+}
+
+.footer-links a:hover {
+    color: var(--color-white);
+    transform: translateX(10px);
+    color: var(--primary-blue);
+}
+
+/* --- 5. FOOTER CONTACT INFO --- */
+.contact-info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.contact-info-item i {
+    color: var(--primary-blue);
+    font-size: 1.5rem;
+    margin-right: var(--spacing-lg);
+    margin-top: -2px;
+    min-width: 24px;
+}
+
+/* --- 6. OPENING HOURS --- */
+.opening-hours-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.opening-hours-list li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--color-border-dark);
+    padding-bottom: 8px;
+}
+
+.opening-hours-list span {
+    color: var(--color-white);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* --- 7. SOCIAL LINKS --- */
+.social-links {
+    display: flex;
+    gap: 10px;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #333;
+    color: var(--color-white);
+    border-radius: 50%;
+    text-decoration: none;
+    transition: var(--transition-default);
+}
+
+.social-links a:hover {
+    background: var(--primary-blue);
+    transform: translateY(-3px);
+}
+
+/* --- 8. NEWSLETTER BOX --- */
+.newsletter-box {
+    background: #252525;
+    padding: 30px;
+    border-radius: var(--radius-lg);
+    margin-bottom: 50px;
+    border: 1px dashed var(--color-border-dark);
+}
+
+.newsletter-input {
+    background: #333;
+    border: none;
+    color: var(--color-white);
+    height: 50px;
+    padding-left: 20px;
+    border-radius: var(--radius-full);
+    font-family: var(--font-sans);
+}
+
+.newsletter-input:focus {
+    background: #444;
+    color: var(--color-white);
+    box-shadow: none;
+    outline: 2px solid var(--primary-blue);
+}
+
+/* --- 9. MAP CONTAINER --- */
+.map-container {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 2px solid var(--color-border-dark);
+    height: 200px;
+    margin-top: 20px;
+}
+
+/* --- 10. COPYRIGHT AREA --- */
+.copyright-area {
+    background-color: var(--color-dark-bg-deep);
+    color: var(--color-gray-light);
+    padding: 20px 0;
+    margin-top: 0;
+    text-align: center;
+    border-top: 1px solid var(--color-border-dark);
+}
+
+.copyright-area p {
+    margin-bottom: 0;
+    font-size: 0.95rem;
+}
+
+.copyright-area strong {
+    color: var(--color-white);
+    font-weight: var(--font-weight-bold);
+}
+
+.copyright-area i {
+    color: var(--status-danger);
+}
+
+/* --- 11. FOOTER RESPONSIVE --- */
+@media (max-width: 768px) {
+    .footer-custom {
+        padding-top: 40px;
+    }
+    
+    .footer-heading {
+        font-size: 1.1rem;
+    }
+    
+    .footer-links a {
+        font-size: 1rem;
+    }
+}

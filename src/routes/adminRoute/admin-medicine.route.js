@@ -18,6 +18,11 @@ router.get('/', async function (req, res) {
         // Search mode
         isSearchMode = true;
         
+        // Block search with 'all' fields
+        if (searchField === 'all') {
+            return res.redirect('back');
+        }
+        
         // Validate ID/quantity search - must be a number
         if ((searchField === 'id' || searchField === 'quantity') && isNaN(searchQuery)) {
             total = { count: 0 };
@@ -55,6 +60,7 @@ router.get('/', async function (req, res) {
         searchQuery: searchQuery,
         searchField: searchField,
         isSearchMode: isSearchMode,
+        success: req.query.success,
         layout: 'admin-layout'
     });
 });
@@ -74,7 +80,7 @@ router.post('/add', async function (req, res) {
         description: req.body.description,
     };
     await medicineService.addMedicine(medicine);
-    res.redirect('/admin/medicines');
+    res.redirect('/admin/medicines?success=add');
 });
 
 router.get('/edit', async function (req, res) {
@@ -95,7 +101,7 @@ router.post('/edit', async function (req, res) {
         description: req.body.description,
     };
     await medicineService.updateMedicine(id, medicine);
-    res.redirect('/admin/medicines');
+    res.redirect('/admin/medicines?success=edit');
 });
 
 export default router;

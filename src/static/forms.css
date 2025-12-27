@@ -1,0 +1,170 @@
+/* ========================================
+   FORM & INPUT STYLES
+   ======================================== */
+
+/* --- 1. INPUT STYLES --- */
+.form-control {
+    border: 2px solid var(--color-border-dark);
+    border-radius: var(--radius-full);
+    padding: 10px 15px;
+    transition: var(--transition-default);
+}
+
+.form-control:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.25rem rgba(45, 91, 255, 0.15);
+}
+
+.custom-input {
+    border: 2px solid var(--color-black);
+    border-radius: var(--radius-full);
+    padding: 10px 15px;
+}
+
+.custom-input-group {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid transparent;
+    border-radius: var(--radius-full);
+    transition: var(--transition-default);
+}
+
+.custom-input-group:focus-within {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(45, 91, 255, 0.1);
+}
+
+.pill-input {
+    border-radius: var(--radius-full);
+    border: 1.5px solid #888;
+    padding: 12px 20px;
+    font-size: var(--font-size-sm);
+    box-shadow: var(--shadow-sm);
+}
+
+.pill-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+    border-color: #0d6efd;
+}
+
+.search-input-rounded {
+    border-radius: var(--radius-full);
+}
+
+.search-input-group {
+    width: 350px;
+}
+
+textarea.custom-input {
+    resize: none;
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-border-dark);
+}
+
+textarea.form-control {
+    resize: none;
+    border-radius: var(--radius-lg);
+}
+
+/* --- 2. CHECKBOX STYLES --- */
+.form-check {
+    margin-bottom: 8px;
+    padding: 5px 0;
+}
+
+.form-check-input {
+    border: 2px solid var(--color-black);
+    cursor: pointer;
+    accent-color: var(--primary-blue);
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+}
+
+.form-check-label {
+    cursor: pointer;
+    margin-left: 8px;
+    color: var(--color-gray-text);
+    font-weight: var(--font-weight-normal);
+}
+
+/* --- 3. FORM LABEL --- */
+.form-label {
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    font-size: var(--font-size-xs);
+    margin-left: 10px;
+    margin-bottom: 5px;
+    color: var(--color-gray-text);
+}
+
+/* --- 4. SELECT STYLES --- */
+.form-select {
+    border: 2px solid var(--color-border-dark);
+    border-radius: var(--radius-md);
+    padding: 10px 15px;
+    font-family: var(--font-primary);
+}
+
+.form-select:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.25rem rgba(45, 91, 255, 0.15);
+}
+
+/* --- 5. TEXTAREA --- */
+textarea {
+    font-family: var(--font-sans);
+}
+
+/* --- 6. PLACEHOLDER STYLING --- */
+::placeholder {
+    color: var(--color-gray-medium);
+    font-weight: var(--font-weight-light);
+}
+
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+    color: var(--color-gray-medium);
+}
+
+/* --- 7. FORM GROUPS --- */
+.form-group {
+    margin-bottom: var(--spacing-2xl);
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: var(--font-weight-semibold);
+}
+
+/* --- 8. DISABLED STYLES --- */
+.form-control:disabled,
+.form-select:disabled {
+    background-color: var(--color-light-bg);
+    color: var(--color-gray-medium);
+    cursor: not-allowed;
+}
+
+input[type="file"] {
+    display: block;
+}
+
+input[type="file"]::file-selector-button {
+    background-color: var(--primary-blue);
+    color: var(--color-white);
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: var(--font-weight-semibold);
+    transition: var(--transition-default);
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: var(--secondary-blue);
+}

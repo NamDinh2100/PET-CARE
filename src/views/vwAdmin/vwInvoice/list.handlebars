@@ -18,6 +18,7 @@
         .table-container {
             min-height: 450px;
         }
+        
         .pagination .page-link {
             width: 40px;
             height: 40px;
@@ -54,176 +55,236 @@
             color: white;
         }
 
-        .badge-partial {
-            background-color: #ffc107;
-            color: black;
+        .search-form .form-select {
+            border-right: none;
+            font-weight: 600;
+            background-color: #f8f9fa;
+        }
+
+        .search-form .form-control {
+            border-left: none;
+            border-radius: 0 25px 25px 0 !important;
+        }
+
+        .search-form .input-group-prepend .form-select {
+            border-radius: 25px 0 0 25px !important;
+        }
+
+        .search-input-rounded {
+            border-radius: 0 25px 25px 0;
         }
     </style>
 {{/section}}
 
-<div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold" style="font-family: 'Abhaya Libre', serif;">INVOICE MANAGEMENT</h2>
-        <p class="text-muted mb-0"><i class="bi bi-info-circle me-2"></i>Invoices are created automatically when prescriptions are completed</p>
-    </div>
-
-    <!-- Filter and Search Section -->
-    <div class="card border-2 rounded-4 mb-4 shadow-sm">
-        <div class="card-body p-4">
-            <div class="row g-3">
-                <!-- Status Filter -->
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Filter by Status:</label>
-                    <div class="btn-group w-100" role="group">
-                        <a href="/admin/invoices" class="btn btn-outline-secondary {{#unless currentStatus}}active{{/unless}}">All</a>
-                        <a href="/admin/invoices?status=paid" class="btn btn-outline-success {{#if (eq currentStatus 'paid')}}active{{/if}}">Paid</a>
-                        <a href="/admin/invoices?status=unpaid" class="btn btn-outline-danger {{#if (eq currentStatus 'unpaid')}}active{{/if}}">Unpaid</a>
-                        <a href="/admin/invoices?status=partial" class="btn btn-outline-warning {{#if (eq currentStatus 'partial')}}active{{/if}}">Partial</a>
-                    </div>
+{{!-- Advanced Search Section --}}
+<div class="row mb-4">
+    <div class="col-md-10 mx-auto">
+        <form action="/admin/invoices" method="GET" class="search-form">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <select name="field" class="form-select border-dark" style="min-width: 180px; max-width: 180px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                        <option value="all" {{#if (eq searchField 'all')}}selected{{/if}}>All Fields</option>
+                        <option value="id" {{#if (eq searchField 'id')}}selected{{/if}}>Invoice ID</option>
+                        <option value="appointment_id" {{#if (eq searchField 'appointment_id')}}selected{{/if}}>Appointment ID</option>
+                        <option value="customer_name" {{#if (eq searchField 'customer_name')}}selected{{/if}}>Customer Name</option>
+                    </select>
                 </div>
-
-                <!-- Search Section -->
-                <div class="col-md-8">
-                    <form method="GET" action="/admin/invoices" class="row g-2">
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold">Search by:</label>
-                            <select name="field" class="form-select rounded-pill border-2">
-                                <option value="all" {{#if (eq searchField 'all')}}selected{{/if}}>All Fields</option>
-                                <option value="id" {{#if (eq searchField 'id')}}selected{{/if}}>Invoice ID</option>
-                                <option value="appointment_id" {{#if (eq searchField 'appointment_id')}}selected{{/if}}>Appointment ID</option>
-                                <option value="customer_name" {{#if (eq searchField 'customer_name')}}selected{{/if}}>Customer Name</option>
-                            </select>
-                        </div>
-                        <div class="col-md-8">
-                            <label class="form-label fw-bold">Search:</label>
-                            <div class="input-group">
-                                <input type="text" name="q" class="form-control rounded-pill border-2" placeholder="Enter search term..." value="{{searchQuery}}">
-                                <button type="submit" class="btn btn-primary rounded-pill ms-2">
-                                    <i class="bi bi-search"></i> Search
-                                </button>
-                                {{#if isSearchMode}}
-                                <a href="/admin/invoices" class="btn btn-outline-secondary rounded-pill ms-2">
-                                    <i class="bi bi-x-circle"></i> Clear
-                                </a>
-                                {{/if}}
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                <input type="text" name="q" class="form-control border-dark search-input-rounded ps-4 bg-white"
+                    placeholder="SEARCH INVOICES..." aria-label="Search" value="{{searchQuery}}">
+                <button type="submit" class="position-absolute end-0 top-50 translate-middle-y me-3 z-1 cursor-pointer text-secondary btn btn-link p-0">
+                    <i class="bi bi-search"></i>
+                </button>
             </div>
-        </div>
+            {{#if isSearchMode}}
+            <div class="mt-2">
+                <span class="badge bg-info me-2">
+                    <i class="bi bi-search me-1"></i>
+                    Search: "{{searchQuery}}" in 
+                    {{#if (eq searchField 'all')}}All Fields{{/if}}
+                    {{#if (eq searchField 'id')}}Invoice ID{{/if}}
+                    {{#if (eq searchField 'appointment_id')}}Appointment ID{{/if}}
+                    {{#if (eq searchField 'customer_name')}}Customer Name{{/if}}
+                </span>
+                <a href="/admin/invoices" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-x me-1"></i>Clear Search
+                </a>
+            </div>
+            {{/if}}
+        </form>
     </div>
+</div>
 
     <!-- Invoice Table -->
-    <div class="card border-2 rounded-4 shadow-sm">
+    <div class="card shadow-sm border-0 rounded-4">
         <div class="card-body p-4">
-            <div class="table-container">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 class="mb-0 brand-font fw-bold text-uppercase">INVOICE</h4>
+                    {{#if isSearchMode}}
+                    <small class="text-muted">
+                        {{invoices.length}} result(s) found for "{{searchQuery}}"
+                        {{#unless (eq searchField 'all')}}
+                            in {{#if (eq searchField 'id')}}Invoice ID{{/if}}{{#if (eq searchField 'appointment_id')}}Appointment ID{{/if}}{{#if (eq searchField 'customer_name')}}Customer Name{{/if}}
+                        {{/unless}}
+                    </small>
+                    {{/if}}
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    {{!-- Filter Dropdown --}}
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-funnel me-1"></i>
+                            {{#if currentStatus}}
+                                {{#if (eq currentStatus 'paid')}}Paid{{/if}}
+                                {{#if (eq currentStatus 'unpaid')}}Unpaid{{/if}}
+                            {{else}}All Status{{/if}}
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item {{#unless currentStatus}}active{{/unless}}"
+                                    href="/admin/invoices">All Status</a></li>
+                            <li><a class="dropdown-item {{#if (eq currentStatus 'paid')}}active{{/if}}"
+                                    href="/admin/invoices?status=paid">Paid</a></li>
+                            <li><a class="dropdown-item {{#if (eq currentStatus 'unpaid')}}active{{/if}}"
+                                    href="/admin/invoices?status=unpaid">Unpaid</a></li>
+                        
+                        </ul> 
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive table-container">
                 {{#if empty}}
                     <div class="text-center py-5">
                         <i class="bi bi-inbox" style="font-size: 4rem; color: #ccc;"></i>
                         <h4 class="mt-3 text-muted">No invoices found</h4>
-                        <p class="text-muted">{{#if isSearchMode}}Try adjusting your search criteria{{else}}Start by creating a new invoice{{/if}}</p>
+                        <p class="text-muted">{{#if isSearchMode}}Try adjusting your search criteria{{else}}Invoices are created automatically when prescriptions are completed{{/if}}</p>
                     </div>
                 {{else}}
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th class="fw-bold">Invoice ID</th>
-                                    <th class="fw-bold">Appointment ID</th>
-                                    <th class="fw-bold">Customer</th>
-                                    <th class="fw-bold">Veterinarian</th>
-                                    <th class="fw-bold">Total Amount</th>
-                                    <th class="fw-bold">Status</th>
-                                    <th class="fw-bold">Invoice Date</th>
-                                    <th class="fw-bold text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{#each invoices}}
-                                <tr>
-                                    <td class="fw-bold">#{{invoice_id}}</td>
-                                    <td>#{{appointment_id}}</td>
-                                    <td>{{customer_name}}</td>
-                                    <td>{{veterinarian_name}}</td>
-                                    <td class="fw-bold text-success">${{total_price}}</td>
-                                    <td>
-                                        {{#if (eq payment_status 'paid')}}
-                                            <span class="badge badge-paid rounded-pill px-3 py-2">PAID</span>
-                                        {{else if (eq payment_status 'unpaid')}}
-                                            <span class="badge badge-unpaid rounded-pill px-3 py-2">UNPAID</span>
-                                        {{else}}
-                                            <span class="badge badge-partial rounded-pill px-3 py-2">PARTIAL</span>
-                                        {{/if}}
-                                    </td>
-                                    <td>{{formatDate date_create}}</td>
-                                    <td class="text-center">
-                                        <div class="btn-group" role="group">
-                                            <a href="/admin/invoices/{{invoice_id}}" class="btn btn-sm btn-outline-primary" title="View Details">
-                                                <i class="bi bi-eye"></i>
-                                            </a>
-                                            <a href="/admin/invoices/edit/{{invoice_id}}" class="btn btn-sm btn-outline-warning" title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{invoice_id}}" title="Delete">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <!-- Delete Modal -->
-                                <div class="modal fade" id="deleteModal{{invoice_id}}" tabindex="-1">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title fw-bold">Confirm Delete</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Are you sure you want to delete Invoice #{{invoice_id}}?</p>
-                                                <p class="text-danger fw-bold mb-0">This action cannot be undone!</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-                                                <form method="POST" action="/admin/invoices/delete/{{invoice_id}}" style="display: inline;">
-                                                    <button type="submit" class="btn btn-danger rounded-pill">Delete</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {{/each}}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Pagination -->
-                    {{#if showPagination}}
-                    <nav aria-label="Invoice pagination" class="mt-4">
-                        <ul class="pagination justify-content-center mb-0">
-                            <li class="page-item {{#if (eq currentPage 1)}}disabled{{/if}}">
-                                <a class="page-link" href="{{#if (eq currentPage 1)}}#{{else}}?page={{subtract currentPage 1}}{{/if}}">
-                                    <i class="bi bi-chevron-left"></i>
-                                </a>
-                            </li>
-                            
-                            {{#each pageNumbers}}
-                            <li class="page-item {{#if active}}active{{/if}}">
-                                <a class="page-link" href="{{href}}">{{value}}</a>
-                            </li>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="ps-3 py-3 rounded-start-3">Invoice ID</th>
+                                <th scope="col" class="py-3">Appointment ID</th>
+                                <th scope="col" class="py-3">Customer</th>
+                                <th scope="col" class="py-3">Veterinarian</th>
+                                <th scope="col" class="py-3">Total Amount</th>
+                                <th scope="col" class="py-3">Status</th>
+                                <th scope="col" class="py-3">Date</th>
+                                <th scope="col" class="text-end pe-3 py-3 rounded-end-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each invoices}}
+                            <tr>
+                                <td class="ps-3 fw-bold text-secondary">#{{invoice_id}}</td>
+                                <td class="fw-semibold">#{{appointment_id}}</td>
+                                <td>{{customer_name}}</td>
+                                <td>{{veterinarian_name}}</td>
+                                <td class="fw-bold text-success">${{total_price}}</td>
+                                <td>
+                                    {{#if (eq payment_status 'paid')}}
+                                        <span class="badge badge-paid rounded-pill px-3 py-2">PAID</span>
+                                    {{else if (eq payment_status 'unpaid')}}
+                                        <span class="badge badge-unpaid rounded-pill px-3 py-2">UNPAID</span>
+                                    {{/if}}
+                                </td>
+                                <td>{{formatDate date_create}}</td>
+                                <td class="text-end pe-3">
+                                    <a class="btn btn-sm btn-outline-primary" href="/admin/invoices/{{invoice_id}}" title="View Details">
+                                        <i class="bi bi-eye"></i> View
+                                    </a>
+                                </td>
+                            </tr>
                             {{/each}}
-                            
-                            <li class="page-item {{#if (eq currentPage pageNumbers.length)}}disabled{{/if}}">
-                                <a class="page-link" href="?page={{add currentPage 1}}">
-                                    <i class="bi bi-chevron-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                    {{/if}}
+                        </tbody>
+                    </table>
                 {{/if}}
+            </div>
+
+            <div class="d-flex justify-content-start mt-4">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination mb-0">
+                        {{#each pageNumbers}}
+                        <li class="page-item {{#if active}}active{{/if}}">
+                            <a class="page-link" href="{{href}}">{{value}}</a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </nav>
+            </div>
             </div>
         </div>
     </div>
 </div>
+
+{{#section 'js'}}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle search form submission
+    const searchForm = document.querySelector('.search-form');
+    if (searchForm) {
+        searchForm.addEventListener('submit', function(e) {
+            const searchField = document.querySelector('select[name="field"]').value;
+            const searchQuery = document.querySelector('input[name="q"]').value.trim();
+            
+            // Check if trying to search with "All Fields"
+            if (searchField === 'all' && searchQuery !== '') {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Invalid Search',
+                    text: 'Please select a specific field to search. Search with "All Fields" is not allowed.',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    }
+                });
+                return false;
+            }
+            
+            // Check if search query is empty
+            if (searchQuery === '') {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Empty Search',
+                    text: 'Please enter a search term.',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    }
+                });
+                return false;
+            }
+        });
+    }
+});
+</script>
+{{/section}}
+
+{{#section 'js'}}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Show success notifications for invoice actions
+    const urlParams = new URLSearchParams(window.location.search);
+    const success = urlParams.get('success');
+    
+    if (success === 'edit') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Invoice updated successfully.',
+            timer: 3000,
+            showConfirmButton: false,
+            customClass: {
+                popup: 'swal2-popup'
+            }
+        });
+        // Clean URL
+        window.history.replaceState({}, '', '/admin/invoices');
+    }
+});
+</script>
+{{/section}}

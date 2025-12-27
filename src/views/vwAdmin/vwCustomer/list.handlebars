@@ -17,17 +17,18 @@
         min-height: 450px;
     }
     .pagination .page-link {
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 6px;
-        padding: 0;
-        border: 2px solid #2d5bff;
-        color: #2d5bff;
-        font-weight: bold;
-    }
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            padding: 0;
+            border: 2px solid #2d5bff;
+            color: #2d5bff;
+            margin: 0 3px;
+            font-weight: 600;
+        }
     .pagination .page-item.active .page-link {
         background-color: #2d5bff;
         color: white;
@@ -83,7 +84,7 @@
         <form action="/admin/customers" method="GET" class="search-form">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <select name="field" class="form-select border-dark" style="max-width: 150px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                    <select name="field" class="form-select border-dark" style="min-width: 180px; max-width: 180px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
                         <option value="all" {{#if (eq searchField 'all')}}selected{{/if}}>All Fields</option>
                         <option value="id" {{#if (eq searchField 'id')}}selected{{/if}}>ID</option>
                         <option value="name" {{#if (eq searchField 'name')}}selected{{/if}}>Name</option>
@@ -242,6 +243,64 @@
                 e.target.submit();
             });
         });
+    }
+    
+    // Handle search form submission validation
+    const searchForm = document.querySelector('.search-form');
+    if (searchForm) {
+        searchForm.addEventListener('submit', function(e) {
+            const searchField = document.querySelector('select[name="field"]').value;
+            const searchQuery = document.querySelector('input[name="q"]').value.trim();
+            
+            // Check if trying to search with "All Fields"
+            if (searchField === 'all' && searchQuery !== '') {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Invalid Search',
+                    text: 'Please select a specific field to search. Search with "All Fields" is not allowed.',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    }
+                });
+                return false;
+            }
+            
+            // Check if search query is empty
+            if (searchQuery === '') {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Empty Search',
+                    text: 'Please enter a search term.',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    }
+                });
+                return false;
+            }
+        });
+    }
+    
+    // Show success notifications
+    const urlParams = new URLSearchParams(window.location.search);
+    const success = urlParams.get('success');
+    
+    if (success === 'delete') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Customer deleted successfully.',
+            timer: 3000,
+            showConfirmButton: false,
+            customClass: {
+                popup: 'swal2-popup'
+            }
+        });
+        // Clean URL
+        window.history.replaceState({}, '', '/admin/customers');
     }
 </script>
 {{/section}}

@@ -21,6 +21,11 @@ router.get('/', async function (req, res) {
         // Search mode
         isSearchMode = true;
         
+        // Block search with 'all' fields
+        if (searchField === 'all') {
+            return res.redirect('back');
+        }
+        
         // Validate ID search - must be a number
         if ((searchField === 'id' || searchField === 'appointment_id') && isNaN(searchQuery)) {
             total = { count: 0 };
@@ -67,14 +72,21 @@ router.get('/', async function (req, res) {
         currentStatus: status,
         searchQuery: searchQuery,
         searchField: searchField,
-        isSearchMode: isSearchMode
+        isSearchMode: isSearchMode,
+        success: req.query.success
     });
 });
 
 // View invoice detail
 router.get('/:id', async function (req, res) {
     const invoice_id = req.params.id;
+
     const invoice = await invoiceService.getInvoiceByID(invoice_id);
+    const appointment = await appointmentService.getAppointmentByID(invoice.appointment_id);
+    const services = await appointmentService.getServicesForAppointment(appointment.appointment_id);
+
+        
+    const total = invoice.total_price - (invoice.total_price * invoice.discount / 100);
 
     if (!invoice) {
         return res.redirect('/admin/invoices');
@@ -82,7 +94,10 @@ router.get('/:id', async function (req, res) {
 
     res.render('vwAdmin/vwInvoice/view', {
         layout: 'admin-layout',
-        invoice: invoice
+        invoice: invoice,
+        appointment: appointment,
+        services: services,
+        total: total
     });
 });
 
@@ -127,11 +142,5 @@ router.post('/update-status/:id', async function (req, res) {
     res.redirect('/admin/invoices');
 });
 
-// Delete invoice
-router.post('/delete/:id', async function (req, res) {
-    const invoice_id = req.params.id;
-    await invoiceService.deleteInvoice(invoice_id);
-    res.redirect('/admin/invoices');
-});
 
 export default router;

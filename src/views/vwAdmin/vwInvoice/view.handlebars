@@ -2,46 +2,97 @@
     <style>
         .invoice-container {
             background: white;
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            max-width: 900px;
+            margin: 0 auto;
         }
         
-        .invoice-header {
-            border-bottom: 3px solid #2d5bff;
-            padding-bottom: 1.5rem;
-            margin-bottom: 2rem;
+        .invoice-brand {
+            color: #2b7de9;
+            font-weight: 800;
+            font-size: 2rem;
+            margin-bottom: 0;
+            font-family: 'Abhaya Libre', serif;
         }
         
-        .invoice-info-box {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 12px;
-            border-left: 4px solid #2d5bff;
+        .invoice-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+            padding: 25px;
+            background: #fafafa;
+            border-radius: 15px;
         }
         
         .info-label {
-            font-weight: 600;
-            color: #6c757d;
-            font-size: 0.9rem;
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+            font-weight: 700;
             margin-bottom: 0.3rem;
         }
         
         .info-value {
-            font-size: 1.1rem;
-            color: #212529;
-            font-weight: 500;
+            font-size: 1rem;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .invoice-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px 0;
+        }
+        
+        .invoice-table th {
+            background: #f8f9fa;
+            padding: 15px 12px;
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            border-bottom: 2px solid #eee;
+            font-weight: 700;
+        }
+        
+        .invoice-table td {
+            padding: 15px 12px;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        
+        .invoice-summary-box {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        .summary-total {
+            border-top: 2px solid #2b7de9;
+            margin-top: 15px;
+            padding-top: 15px;
+            color: #2b7de9;
+            font-weight: 800;
+            font-size: 1.4rem;
         }
         
         .badge-status {
-            font-size: 1rem;
-            padding: 0.5rem 1.5rem;
-        }
-        
-        .total-amount {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #28a745;
+            font-size: 0.85rem;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
         }
         
         @media print {
@@ -50,157 +101,154 @@
             }
             .invoice-container {
                 box-shadow: none;
+                max-width: 100%;
             }
         }
     </style>
 {{/section}}
 
-<div class="container-fluid">
+<div class="container-fluid py-4">
     <div class="row">
-        <div class="col-md-10 offset-md-1">
+        <div class="col-12">
             <!-- Action Buttons -->
             <div class="d-flex justify-content-between align-items-center mb-4 no-print">
-                <div class="d-flex align-items-center">
-                    <a href="/admin/invoices" class="btn btn-outline-secondary rounded-circle me-3">
+                <div class="d-flex align-items-center gap-3">
+                    <a href="/admin/invoices" class="btn btn-outline-secondary rounded-circle">
                         <i class="bi bi-arrow-left"></i>
                     </a>
-                    <h2 class="fw-bold mb-0" style="font-family: 'Abhaya Libre', serif;">INVOICE DETAILS</h2>
+                    <h4 class="mb-0 brand-font fw-bold text-uppercase">INVOICE DETAILS</h4>
                 </div>
-                <div class="btn-group">
-                    <button onclick="window.print()" class="btn btn-primary rounded-pill px-4">
-                        <i class="bi bi-printer me-2"></i>Print
-                    </button>
+                {{#if (eq invoice.payment_status 'unpaid')}}
+                <div class="d-flex gap-2">
                     <a href="/admin/invoices/edit/{{invoice.invoice_id}}" class="btn btn-outline-warning rounded-pill px-4">
                         <i class="bi bi-pencil me-2"></i>Edit
                     </a>
                 </div>
+                {{/if}}
             </div>
 
             <!-- Invoice Container -->
             <div class="invoice-container">
                 <!-- Invoice Header -->
-                <div class="invoice-header">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h1 class="fw-bold mb-3" style="font-family: 'Abhaya Libre', serif; color: #2d5bff;">
-                                INVOICE
-                            </h1>
-                            <p class="mb-1"><strong>Invoice ID:</strong> #{{invoice.invoice_id}}</p>
-                            <p class="mb-1"><strong>Invoice Date:</strong> {{formatDate invoice.invoice_date}}</p>
-                            {{#if invoice.payment_date}}
-                            <p class="mb-0"><strong>Payment Date:</strong> {{formatDate invoice.payment_date}}</p>
-                            {{/if}}
+                <div class="d-flex justify-content-between align-items-start mb-4">
+                    <div>
+                        <h4 class="invoice-brand">PetCareUS</h4>
+                        <p class="text-muted small mb-0">Quality health for your pets</p>
+                    </div>
+                    <div class="text-end">
+                        <span class="badge bg-light text-dark border p-2 fs-6">#INV-{{invoice.invoice_id}}</span>
+                        <p class="small text-muted mt-2 mb-0">Date: {{formatDate invoice.date_create}}</p>
+                    </div>
+                </div>
+
+                <!-- Invoice Details Grid -->
+                <div class="invoice-details-grid">
+                    <div>
+                        <div class="mb-3">
+                            <div class="info-label">Customer</div>
+                            <div class="info-value">{{invoice.customer_name}}</div>
                         </div>
-                        <div class="col-md-6 text-md-end">
-                            <h3 class="fw-bold mb-2" style="font-family: 'Abhaya Libre', serif;">PetCareUS</h3>
-                            <p class="mb-1">123 Pet Care Street</p>
-                            <p class="mb-1">Phone: (123) 456-7890</p>
-                            <p class="mb-0">Email: info@petcareus.com</p>
+                        <div>
+                            <div class="info-label">Pet Name</div>
+                            <div class="info-value"><i class="bi bi-paw-fill me-1 text-primary"></i> {{appointment.pet_name}}</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="mb-3">
+                            <div class="info-label">Appointment Time</div>
+                            <div class="info-value">{{formatDate appointment.date_start}} | {{appointment.time}}</div>
+                        </div>
+                        <div>
+                            <div class="info-label">Veterinarian</div>
+                            <div class="info-value">{{appointment.veterinarian_name}}</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Customer & Appointment Info -->
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <div class="invoice-info-box mb-3">
-                            <h5 class="fw-bold mb-3">
-                                <i class="bi bi-person-circle me-2"></i>Customer Information
-                            </h5>
-                            <div class="mb-2">
-                                <div class="info-label">Name:</div>
-                                <div class="info-value">{{invoice.customer_name}}</div>
-                            </div>
-                            <div class="mb-0">
-                                <div class="info-label">Phone:</div>
-                                <div class="info-value">{{invoice.customer_phone}}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="invoice-info-box mb-3">
-                            <h5 class="fw-bold mb-3">
-                                <i class="bi bi-calendar-check me-2"></i>Appointment Information
-                            </h5>
-                            <div class="mb-2">
-                                <div class="info-label">Appointment ID:</div>
-                                <div class="info-value">#{{invoice.appointment_id}}</div>
-                            </div>
-                            <div class="mb-2">
-                                <div class="info-label">Appointment Date:</div>
-                                <div class="info-value">{{formatDate invoice.appointment_date}}</div>
-                            </div>
-                            <div class="mb-0">
-                                <div class="info-label">Veterinarian:</div>
-                                <div class="info-value">{{invoice.veterinarian_name}}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Services Table -->
+                <table class="invoice-table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th class="text-center" style="width: 100px;">Quantity</th>
+                            <th class="text-end" style="width: 150px;">Price</th>
+                            <th class="text-end" style="width: 150px;">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each services}}
+                        <tr>
+                            <td>
+                                <strong>{{service_name}}</strong>
+                                <br><small class="text-muted">Professional Pet Service</small>
+                            </td>
+                            <td class="text-center">1</td>
+                            <td class="text-end">${{price}}</td>
+                            <td class="text-end fw-bold">${{price}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
 
-                <!-- Payment Details -->
-                <div class="row mb-4">
+                <!-- Payment & Summary Section -->
+                <div class="row mt-4">
                     <div class="col-md-6">
-                        <div class="invoice-info-box">
-                            <h5 class="fw-bold mb-3">
-                                <i class="bi bi-credit-card me-2"></i>Payment Details
-                            </h5>
-                            <div class="mb-2">
-                                <div class="info-label">Payment Status:</div>
-                                <div>
-                                    {{#if (eq invoice.payment_status 'paid')}}
-                                        <span class="badge badge-status bg-success">PAID</span>
-                                    {{else if (eq invoice.payment_status 'unpaid')}}
-                                        <span class="badge badge-status bg-danger">UNPAID</span>
-                                    {{else}}
-                                        <span class="badge badge-status bg-warning text-dark">PARTIAL</span>
-                                    {{/if}}
-                                </div>
+                        <div class="p-3 border rounded-3 bg-light">
+                            <div class="info-label mb-2">Payment Detail</div>
+                            <div class="small mt-2 d-flex justify-content-between">
+                                <span>Method:</span>
+                                <span class="fw-bold text-capitalize">{{invoice.payment_method}}</span>
                             </div>
-                            {{#if invoice.payment_method}}
-                            <div class="mb-0">
-                                <div class="info-label">Payment Method:</div>
-                                <div class="info-value text-capitalize">{{invoice.payment_method}}</div>
+                            <div class="small d-flex justify-content-between mt-1">
+                                <span>Status:</span>
+                                <span class="badge badge-status {{#if (eq invoice.payment_status 'paid')}}bg-success{{else if (eq invoice.payment_status 'unpaid')}}bg-danger{{else}}bg-warning text-dark{{/if}}">
+                                    {{invoice.payment_status}}
+                                </span>
                             </div>
-                            {{/if}}
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="invoice-info-box text-center py-4">
-                            <div class="info-label mb-2">TOTAL AMOUNT</div>
-                            <div class="total-amount">${{invoice.total_amount}}</div>
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span>${{invoice.total_price}}</span>
+                        </div>
+                        <div class="summary-row text-danger">
+                            <span>Discount:</span>
+                            <span>- {{invoice.discount}}%</span>
+                        </div>
+                        <div class="summary-total d-flex justify-content-between">
+                            <span>TOTAL:</span>
+                            <span>${{total}}</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- Notes -->
-                {{#if invoice.notes}}
-                <div class="invoice-info-box mb-4">
-                    <h5 class="fw-bold mb-3">
-                        <i class="bi bi-pencil-square me-2"></i>Notes
-                    </h5>
-                    <p class="mb-0">{{invoice.notes}}</p>
-                </div>
-                {{/if}}
 
                 <!-- Footer -->
-                <div class="text-center mt-5 pt-4 border-top">
-                    <p class="text-muted mb-0">Thank you for choosing PetCareUS!</p>
-                    <p class="text-muted small">For any questions regarding this invoice, please contact us.</p>
-                </div>
+                <p class="text-center text-muted small mt-5 mb-0">Thank you for trusting our clinic!</p>
             </div>
 
-            <!-- Status Update Form (Only for unpaid/partial) -->
-            {{#if (or (eq invoice.payment_status 'unpaid') (eq invoice.payment_status 'partial'))}}
-            <div class="card mt-4 border-2 rounded-4 no-print">
+            <!-- Status Update Form (Only for unpaid) -->
+            {{#if (eq invoice.payment_status 'unpaid')}}
+            <div class="card mt-4 border-0 rounded-4 shadow-sm no-print" style="max-width: 900px; margin: 2rem auto 0;">
                 <div class="card-body p-4">
-                    <h5 class="fw-bold mb-3">Update Payment Status</h5>
-                    <form method="POST" action="/admin/invoices/update-status/{{invoice.invoice_id}}" class="row align-items-end">
-                        <div class="col-md-8">
-                            <label class="form-label fw-bold">New Status:</label>
-                            <select name="status" class="form-select rounded-pill border-2" required>
+                    <h5 class="fw-bold mb-3">
+                        <i class="bi bi-credit-card me-2"></i>Update Payment Status
+                    </h5>
+                    <form method="POST" action="/admin/invoices/update-status/{{invoice.invoice_id}}" class="row align-items-end g-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold text-uppercase text-muted" style="font-size: 0.85rem;">Payment Method</label>
+                            <select name="payment_method" class="form-select rounded-pill">
+                                <option value="cash" {{#if (eq invoice.payment_method 'cash')}}selected{{/if}}>Cash</option>
+                                <option value="credit_card" {{#if (eq invoice.payment_method 'credit_card')}}selected{{/if}}>Credit Card</option>
+                                <option value="debit_card" {{#if (eq invoice.payment_method 'debit_card')}}selected{{/if}}>Debit Card</option>
+                                <option value="bank_transfer" {{#if (eq invoice.payment_method 'bank_transfer')}}selected{{/if}}>Bank Transfer</option>
+                                <option value="e_wallet" {{#if (eq invoice.payment_method 'e_wallet')}}selected{{/if}}>E-Wallet</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold text-uppercase text-muted" style="font-size: 0.85rem;">Payment Status</label>
+                            <select name="status" class="form-select rounded-pill" required>
                                 <option value="unpaid" {{#if (eq invoice.payment_status 'unpaid')}}selected{{/if}}>Unpaid</option>
-                                <option value="partial" {{#if (eq invoice.payment_status 'partial')}}selected{{/if}}>Partial Payment</option>
                                 <option value="paid">Paid</option>
                             </select>
                         </div>

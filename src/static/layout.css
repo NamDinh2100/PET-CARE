@@ -1,0 +1,35 @@
+/* Admin Layout Specific Styles */
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Admin Layout */
+.container-fluid.flex-grow-1 {
+    flex: 1;
+    display: flex;
+}
+
+.sidebar {
+    height: 100% !important;
+    overflow-y: auto;
+    display: block !important;
+}
+
+main {
+    min-height: auto !important;
+    flex: 1;
+}
+
+/* Admin-Specific Copyright Area Override */
+.copyright-area {
+    background-color: #1a1a1a;
+    color: #b0b0b0;
+    padding: 20px 0;
+    margin-top: 0;
+    border-top: 1px solid #333;
+}
+
+.copyright-area strong {
+    color: #fff;
+}

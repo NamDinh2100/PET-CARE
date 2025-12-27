@@ -1,66 +1,54 @@
 {{#section 'css'}}
 <style>
-    .page-container {
-        background-color: #f8f9fa;
-        min-height: 100vh;
-        padding: 20px 0;
-    }
-
     .pet-info-card {
         background: white;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        border: 3px solid #007bff;
-        max-width: 800px;
-        margin: 0 auto;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border: none;
+        overflow: hidden;
     }
 
     .pet-header {
-        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
-        color: white;
-        border-radius: 17px 17px 0 0;
-        padding: 25px 30px;
-        text-align: center;
-        position: relative;
+        background: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+        padding: 1.5rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .pet-title {
-        font-size: 2rem;
-        font-weight: 800;
+        font-size: 1.5rem;
+        font-weight: 700;
         margin: 0;
         font-family: 'Abhaya Libre', serif;
         text-transform: uppercase;
-        letter-spacing: 2px;
+        color: #2c3e50;
+        letter-spacing: 0.5px;
     }
 
     .close-button {
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(255, 255, 255, 0.2);
-        border: 2px solid white;
+        background: #dc3545;
+        border: none;
         color: white;
-        border-radius: 50%;
-        padding: 10px;
+        border-radius: 8px;
+        padding: 8px 16px;
         text-decoration: none;
         font-weight: 600;
         transition: all 0.3s ease;
-        width: 45px;
-        height: 45px;
         display: flex;
         align-items: center;
-        justify-content: center;
+        gap: 8px;
+        font-size: 0.9rem;
     }
 
     .close-button:hover {
-        background: white;
-        color: #007bff;
-        transform: translateY(-50%) scale(1.1);
+        background: #c82333;
+        color: white;
     }
 
     .pet-content {
-        padding: 40px;
+        padding: 2rem;
     }
 
     .pet-label {
@@ -105,7 +93,7 @@
     }
 
     .btn-primary-custom {
-        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        background: #007bff;
         border: none;
         border-radius: 50px;
         padding: 15px 40px;
@@ -121,11 +109,11 @@
     .btn-primary-custom:hover {
         transform: translateY(-3px);
         box-shadow: 0 12px 35px rgba(0, 123, 255, 0.4);
-        background: linear-gradient(135deg, #0056b3 0%, #004494 100%);
+        background: #0056b3;
     }
 
     .btn-success-custom {
-        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+        background: #28a745;
         border: none;
         border-radius: 50px;
         padding: 15px 40px;
@@ -141,7 +129,7 @@
     .btn-success-custom:hover {
         transform: translateY(-3px);
         box-shadow: 0 12px 35px rgba(40, 167, 69, 0.4);
-        background: linear-gradient(135deg, #1e7e34 0%, #155724 100%);
+        background: #1e7e34;
     }
 
     .no-pet-section {
@@ -240,16 +228,14 @@
 </style>
 {{/section}}
 
-<div class="page-container">
-    <div class="container">
-        <div class="pet-info-card">
-            <!-- Header Section -->
-            <div class="pet-header">
-                <h1 class="pet-title">Pet Information</h1>
-                <a href="javascript:history.back()" class="close-button">
-                    <i class="bi bi-x-lg"></i>
-                </a>
-            </div>
+<div class="container-fluid py-4">
+    <a href="javascript:history.back()" class="text-dark text-decoration-none"><i class="bi bi-arrow-left fs-4"></i></a>
+    <div class="pet-info-card">
+        <!-- Header Section -->
+        <div class="pet-header">
+            <h1 class="pet-title">Pet Information</h1>
+            
+        </div>
 
             <!-- Content Section -->
             <div class="pet-content">
@@ -293,10 +279,10 @@
                     </form>
 
                     <div class="action-buttons">
-                        <a href="/vet/appointment/pet-info/medical-history?pet_id={{pet.pet_id}}" class="btn btn-primary-custom">
+                        <a href="/vet/appointment/pet-info/medical-history?pet_id={{pet.pet_id}}" class="btn btn-outline-primary">
                             <i class="bi bi-clock-history me-2"></i>View History
                         </a>
-                        <button type="submit" form="petEditForm" class="btn btn-success-custom" id="saveBtn">
+                        <button type="submit" form="petEditForm" class="btn btn-outline-success" id="saveBtn">
                             <i class="bi bi-check-circle me-2"></i>Save Changes
                         </button>
                     </div>
@@ -428,34 +414,28 @@ function resetForm() {
 }
 
 function showNotification(message, type = 'success') {
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `alert alert-${type} position-fixed`;
-    notification.style.cssText = `
-        top: 20px; 
-        right: 20px; 
-        z-index: 1060; 
-        min-width: 300px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        border-radius: 10px;
-    `;
-    notification.innerHTML = `
-        <i class="bi bi-${type === 'success' ? 'check-circle' : 'info-circle'} me-2"></i>
-        ${message}
-    `;
+    const iconMap = {
+        'success': 'check-circle',
+        'error': 'exclamation-circle',
+        'warning': 'exclamation-triangle',
+        'info': 'info-circle',
+        'danger': 'exclamation-circle'
+    };
     
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        notification.style.opacity = '0';
-        notification.style.transition = 'opacity 0.3s ease';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
-    }, 3000);
+    const typeMap = {
+        'success': 'success',
+        'error': 'error',
+        'warning': 'warning',
+        'info': 'info',
+        'danger': 'error'
+    };
+
+    Swal.fire({
+        title: type.charAt(0).toUpperCase() + type.slice(1),
+        text: message,
+        icon: typeMap[type],
+        confirmButtonText: 'OK'
+    });
 }
 
 // Form submission handling

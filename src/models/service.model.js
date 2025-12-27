@@ -8,6 +8,10 @@ export function getServiceByID(service_id) {
     return db('services').where('service_id', service_id).first();
 }
 
+export function getServiceByName(name) {
+    return db('services').where('service_name', 'like', `%${name}%`);
+}
+
 export function countByService() {
     return db('services')
     .count('service_id as count').first();
@@ -26,14 +30,6 @@ export function addService(service) {
 
 export function updateService(id, service) {
     return db('services').where('service_id', id).update(service);
-}
-
-export function deleteService(id) {
-    return db('services').where('service_id', id).del();
-}
-
-export function getServiceByName(name) {
-    return db('services').where('service_name', 'like', `%${name}%`);
 }
 
 export function getServiceByAppointmentID(appointment_id) {

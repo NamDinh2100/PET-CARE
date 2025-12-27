@@ -1,74 +1,61 @@
 {{#section 'css'}}
 <style>
-    .page-container {
-        background-color: #f8f9fa;
-        min-height: 100vh;
-        padding: 20px 0;
-    }
-
     .history-card {
         background: white;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        border: 3px solid #17a2b8;
-        max-width: 1200px;
-        margin: 0 auto;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border: none;
+        overflow: hidden;
     }
 
     .history-header {
-        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
-        color: white;
-        border-radius: 17px 17px 0 0;
-        padding: 25px 30px;
-        text-align: center;
-        position: relative;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-bottom: 2px solid #dee2e6;
+        padding: 1.5rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .history-title {
-        font-size: 2rem;
-        font-weight: 800;
+        font-size: 1.5rem;
+        font-weight: 700;
         margin: 0;
         font-family: 'Abhaya Libre', serif;
         text-transform: uppercase;
-        letter-spacing: 2px;
+        color: #2c3e50;
+        letter-spacing: 0.5px;
     }
 
     .close-button {
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(255, 255, 255, 0.2);
-        border: 2px solid white;
+        background: #dc3545;
+        border: none;
         color: white;
-        border-radius: 50%;
-        padding: 10px;
+        border-radius: 8px;
+        padding: 8px 16px;
         text-decoration: none;
         font-weight: 600;
         transition: all 0.3s ease;
-        width: 45px;
-        height: 45px;
         display: flex;
         align-items: center;
-        justify-content: center;
+        gap: 8px;
+        font-size: 0.9rem;
     }
 
     .close-button:hover {
-        background: white;
-        color: #17a2b8;
-        transform: translateY(-50%) scale(1.1);
+        background: #c82333;
+        color: white;
     }
 
     .history-content {
-        padding: 40px;
+        padding: 2rem;
     }
 
     .history-table {
         background: white;
-        border-radius: 15px;
+        border-radius: 8px;
         overflow: hidden;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        border: 1px solid #e9ecef;
+        border: 1px solid #dee2e6;
     }
 
     .table-header {
@@ -88,7 +75,6 @@
 
     .table-row:hover {
         background-color: #f8f9fa;
-        transform: translateY(-1px);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
@@ -196,54 +182,19 @@
         color: white;
     }
 
-    @media (max-width: 768px) {
-        .history-card {
-            margin: 10px;
-            border-radius: 15px;
-        }
-        
-        .history-header {
-            padding: 20px 15px;
-            border-radius: 12px 12px 0 0;
-        }
-        
-        .history-title {
-            font-size: 1.5rem;
-        }
-        
-        .close-button {
-            right: 15px;
-            width: 40px;
-            height: 40px;
-            padding: 8px;
-        }
-        
-        .history-content {
-            padding: 20px;
-        }
-        
-        .table-cell {
-            padding: 10px 15px;
-            font-size: 0.9rem;
-        }
-        
-        .note-text {
-            max-width: 120px;
-        }
-    }
 </style>
 {{/section}}
 
-<div class="page-container">
-    <div class="container">
-        <div class="history-card">
-            <!-- Header Section -->
-            <div class="history-header">
-                <h1 class="history-title">Medical History</h1>
-                <a href="javascript:history.back()" class="close-button">
-                    <i class="bi bi-x-lg"></i>
-                </a>
-            </div>
+<div class="container-fluid py-4">
+    <a href="javascript:history.back()" class="text-dark text-decoration-none"><i class="bi bi-arrow-left fs-4"></i></a>
+    <div class="history-card">
+        
+        
+        <!-- Header Section -->
+        <div class="history-header">
+            <h1 class="history-title">Medical History</h1>
+            
+        </div>
 
             <!-- Content Section -->
             <div class="history-content">
@@ -320,23 +271,29 @@
                             This pet doesn't have any medical history yet. Medical records will appear here after completed appointments.
                         </p>
                         
-                        <a href="javascript:history.back()" class="back-button">
+                        <a href="javascript:history.back()" class="btn btn-outline-dark">
                             <i class="bi bi-arrow-left me-2"></i>Back to Pet Info
                         </a>
                     </div>
                 {{/if}}
             </div>
-        </div>
     </div>
 </div>
 
 {{#section 'js'}}
 <script>
 function viewDetails(appointmentId) {
-    // You can implement appointment details modal or redirect here
-    alert('View details for appointment ID: ' + appointmentId);
-    // Example: redirect to appointment details page
-    // window.location.href = `/vet/appointment/details/${appointmentId}`;
+    Swal.fire({
+        icon: 'info',
+        title: 'Appointment Details',
+        text: 'Redirecting to appointment details page...',
+        confirmButtonColor: '#2d5bff',
+        timer: 1500,
+        timerProgressBar: true
+    }).then(() => {
+        // Example: redirect to appointment details page
+        // window.location.href = `/vet/appointment/details/${appointmentId}`;
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -345,11 +302,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     tableRows.forEach(row => {
         row.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-2px)';
+            // No transform effect
         });
         
         row.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
+            // No transform effect
         });
     });
     
@@ -359,7 +316,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (element.scrollWidth > element.clientWidth) {
             element.style.cursor = 'help';
             element.addEventListener('click', function() {
-                alert('Full note: ' + this.getAttribute('title'));
+                Swal.fire({
+                    title: 'Full Note',
+                    text: this.getAttribute('title'),
+                    icon: 'info',
+                    confirmButtonColor: '#2d5bff',
+                    width: '600px'
+                });
             });
         }
     });

@@ -1,16 +1,26 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
-import * as userService from '../models/user.model.js';
-import * as serviceService from '../models/service.model.js';
-import * as appointmentService from '../models/appointment.model.js';
-import * as petService from '../models/pet.model.js';
-import * as medicineService from '../models/medicine.model.js';
-import * as emailService from '../models/email.model.js';
+import * as userService from '../../models/user.model.js';
+import * as serviceService from '../../models/service.model.js';
+import * as appointmentService from '../../models/appointment.model.js';
+import * as petService from '../../models/pet.model.js';
+import * as medicineService from '../../models/medicine.model.js';
+import * as emailService from '../../models/email.model.js';
+import * as employeeService from '../../models/employee.model.js';
 
 const router = express.Router();
 
-router.get('/', function (req, res) {
-    res.render('vwAccounts/home');
+router.get('/', async function (req, res) {
+    const services = await serviceService.getAllServices();
+    const employees = await employeeService.getAllVeterinarians();
+    
+    if (!req.session.isAuth) {
+        req.session.isAuth = false;
+    }
+    res.render('vwAccounts/home', {
+        services: services,
+        employees: employees
+    });
 });
 
 router.get('/signup', function (req, res) {
@@ -63,8 +73,6 @@ router.post('/signin', async function (req, res) {
     req.session.authUser = user;
     req.session.serviceList = serviceList;
 
-    console.log('User logged in:', req.session.authUser);
-
     let url;
     if (user.role !== 'customer')
     {
@@ -97,6 +105,8 @@ router.post('/signin', async function (req, res) {
 router.post('/signout', function (req, res) {
     req.session.isAuth = false;
     delete req.session.authUser;
+    delete req.session.serviceList;
+    delete req.session.pets;
     res.redirect('/');
 });
 
@@ -132,5 +142,10 @@ router.post('/forgot-password', async function (req, res) {
         success_message: 'A new password has been sent to your email.'
     });
 });
+
+
+
+    
+
 
 export default router;

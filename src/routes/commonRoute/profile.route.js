@@ -1,39 +1,24 @@
 import express from 'express';
 import * as userService from '../../models/user.model.js';
-import bcrypt from 'bcryptjs';
 
 const router = express.Router();
 
+// GET /profile - View profile for all roles
 router.get('/', async function (req, res) {
-    const user = await userService.getUserByEmail(req.session.authUser.email);
     const success = req.query.success;
     const error = req.query.error;
+    
+    // Lấy thông tin user đầy đủ từ database
+    const user = await userService.getUserByEmail(req.session.authUser.email);
 
-    res.render('vwCustomer/profile', {
+    res.render('vwAccounts/profile', {
         user: user,
-        activeTab: 'profile',
         success: success,
-        error: error
+        error: error,
     });
 });
 
-router.post('/update', async function (req, res) {
-    const userId = req.session.authUser.user_id;
-    const updatedUser = {
-        full_name: req.body.full_name,
-        phone: req.body.phone
-    };
-
-    await userService.updateUser(userId, updatedUser);
-
-    // Update session
-    req.session.authUser.full_name = updatedUser.full_name;
-    req.session.authUser.phone = updatedUser.phone;
-
-    res.redirect('/profile?success=updated');
-});
-
-router.post('/password', async function (req, res) {
+router.post('/change-password', async function (req, res) {
     const user = await userService.getUserByEmail(req.session.authUser.email);
 
     const isMatch = bcrypt.compareSync(req.body.current_password, user.password);
@@ -49,6 +34,24 @@ router.post('/password', async function (req, res) {
     await userService.updatePassword(user.user_id, hashPassword);
 
     res.redirect('/profile?success=password_changed');
+});
+
+router.post('/update', async function (req, res) {
+    const userId = req.session.authUser.user_id;
+    const updatedUser = {
+        full_name: req.body.full_name,
+        phone: req.body.phone,
+        address: req.body.address
+    };
+
+    await userService.updateUser(userId, updatedUser);
+
+    // Update session
+    req.session.authUser.full_name = updatedUser.full_name;
+    req.session.authUser.phone = updatedUser.phone;
+    req.session.authUser.address = updatedUser.address;
+
+    res.redirect('/profile?success=updated');
 });
 
 export default router;

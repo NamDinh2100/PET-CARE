@@ -102,10 +102,8 @@ router.get('/:id/invoice', async function (req, res) {
         // Calculate totals
         let subtotal = 0;
         services.forEach(service => {
-            subtotal += parseFloat(service.price) || 0;
+            subtotal += parseFloat(service.base_price) || 0;
         });
-
-        console.log('Invoice details:', invoice);
         
         const discount = invoice.discount ? parseFloat(invoice.discount) : 0; // Can be customized based on your business logic
         const total = subtotal - (subtotal * discount / 100);

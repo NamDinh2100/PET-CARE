@@ -2,83 +2,312 @@
 <style>
     :root {
         --primary-blue: #2d6bfd;
-        --edit-red: #ff0033;
+        --secondary-blue: #4a7ffe;
+        --success-green: #10b981;
+        --light-bg: #f8fafc;
+        --border-color: #e2e8f0;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+    }
+
+    /* Container and Card Styles */
+    .schedule-container {
+        background: linear-gradient(135deg, #f0f4f8 0%, #f9fbfd 100%);
+        padding: 2rem 0;
+        min-height: 100vh;
+    }
+
+    .content-card {
+        background: white;
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: box-shadow 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content-card:hover {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Card Header */
+    .card-header {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        border-bottom: 2px solid var(--border-color) !important;
+        padding: 1.5rem 2rem !important;
+    }
+
+    .card-header .fs-4 {
+        color: var(--text-primary);
+        font-family: 'Abhaya Libre', serif;
+        letter-spacing: 0.5px;
+    }
+
+    /* Day Names Header */
+    .row.m-0.pt-3 {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border-bottom: 2px solid var(--border-color) !important;
+        padding: 1rem 0 !important;
+    }
+
+    .day-name {
+        color: var(--text-primary);
+        font-weight: 700;
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
     }
 
     /* Custom styles for calendar grid alignment */
     .calendar-grid-custom {
-        display: flex;
-        flex-wrap: wrap;
-        padding: 10px; /* Adjust padding for inner grid */
-    }
-
-    .day-col {
-        /* Set width for 7 columns, using flex-basis to ensure proper wrapping */
-        flex-basis: calc(100% / 7); 
-        max-width: calc(100% / 7);
-        padding: 5px; /* Spacing between days */
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 8px;
+        padding: 20px;
+        background: white;
+        box-sizing: border-box;
     }
 
     /* Style for the day cell itself */
     .calendar-day-custom {
-        aspect-ratio: 1; /* Make it a square */
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 0.5rem; /* Equivalent to Bootstrap's rounded-2/3 */
+        border-radius: 12px;
         font-weight: 600;
-        background: #f8f9fa; /* Light background for empty days */
-        border: 1px solid #dee2e6;
+        background: var(--light-bg);
+        border: 2px solid var(--border-color);
         cursor: pointer;
-        transition: all 0.2s;
-        height: 100%; /* Fill the padded column */
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        min-height: 50px;
     }
 
     .calendar-day-custom.empty {
-        background: #e9ecef; /* Lighter background for empty cells outside the month */
+        background: #fafbfc;
         cursor: default;
-        border-color: #f8f9fa;
+        border-color: #f5f7fa;
     }
 
     .calendar-day-custom.has-appointment {
-        background: var(--primary-blue);
+        background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
         color: white;
         border-color: var(--primary-blue);
         font-weight: 700;
-        box-shadow: 0 4px 10px rgba(45, 107, 253, 0.3);
+        box-shadow: 0 8px 20px rgba(45, 107, 253, 0.25);
+        position: relative;
+    }
+
+    .calendar-day-custom.has-appointment::before {
+        content: '';
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 8px;
+        height: 8px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
     }
 
     .calendar-day-custom.has-appointment.completed {
-        background: #198754; /* Bootstrap success green */
-        border-color: #198754;
-        box-shadow: 0 4px 10px rgba(25, 135, 84, 0.3);
+        background: linear-gradient(135deg, var(--success-green) 0%, #059669 100%);
+        border-color: var(--success-green);
+        box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25);
     }
 
-    .calendar-day-custom.has-appointment:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(45, 107, 253, 0.4);
+    .calendar-day-custom.has-appointment:hover:not(.empty) {
+        box-shadow: 0 12px 28px rgba(45, 107, 253, 0.35);
     }
 
     .calendar-day-custom.has-appointment.completed:hover {
-        box-shadow: 0 6px 15px rgba(25, 135, 84, 0.4);
+        box-shadow: 0 12px 28px rgba(16, 185, 129, 0.35);
     }
 
+    /* Navigation Buttons */
     .btn-edit-custom {
-        background-color: var(--edit-red);
+        background-color: var(--primary-blue);
         color: white;
-        border: 2px solid #a30020;
-        padding: 0.25rem 1rem;
-        border-radius: 0.5rem;
-        font-weight: bold;
-        display: flex;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 10px;
+        font-weight: 600;
+        display: inline-flex;
         align-items: center;
         gap: 8px;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-size: 0.95rem;
     }
 
     .btn-edit-custom:hover {
-        background-color: #cc0029;
+        background-color: var(--secondary-blue);
+        box-shadow: 0 6px 16px rgba(45, 107, 253, 0.25);
         color: white;
+    }
+
+    .btn-edit-custom:active {
+        opacity: 0.9;
+    }
+
+    #monthYear {
+        font-family: 'Abhaya Libre', serif;
+        color: var(--text-primary);
+        min-width: 200px;
+        text-align: center;
+    }
+
+    /* Card Footer */
+    .card-footer {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border-top: 2px solid var(--border-color) !important;
+        padding: 1.5rem 2rem !important;
+    }
+
+    /* Legend Styles */
+    .legend-color {
+        transition: all 0.3s ease;
+    }
+
+    .d-flex.gap-4 > div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .d-flex.gap-4 > div:hover {
+        background: rgba(255, 255, 255, 1);
+    }
+
+    .small.fw-semibold {
+        color: var(--text-primary);
+        font-size: 0.9rem;
+    }
+
+    #totalAppointments {
+        color: var(--text-primary);
+        font-size: 1rem;
+        background: linear-gradient(135deg, rgba(45, 107, 253, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+    }
+
+    /* Appointment Detail Popup Styles */
+    .appointment-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 12px;
+        text-align: left;
+        transition: all 0.2s ease;
+    }
+
+    .appointment-card:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+    }
+
+    .appointment-card:last-child {
+        margin-bottom: 0;
+    }
+
+    .appointment-card .info-row {
+        display: flex;
+        margin-bottom: 8px;
+        align-items: flex-start;
+    }
+
+    .appointment-card .info-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .appointment-card .info-label {
+        font-weight: 600;
+        color: #64748b;
+        min-width: 100px;
+        font-size: 0.85rem;
+    }
+
+    .appointment-card .info-value {
+        color: #1e293b;
+        font-size: 0.9rem;
+        flex: 1;
+    }
+
+    .appointment-card .status-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .appointment-card .status-confirmed {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    .appointment-card .status-completed {
+        background: #dcfce7;
+        color: #16a34a;
+    }
+
+    .appointment-card .status-cancelled {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    .appointment-card .status-pending {
+        background: #fef3c7;
+        color: #d97706;
+    }
+
+    .appointment-card .status-scheduled {
+        background: #f3e8ff;
+        color: #7c3aed;
+    }
+
+    .appointment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .appointment-header .time {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--primary-blue);
+    }
+
+    .popup-title {
+        font-family: 'Abhaya Libre', serif;
+        color: #1e293b;
+    }
+
+    .btn-view-detail {
+        background: var(--primary-blue);
+        color: white;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .btn-view-detail:hover {
+        background: var(--secondary-blue);
     }
 </style>
 
@@ -87,7 +316,7 @@
 <div class="container-fluid schedule-container">
     <div class="card shadow-lg content-card border-2">
         <div class="card-header bg-light p-3 border-bottom d-flex justify-content-between align-items-center">
-            <span class="fs-4 fw-bold text-uppercase">Work Schedule</span>
+            <span class="fs-4 fw-bold text-uppercase">Schedule</span>
             <div class="d-flex gap-2 align-items-center">
                 <button class="btn btn-sm btn-edit-custom" onclick="previousMonth()" title="Previous Month">
                     <i class="fa-solid fa-chevron-left"></i>
@@ -100,19 +329,19 @@
         </div>
 
         <div class="row m-0 pt-3 pb-2 fw-bold text-center border-bottom bg-white">
-            <div class="col day-name">Mon</div>
-            <div class="col day-name">Tue</div>
-            <div class="col day-name">Wed</div>
-            <div class="col day-name">Thu</div>
-            <div class="col day-name">Fri</div>
-            <div class="col day-name">Sat</div>
-            <div class="col day-name">Sun</div>
+            <div class="col day-name" style="width: calc(100% / 7); max-width: calc(100% / 7);">Mon</div>
+            <div class="col day-name" style="width: calc(100% / 7); max-width: calc(100% / 7);">Tue</div>
+            <div class="col day-name" style="width: calc(100% / 7); max-width: calc(100% / 7);">Wed</div>
+            <div class="col day-name" style="width: calc(100% / 7); max-width: calc(100% / 7);">Thu</div>
+            <div class="col day-name" style="width: calc(100% / 7); max-width: calc(100% / 7);">Fri</div>
+            <div class="col day-name" style="width: calc(100% / 7); max-width: calc(100% / 7);">Sat</div>
+            <div class="col day-name" style="width: calc(100% / 7); max-width: calc(100% / 7);">Sun</div>
         </div>
 
-        <div class="row g-0 flex-grow-1 bg-white calendar-grid-custom" id="calendarGrid">
-            </div>
+        <div class="calendar-grid-custom" id="calendarGrid">
+        </div>
 
-        <div class="card-footer bg-light p-3 d-flex justify-content-between align-items-center border-top">
+        <div class="card-footer bg-light p-3 d-flex justify-content-between align-items-center border-top" style="flex-shrink: 0;">
             <div class="d-flex gap-4 align-items-center">
                 <div class="d-flex align-items-center gap-2">
                     <div class="legend-color active rounded-3 border border-secondary" style="width: 30px; height: 30px; background-color: var(--primary-blue);"></div>
@@ -148,6 +377,49 @@
         appointmentDates.get(dateKey).push(apt);
     });
 
+    // Helper function to format time
+    function formatTime(timeString) {
+        if (!timeString) return 'N/A';
+        if (timeString.length >= 5) {
+            return timeString.substring(0, 5);
+        }
+        return timeString;
+    }
+
+    // Helper function to format date
+    function formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+
+    // Helper function to get status class
+    function getStatusClass(status) {
+        const statusMap = {
+            'confirmed': 'status-confirmed',
+            'completed': 'status-completed',
+            'cancelled': 'status-cancelled',
+            'scheduled': 'status-scheduled'
+        };
+        return statusMap[status];
+    }
+
+    // Helper function to get status display text
+    function getStatusText(status) {
+        const statusMap = {
+            'confirmed': 'Confirmed',
+            'completed': 'Completed',
+            'cancelled': 'Cancelled',
+            'scheduled': 'Scheduled'
+        };
+        return statusMap[status] || status;
+    }
+
     function renderCalendar() {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
@@ -164,30 +436,29 @@
         // Adjust for Monday start (0 = Sunday, convert to 1 = Monday)
         const startDay = firstDay === 0 ? 6 : firstDay - 1;
 
+        // Calculate required number of rows
+        const totalCells = startDay + daysInMonth;
+        const requiredRows = Math.ceil(totalCells / 7);
+
         const grid = document.getElementById('calendarGrid');
         grid.innerHTML = '';
+        
+        // Update grid rows dynamically
+        grid.style.gridTemplateRows = `repeat(${requiredRows}, minmax(60px, 1fr))`;
 
         let totalDaysRendered = 0;
         
         // Add empty cells for days before month starts
         for (let i = 0; i < startDay; i++) {
-            const dayCol = document.createElement('div');
-            dayCol.className = 'day-col';
-            
             const emptyCell = document.createElement('div');
             emptyCell.className = 'calendar-day-custom empty';
-            dayCol.appendChild(emptyCell);
-            
-            grid.appendChild(dayCol);
+            grid.appendChild(emptyCell);
             totalDaysRendered++;
         }
 
         // Add day cells
         let appointmentCount = 0;
         for (let day = 1; day <= daysInMonth; day++) {
-            const dayCol = document.createElement('div');
-            dayCol.className = 'day-col';
-
             const dayCell = document.createElement('div');
             dayCell.className = 'calendar-day-custom';
             dayCell.textContent = day;
@@ -210,24 +481,17 @@
                 dayCell.onclick = () => showDayDetails(dateKey, dayAppointments);
             }
 
-            dayCol.appendChild(dayCell);
-            grid.appendChild(dayCol);
+            grid.appendChild(dayCell);
             totalDaysRendered++;
         }
 
-        // Add empty cells for the remaining days of the last week (to complete the row)
-        const remainingCells = 7 - (totalDaysRendered % 7);
-        if (remainingCells !== 7) {
-             for (let i = 0; i < remainingCells; i++) {
-                const dayCol = document.createElement('div');
-                dayCol.className = 'day-col';
-                
-                const emptyCell = document.createElement('div');
-                emptyCell.className = 'calendar-day-custom empty';
-                dayCol.appendChild(emptyCell);
-                
-                grid.appendChild(dayCol);
-            }
+        // Add empty cells only to complete the last row
+        const totalRequiredCells = requiredRows * 7;
+        const remainingCells = totalRequiredCells - totalDaysRendered;
+        for (let i = 0; i < remainingCells; i++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.className = 'calendar-day-custom empty';
+            grid.appendChild(emptyCell);
         }
         
         // Update total appointments count
@@ -245,12 +509,88 @@
     }
 
     function showDayDetails(dateKey, dayAppointments) {
-        const appointments = dayAppointments.map(apt => {
-            const statusText = apt.status === 'scheduled' ? 'Scheduled' : 'Completed';
-            return `- ${apt.full_name}: ${statusText}`;
-        }).join('\n');
+        // Sort appointments by time
+        dayAppointments.sort((a, b) => {
+            const timeA = a.time || '00:00';
+            const timeB = b.time || '00:00';
+            return timeA.localeCompare(timeB);
+        });
+
+        const appointmentsHtml = dayAppointments.map((apt, index) => {
+            // Parse services if available
+            let servicesText = 'N/A';
+            if (apt.services) {
+                try {
+                    const servicesArray = Array.isArray(apt.services) ? apt.services : JSON.parse(apt.services);
+                    if (servicesArray.length > 0) {
+                        servicesText = servicesArray.map(s => s.service_name || s).join(', ');
+                    }
+                } catch (e) {
+                    servicesText = apt.services;
+                }
+            }
+
+            return `
+                <div class="appointment-card">
+                    <div class="appointment-header">
+                        <span class="time">
+                            <i class="fa-regular fa-clock me-1"></i>
+                            ${formatTime(apt.time) || 'Not specified'}
+                        </span>
+                        <span class="status-badge ${getStatusClass(apt.status)}">
+                            ${getStatusText(apt.status)}
+                        </span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label"><i class="fa-regular fa-user me-1"></i> Customer:</span>
+                        <span class="info-value">${apt.customer_name || apt.full_name || 'N/A'}</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label"><i class="fa-solid fa-stethoscope me-1"></i> Services:</span>
+                        <span class="info-value">${servicesText}</span>
+                    </div>
+                    
+                    ${apt.note ? `
+                    <div class="info-row">
+                        <span class="info-label"><i class="fa-regular fa-note-sticky me-1"></i> Note:</span>
+                        <span class="info-value">${apt.note}</span>
+                    </div>
+                    ` : ''}
+                    
+                    <div class="text-end mt-3">
+                        <a href="/vet/appointment?q=${apt.appointment_id}&field=id" class="btn-view-detail">
+                            <i class="fa-solid fa-eye me-1"></i> View Details
+                        </a>
+                    </div>
+                </div>
+            `;
+        }).join('');
         
-        alert(`Appointments for ${dateKey}:\n\n${appointments}`);
+        const formattedDate = formatDate(dateKey);
+        
+        Swal.fire({
+            title: `<div class="popup-title">Appointments</div>`,
+            html: `
+                <div style="margin-bottom: 15px; color: #64748b; font-size: 0.95rem;">
+                    <strong>${formattedDate}</strong> - ${dayAppointments.length} appointment(s)
+                </div>
+                <div style="max-height: 450px; overflow-y: auto; padding: 5px;">
+                    ${appointmentsHtml}
+                </div>
+            `,
+            showCloseButton: true,
+            showConfirmButton: true,
+            width: '650px',
+            customClass: {
+                popup: 'rounded-4'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/vet/appointment';
+            }
+        });
     }
 
     // Initial render
