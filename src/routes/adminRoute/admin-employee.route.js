@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/', async function (req, res) {
     const role = req.query.role;
     const searchQuery = req.query.q;
-    const searchField = req.query.field || 'all';
+    const searchField = req.query.field || '';
     const page = parseInt(req.query.page) || 1;
     const limit = 8;
     const offset = (page - 1) * limit;
@@ -18,14 +18,9 @@ router.get('/', async function (req, res) {
     let list;
     let isSearchMode = false;
 
-    if (searchQuery && searchQuery.trim()) {
-        // Search mode
+    if (searchQuery && searchQuery.trim() && searchField && searchField !== '') {
+        // Search mode - only if both query and field are provided
         isSearchMode = true;
-        
-        // Block search with 'all' fields
-        if (searchField === 'all') {
-            return res.redirect('back');
-        }
         
         // Validate ID search - must be a number
         if (searchField === 'id' && isNaN(searchQuery)) {
@@ -82,7 +77,13 @@ router.get('/add', async function (req, res) {
 });
 
 router.post('/add', async function (req, res) {
-
+    const check = await userService.getUserByEmail(req.body.email);
+    if (check) {
+        return res.render('vwAdmin/vwEmployee/add', {
+            err_message: 'Email already in use',
+            layout: 'admin-layout'
+        });
+    }
     const genPassword = emailService.generatePassword();
     try {
         const emailText = `Welcome to the our WEDSITE, ${req.body.full_name}!\nYour account has been created with the following credentials:
@@ -107,7 +108,10 @@ router.post('/add', async function (req, res) {
     };
 
     await userService.addUser(employee);
-    res.redirect('/admin/employees?success=add');
+    res.render('vwAdmin/vwEmployee/add', {
+        success_message: 'Employee added successfully! Login credentials have been sent to their email.',
+        layout: 'admin-layout'
+    });
 });
 
 router.get('/edit', async function (req, res) {

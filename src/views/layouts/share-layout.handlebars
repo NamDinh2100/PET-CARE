@@ -122,45 +122,44 @@
 
         <!-- Change Password Modal -->
         <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content rounded-4 border-2">
-                    <div class="modal-header bg-primary text-white rounded-top-4">
-                        <h5 class="modal-title fw-bold text-white" id="changePasswordModalLabel">
-                            <i class="bi bi-key me-2 text-white"></i>Change Password
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body p-4">
-                        <form id="changePasswordForm" method="POST" action="/change-password">
-                            <div class="mb-3">
-                                <label for="currentPassword" class="form-label fw-bold" style="font-family: 'Abhaya Libre', serif;">Current Password</label>
-                                <input type="password" class="form-control rounded-pill border-2 border-dark" id="currentPassword" name="current_password" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="newPassword" class="form-label fw-bold" style="font-family: 'Abhaya Libre', serif;">New Password</label>
-                                <input type="password" class="form-control rounded-pill border-2 border-dark" id="newPassword" name="new_password" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="confirmPassword" class="form-label fw-bold" style="font-family: 'Abhaya Libre', serif;">Confirm New Password</label>
-                                <input type="password" class="form-control rounded-pill border-2 border-dark" id="confirmPassword" name="confirm_password" required>
-                            </div>
-                            <div id="passwordError" class="alert alert-danger d-none" role="alert">
-                                <i class="bi bi-exclamation-triangle me-2"></i>
-                                <span id="errorMessage"></span>
-                            </div>
-                            <div id="passwordSuccess" class="alert alert-success d-none" role="alert">
-                                <i class="bi bi-check-circle me-2"></i>
-                                Password changed successfully!
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer border-0 px-4 pb-4">
-                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" form="changePasswordForm" class="btn btn-primary rounded-pill px-4">Change Password</button>
-                    </div>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border: 3px solid #0033ff; border-radius: 25px;">
+                <div class="modal-header text-white" style="background-color: #0900b8; border-bottom: 2px solid #a58f8f; border-radius: 0px 0px 0 0; padding-top: 15px; padding-bottom: 15px;">
+                    <h5 class="modal-title fw-bold" id="changePasswordModalLabel" style="font-family: 'Abhaya Libre', serif;">
+                        <i class="bi bi-key me-2"></i>CHANGE PASSWORD
+                    </h5>
+                    <button type="button" class="btn-close btn-close-red" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="changePasswordForm" method="POST" action="/profile/change-password">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label fw-bold" style="font-family: 'Abhaya Libre', serif;">Current Password</label>
+                            <input type="password" class="form-control rounded-pill border-2 border-dark" id="currentPassword" name="current_password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label fw-bold" style="font-family: 'Abhaya Libre', serif;">New Password</label>
+                            <input type="password" class="form-control rounded-pill border-2 border-dark" id="newPassword" name="new_password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label fw-bold" style="font-family: 'Abhaya Libre', serif;">Confirm New Password</label>
+                            <input type="password" class="form-control rounded-pill border-2 border-dark" id="confirmPassword" name="confirm_password" required>
+                        </div>
+                        <div id="passwordError" class="alert alert-danger d-none" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <span id="errorMessage"></span>
+                        </div>
+                        <div id="passwordSuccess" class="alert alert-success d-none" role="alert">
+                            <i class="bi bi-check-circle me-2"></i>
+                            Password changed successfully!
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0 px-4 pb-4">
+                    <button type="submit" form="changePasswordForm" class="btn btn-outline-primary px-4">Change Password</button>
                 </div>
             </div>
         </div>
+    </div>
     
     
 

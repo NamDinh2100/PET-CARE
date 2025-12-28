@@ -1,9 +1,9 @@
 import express from 'express';
+import bcrypt from 'bcryptjs';
 import * as userService from '../../models/user.model.js';
 
 const router = express.Router();
 
-// GET /profile - View profile for all roles
 router.get('/', async function (req, res) {
     const success = req.query.success;
     const error = req.query.error;

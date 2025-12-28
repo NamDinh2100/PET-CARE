@@ -75,10 +75,10 @@ export function searchMedicines(field, query, limit, offset) {
                 .offset(offset)
                 .orderBy('medicine_id', 'asc');
         default:
+            // Search text fields only (exclude medicine_id as it requires a number)
             return baseQuery
                 .where(function() {
-                    this.where('medicine_id', '=', query)
-                        .orWhere('name', 'ilike', `%${query}%`)
+                    this.where('medicine_name', 'ilike', `%${query}%`)
                         .orWhere('form', 'ilike', `%${query}%`)
                         .orWhere('category', 'ilike', `%${query}%`);
                 })
@@ -109,10 +109,10 @@ export function countSearchMedicines(field, query) {
                 .where('category', 'ilike', `%${query}%`)
                 .count('medicine_id as count').first();
         default:
+            // Search text fields only (exclude medicine_id as it requires a number)
             return baseQuery
                 .where(function() {
-                    this.where('medicine_id', '=', query)
-                        .orWhere('name', 'ilike', `%${query}%`)
+                    this.where('medicine_name', 'ilike', `%${query}%`)
                         .orWhere('form', 'ilike', `%${query}%`)
                         .orWhere('category', 'ilike', `%${query}%`);
                 })

@@ -94,12 +94,8 @@ export function countSearchInvoices(searchField, searchQuery) {
     } else if (searchField === 'appointment_id') {
         query.where('inv.appointment_id', searchQuery);
     } else {
-        // Search all fields
-        query.where(function() {
-            this.where('cus.full_name', 'like', `%${searchQuery}%`)
-                .orWhere('inv.invoice_id', 'like', `%${searchQuery}%`)
-                .orWhere('inv.appointment_id', 'like', `%${searchQuery}%`);
-        });
+        // Search text fields only (exclude invoice_id and appointment_id as they require numbers)
+        query.where('cus.full_name', 'like', `%${searchQuery}%`);
     }
 
     return query.count('inv.invoice_id as count').first();
@@ -124,12 +120,8 @@ export function searchInvoices(searchField, searchQuery, limit, offset) {
     } else if (searchField === 'appointment_id') {
         query.where('inv.appointment_id', searchQuery);
     } else {
-        // Search all fields
-        query.where(function() {
-            this.where('cus.full_name', 'like', `%${searchQuery}%`)
-                .orWhere('inv.invoice_id', 'like', `%${searchQuery}%`)
-                .orWhere('inv.appointment_id', 'like', `%${searchQuery}%`);
-        });
+        // Search text fields only (exclude invoice_id and appointment_id as they require numbers)
+        query.where('cus.full_name', 'like', `%${searchQuery}%`);
     }
 
     return query.limit(limit).offset(offset).orderBy('inv.invoice_id', 'desc');

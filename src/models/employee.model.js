@@ -71,10 +71,10 @@ export function searchEmployees(field, query, limit, offset) {
                 .offset(offset)
                 .orderBy('user_id', 'asc');
         default:
+            // Search text fields only (exclude user_id as it's integer)
             return baseQuery
                 .where(function() {
-                    this.where('user_id', '=', query)
-                        .orWhere('full_name', 'ilike', `%${query}%`)
+                    this.where('full_name', 'ilike', `%${query}%`)
                         .orWhere('email', 'ilike', `%${query}%`)
                         .orWhere('phone', 'ilike', `%${query}%`)
                         .orWhere('role', 'ilike', `%${query}%`);
@@ -110,10 +110,10 @@ export function countSearchEmployees(field, query) {
                 .where('role', 'ilike', `%${query}%`)
                 .count('user_id as count').first();
         default:
+            // Search text fields only (exclude user_id as it's integer)
             return baseQuery
                 .where(function() {
-                    this.where('user_id', '=', query)
-                        .orWhere('full_name', 'ilike', `%${query}%`)
+                    this.where('full_name', 'ilike', `%${query}%`)
                         .orWhere('email', 'ilike', `%${query}%`)
                         .orWhere('phone', 'ilike', `%${query}%`)
                         .orWhere('role', 'ilike', `%${query}%`);

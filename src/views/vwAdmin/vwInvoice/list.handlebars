@@ -83,7 +83,7 @@
             <div class="input-group">
                 <div class="input-group-prepend">
                     <select name="field" class="form-select border-dark" style="min-width: 180px; max-width: 180px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
-                        <option value="all" {{#if (eq searchField 'all')}}selected{{/if}}>All Fields</option>
+                        <option value="" {{#unless searchField}}selected{{/unless}}>Select Field</option>
                         <option value="id" {{#if (eq searchField 'id')}}selected{{/if}}>Invoice ID</option>
                         <option value="appointment_id" {{#if (eq searchField 'appointment_id')}}selected{{/if}}>Appointment ID</option>
                         <option value="customer_name" {{#if (eq searchField 'customer_name')}}selected{{/if}}>Customer Name</option>
@@ -100,7 +100,6 @@
                 <span class="badge bg-info me-2">
                     <i class="bi bi-search me-1"></i>
                     Search: "{{searchQuery}}" in 
-                    {{#if (eq searchField 'all')}}All Fields{{/if}}
                     {{#if (eq searchField 'id')}}Invoice ID{{/if}}
                     {{#if (eq searchField 'appointment_id')}}Appointment ID{{/if}}
                     {{#if (eq searchField 'customer_name')}}Customer Name{{/if}}
@@ -124,9 +123,9 @@
                     {{#if isSearchMode}}
                     <small class="text-muted">
                         {{invoices.length}} result(s) found for "{{searchQuery}}"
-                        {{#unless (eq searchField 'all')}}
+                        {{#if searchField}}
                             in {{#if (eq searchField 'id')}}Invoice ID{{/if}}{{#if (eq searchField 'appointment_id')}}Appointment ID{{/if}}{{#if (eq searchField 'customer_name')}}Customer Name{{/if}}
-                        {{/unless}}
+                        {{/if}}
                     </small>
                     {{/if}}
                 </div>
@@ -229,17 +228,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const searchField = document.querySelector('select[name="field"]').value;
             const searchQuery = document.querySelector('input[name="q"]').value.trim();
             
-            // Check if trying to search with "All Fields"
-            if (searchField === 'all' && searchQuery !== '') {
+            // Check if field is not selected
+            if (!searchField || searchField === '') {
                 e.preventDefault();
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Invalid Search',
-                    text: 'Please select a specific field to search. Search with "All Fields" is not allowed.',
+                    title: 'Field Required',
+                    text: 'Please select a field before searching.',
                     confirmButtonText: 'OK',
-                    customClass: {
-                        confirmButton: 'btn btn-primary'
-                    }
+                    confirmButtonColor: '#2d5bff'
                 });
                 return false;
             }
@@ -252,9 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     title: 'Empty Search',
                     text: 'Please enter a search term.',
                     confirmButtonText: 'OK',
-                    customClass: {
-                        confirmButton: 'btn btn-primary'
-                    }
+                    confirmButtonColor: '#2d5bff'
                 });
                 return false;
             }

@@ -62,12 +62,9 @@ export function searchServices(field, query, limit, offset) {
                 .offset(offset)
                 .orderBy('service_id', 'asc');
         default:
+            // Search text fields only (exclude service_id and base_price as they require numbers)
             return baseQuery
-                .where(function() {
-                    this.where('service_id', '=', query)
-                        .orWhere('service_name', 'ilike', `%${query}%`)
-                        .orWhere('base_price', '=', query);
-                })
+                .where('service_name', 'ilike', `%${query}%`)
                 .limit(limit)
                 .offset(offset)
                 .orderBy('service_id', 'asc');
@@ -91,12 +88,9 @@ export function countSearchServices(field, query) {
                 .where('base_price', '=', query)
                 .count('service_id as count').first();
         default:
+            // Search text fields only (exclude service_id and base_price as they require numbers)
             return baseQuery
-                .where(function() {
-                    this.where('service_id', '=', query)
-                        .orWhere('service_name', 'ilike', `%${query}%`)
-                        .orWhere('base_price', '=', query);
-                })
+                .where('service_name', 'ilike', `%${query}%`)
                 .count('service_id as count').first();
     }
 }

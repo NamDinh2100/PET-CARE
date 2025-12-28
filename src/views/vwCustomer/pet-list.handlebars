@@ -111,24 +111,59 @@
         border-radius: 25px 0 0 25px !important;
     }
 
+    /* Modal Styles */
     .modal-content {
         border-radius: 20px;
-        border: none;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        border: 3px solid #2d5bff;
+        overflow: hidden;
     }
 
     .modal-header {
-        background-color: #f8f9fa;
-        border-bottom: 2px solid #e9ecef;
-        padding: 20px;
-        border-radius: 20px 20px 0 0;
+        background: #2d5bff;
+        border-bottom: 3px solid #2d5bff;
+        padding: 20px 30px;
+        border-radius: 0px 0px 0 0;
+        text-align: center;
+    }
+
+    .modal-header .modal-title {
+        width: 100%;
+        text-align: center;
     }
 
     .modal-title {
         font-family: 'Abhaya Libre', serif;
         font-weight: 800;
-        color: #212529;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        color: white;
+    }
+
+    .btn-close {
+        background: #dc3545;
+        border: none;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+        position: relative;
+    }
+
+    .btn-close:hover,
+    .btn-close:focus {
+        background: #dc3545;
+        box-shadow: none;
+        opacity: 1;
+    }
+
+    .btn-close::before {
+        content: '✕';
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        position: absolute;
     }
 
     .custom-input {

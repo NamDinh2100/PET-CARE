@@ -137,14 +137,14 @@
     <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="border: 3px solid #0033ff; border-radius: 25px;">
-                <div class="modal-header text-white" style="background-color: #0900b8; border-bottom: 2px solid #a58f8f; border-radius: 20px 20px 0 0; padding-top: 15px; padding-bottom: 15px;">
+                <div class="modal-header text-white" style="background-color: #0900b8; border-bottom: 2px solid #a58f8f; border-radius: 0px 0px 0 0; padding-top: 15px; padding-bottom: 15px;">
                     <h5 class="modal-title fw-bold" id="changePasswordModalLabel" style="font-family: 'Abhaya Libre', serif;">
                         <i class="bi bi-key me-2"></i>CHANGE PASSWORD
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <form id="changePasswordForm" method="POST" action="/change-password">
+                    <form id="changePasswordForm" method="POST" action="/profile/change-password">
                         <div class="mb-3">
                             <label for="currentPassword" class="form-label fw-bold" style="font-family: 'Abhaya Libre', serif;">Current Password</label>
                             <input type="password" class="form-control rounded-pill border-2 border-dark" id="currentPassword" name="current_password" required>

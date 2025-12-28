@@ -89,11 +89,10 @@ export function searchAppointments(field, query, limit, offset) {
                 .offset(offset)
                 .orderBy('ap.appointment_id', 'asc');
         default:
-            // Search all fields
+            // Search text fields only (exclude appointment_id as it requires a number)
             return baseQuery
                 .where(function() {
-                    this.where('ap.appointment_id', '=', query)
-                        .orWhere('cus.full_name', 'ilike', `%${query}%`)
+                    this.where('cus.full_name', 'ilike', `%${query}%`)
                         .orWhere('vet.full_name', 'ilike', `%${query}%`)
                         .orWhere('ap.status', 'ilike', `%${query}%`);
                 })
@@ -126,11 +125,10 @@ export function countSearchAppointments(field, query) {
                 .where('ap.status', 'ilike', `%${query}%`)
                 .count('ap.appointment_id as count').first();
         default:
-            // Count all fields
+            // Count text fields only (exclude appointment_id as it requires a number)
             return baseQuery
                 .where(function() {
-                    this.where('ap.appointment_id', '=', query)
-                        .orWhere('cus.full_name', 'ilike', `%${query}%`)
+                    this.where('cus.full_name', 'ilike', `%${query}%`)
                         .orWhere('vet.full_name', 'ilike', `%${query}%`)
                         .orWhere('ap.status', 'ilike', `%${query}%`);
                 })

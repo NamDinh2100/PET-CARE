@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/', async function (req, res) {
     const status = req.query.status;
     const searchQuery = req.query.q;
-    const searchField = req.query.field || 'all';
+    const searchField = req.query.field || '';
     const page = parseInt(req.query.page) || 1;
     const limit = 8;
     const offset = (page - 1) * limit;
@@ -18,14 +18,9 @@ router.get('/', async function (req, res) {
     let list;
     let isSearchMode = false;
 
-    if (searchQuery && searchQuery.trim()) {
-        // Search mode
+    if (searchQuery && searchQuery.trim() && searchField && searchField !== '') {
+        // Search mode - only if both query and field are provided
         isSearchMode = true;
-        
-        // Block search with 'all' fields
-        if (searchField === 'all') {
-            return res.redirect('back');
-        }
         
         // Validate ID search - must be a number
         if (searchField === 'id' && isNaN(searchQuery)) {

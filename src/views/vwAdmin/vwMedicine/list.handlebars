@@ -91,7 +91,7 @@
             <div class="input-group">
                 <div class="input-group-prepend">
                     <select name="field" class="form-select border-dark" style="min-width: 180px; max-width: 180px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
-                        <option value="all" {{#if (eq searchField 'all')}}selected{{/if}}>All Fields</option>
+                        <option value="" {{#unless searchField}}selected{{/unless}}>Select Field</option>
                         <option value="id" {{#if (eq searchField 'id')}}selected{{/if}}>ID</option>
                         <option value="name" {{#if (eq searchField 'name')}}selected{{/if}}>Name</option>
                         <option value="form" {{#if (eq searchField 'form')}}selected{{/if}}>Form</option>
@@ -109,7 +109,6 @@
                 <span class="badge bg-info me-2">
                     <i class="bi bi-search me-1"></i>
                     Search: "{{searchQuery}}" in 
-                    {{#if (eq searchField 'all')}}All Fields{{/if}}
                     {{#if (eq searchField 'id')}}ID{{/if}}
                     {{#if (eq searchField 'name')}}Name{{/if}}
                     {{#if (eq searchField 'form')}}Form{{/if}}
@@ -134,9 +133,9 @@
                 {{#if isSearchMode}}
                 <small class="text-muted">
                     {{medicines.length}} result(s) found for "{{searchQuery}}"
-                    {{#unless (eq searchField 'all')}}
-                        in {{#if (eq searchField 'name')}}Name{{/if}}{{#if (eq searchField 'description')}}Description{{/if}}{{#if (eq searchField 'id')}}ID{{/if}}{{#if (eq searchField 'quantity')}}Quantity{{/if}}
-                    {{/unless}}
+                    {{#if searchField}}
+                        in {{#if (eq searchField 'name')}}Name{{/if}}{{#if (eq searchField 'form')}}Form{{/if}}{{#if (eq searchField 'id')}}ID{{/if}}{{#if (eq searchField 'category')}}Category{{/if}}
+                    {{/if}}
                 </small>
                 {{/if}}
             </div>
@@ -261,96 +260,111 @@
 
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-  document.querySelector('#frmMedicine').addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    Swal.fire({
-        title: 'Success',
-        text: 'Added medicine successfully.',
-        icon: 'success'
-    }).then(() => {
-        e.target.submit();
-    });
-  })
-
     document.addEventListener('DOMContentLoaded', function () {
-        // Tự động bật Modal Medicine
-        var addModalElement = document.getElementById('addMedicineModal');
-        if (addModalElement) {
-            var myModal = new bootstrap.Modal(addModalElement);
-            myModal.show();
-        }
         
-        // Handle search form submission validation
+        // --- 1. SEARCH FORM VALIDATION ---
         const searchForm = document.querySelector('.search-form');
         if (searchForm) {
-            searchForm.addEventListener('submit', function(e) {
-                const searchField = document.querySelector('select[name="field"]').value;
-                const searchQuery = document.querySelector('input[name="q"]').value.trim();
+            searchForm.addEventListener('submit', function (e) {
+                const selectField = this.querySelector('select[name="field"]');
+                const searchInput = this.querySelector('input[name="q"]');
                 
-                // Check if trying to search with "All Fields"
-                if (searchField === 'all' && searchQuery !== '') {
-                    e.preventDefault();
+                const fieldValue = selectField.value;
+                const queryValue = searchInput.value.trim();
+
+                // Check if the search field is selected
+                if (!fieldValue || fieldValue === "") {
+                    e.preventDefault(); // Stop form submission
                     Swal.fire({
-                        icon: 'warning',
-                        title: 'Invalid Search',
-                        text: 'Please select a specific field to search. Search with "All Fields" is not allowed.',
-                        confirmButtonText: 'OK',
-                        customClass: {
-                            confirmButton: 'btn btn-primary'
-                        }
+                        icon: 'error',
+                        title: 'Selection Required',
+                        text: 'Please select a search field (ID, Name, or Price) before searching.',
+                        confirmButtonColor: '#0900b8',
+                        confirmButtonText: 'Got it'
                     });
                     return false;
                 }
-                
-                // Check if search query is empty
-                if (searchQuery === '') {
+
+                // Check if the search input is empty
+                if (queryValue === "") {
                     e.preventDefault();
                     Swal.fire({
                         icon: 'warning',
                         title: 'Empty Search',
-                        text: 'Please enter a search term.',
-                        confirmButtonText: 'OK',
-                        customClass: {
-                            confirmButton: 'btn btn-primary'
-                        }
+                        text: 'Please enter a keyword to search.',
+                        confirmButtonColor: '#2d5bff',
+                        confirmButtonText: 'OK'
                     });
                     return false;
                 }
             });
         }
-        
-        // Show success notifications
+
+        // --- 2. ADD SERVICE FORM HANDLING ---
+        const serviceForm = document.querySelector('#frmService');
+        if (serviceForm) {
+            serviceForm.addEventListener('submit', function (e) {
+                e.preventDefault(); // Pause to show confirmation
+
+                Swal.fire({
+                    title: 'Confirm Submission',
+                    text: 'Are you sure you want to save this service?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#0900b8',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Display success message then submit the form
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Processing your request...',
+                            icon: 'success',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            this.submit(); 
+                        });
+                    }
+                });
+            });
+        }
+
+        // --- 3. AUTOMATIC MODAL TRIGGER ---
+        // Automatically opens the modal if isAddMode is true
+        const addModalElement = document.getElementById('addServiceModal');
+        if (addModalElement) {
+            const myModal = new bootstrap.Modal(addModalElement);
+            myModal.show();
+        }
+
+        // --- 4. URL SUCCESS NOTIFICATIONS ---
         const urlParams = new URLSearchParams(window.location.search);
-        const success = urlParams.get('success');
-        
-        if (success === 'add') {
-            Swal.fire({
+        const successType = urlParams.get('success');
+
+        if (successType) {
+            let config = {
                 icon: 'success',
-                title: 'Success!',
-                text: 'Medicine added successfully.',
                 timer: 3000,
-                showConfirmButton: false,
-                customClass: {
-                    popup: 'swal2-popup'
-                }
-            });
-            // Clean URL
-            window.history.replaceState({}, '', '/admin/medicines');
-        } else if (success === 'edit') {
-            Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: 'Medicine updated successfully.',
-                timer: 3000,
-                showConfirmButton: false,
-                customClass: {
-                    popup: 'swal2-popup'
-                }
-            });
-            // Clean URL
-            window.history.replaceState({}, '', '/admin/medicines');
+                showConfirmButton: false
+            };
+
+            if (successType === 'add') {
+                config.title = 'Created!';
+                config.text = 'The new service has been successfully added.';
+            } else if (successType === 'edit') {
+                config.title = 'Updated!';
+                config.text = 'The service information has been updated.';
+            }
+
+            Swal.fire(config);
+
+            // Clean URL (removes ?success=... so the alert doesn't reappear on refresh)
+            window.history.replaceState({}, '', '/admin/services');
         }
     });
 </script>

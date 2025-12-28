@@ -37,15 +37,15 @@
             </div>
 
             <div class="modal-body p-5">
-                <form method="POST">
+                <form method="POST" id="frmEmp">
                     <div class="mb-4">
-                        <input type="email" name="email" class="form-control form-control-lg rounded-pill border-2 fs-6"
-                            placeholder="EMAIL" required style="border-color: #ccc;">
+                        <input type="text" name="email" class="form-control form-control-lg rounded-pill border-2 fs-6"
+                            placeholder="EMAIL" style="border-color: #ccc;">
                     </div>
 
                     <div class="mb-4">
                         <input type="text" name="full_name"
-                            class="form-control form-control-lg rounded-pill border-2 fs-6" placeholder="NAME" required
+                            class="form-control form-control-lg rounded-pill border-2 fs-6" placeholder="NAME"
                             style="border-color: #ccc;">
                     </div>
 
@@ -82,7 +82,29 @@
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    document.querySelector('form').addEventListener('submit', function(e) {
+    {{#if err_message}}
+    Swal.fire({
+        title: 'Error!',
+        text: '{{err_message}}',
+        icon: 'error',
+        confirmButtonText: 'Try Again',
+        confirmButtonColor: '#dc3545'
+    });
+    {{/if}}
+    {{#if success_message}}
+    Swal.fire({
+        title: 'Success!',
+        text: '{{success_message}}',
+        icon: 'success',
+        confirmButtonText: 'Back to Employee List',
+        confirmButtonColor: '#28a745'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '/admin/employees';
+        }
+    });
+    {{/if}}
+    document.querySelector('#frmEmp').addEventListener('submit', function(e) {
         e.preventDefault();
         const form = e.target;
         const email = form.querySelector('[name="email"]').value.trim();
@@ -90,83 +112,53 @@
         const phone = form.querySelector('[name="phone"]').value.trim();
         const role = form.querySelector('[name="role"]').value;
         
-        // Email validation regex
+        if (!email || !fullName || !role || role === 'ROLE') {
+            Swal.fire({
+                title: 'Notification',
+                text: 'Please fill in all required fields!',
+                icon: 'warning',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const phoneRegex = /^[0-9]{10,11}$/;
-        
-        // Validation checks
-        if (!email) {
-            Swal.fire({
-                title: 'Validation Error!',
-                text: 'Email is required.',
-                icon: 'error',
-                confirmButtonColor: '#dc3545'
-            });
-            return;
-        }
-        
         if (!emailRegex.test(email)) {
-            Swal.fire({
-                title: 'Validation Error!',
-                text: 'Please enter a valid email address.',
+            Swal.fire({ 
+                title: 'Email Error', 
+                text: 'Invalid email format (e.g., abc@gmail.com)', 
                 icon: 'error',
                 confirmButtonColor: '#dc3545'
             });
             return;
         }
         
-        if (!fullName) {
-            Swal.fire({
-                title: 'Validation Error!',
-                text: 'Full name is required.',
+        if (fullName.length < 2) {
+            Swal.fire({ 
+                title: 'Name Error', 
+                text: 'Full name must be at least 2 characters', 
                 icon: 'error',
                 confirmButtonColor: '#dc3545'
             });
             return;
         }
         
-        if (phone && !phoneRegex.test(phone)) {
-            Swal.fire({
-                title: 'Validation Error!',
-                text: 'Phone number must be 10-11 digits.',
-                icon: 'error',
-                confirmButtonColor: '#dc3545'
-            });
-            return;
-        }
-        
-        if (!role || role === 'ROLE') {
-            Swal.fire({
-                title: 'Validation Error!',
-                text: 'Please select a role.',
-                icon: 'error',
-                confirmButtonColor: '#dc3545'
-            });
-            return;
-        }
-        
-        // Confirmation before submit
-        Swal.fire({
-            title: 'Confirm Add',
-            text: 'Are you sure you want to add this employee?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#28a745',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Yes, Add!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'Employee added successfully.',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then(() => {
-                    form.submit();
+        // Validate Phone (if provided)
+        if (phone) {
+            const phoneRegex = /^[0-9]{10,11}$/;
+            if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+                Swal.fire({ 
+                    title: 'Phone Error', 
+                    text: 'Phone number must be 10-11 digits', 
+                    icon: 'error',
+                    confirmButtonColor: '#dc3545'
                 });
+                return;
             }
-        });
+        }
+        
+        // --- STEP 3: SUBMIT FORM IF ALL VALID ---
+        form.submit();
     });
 </script>
 {{/section}}

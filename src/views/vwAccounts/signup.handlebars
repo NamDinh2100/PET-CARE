@@ -109,27 +109,27 @@
         <form id="frmSignup" method="POST">
             <div class="mb-3 custom-input-group d-flex align-items-center">
                 <span class="input-icon"><i class="bi bi-envelope"></i></span>
-                <input type="email" class="form-control form-control-custom w-100" id="email" name="email" placeholder="Email Address" required>
+                <input type="text" class="form-control form-control-custom w-100" id="email" name="email" placeholder="Email Address">
             </div>
 
             <div class="mb-3 custom-input-group d-flex align-items-center">
                 <span class="input-icon"><i class="bi bi-person"></i></span>
-                <input type="text" class="form-control form-control-custom w-100" id="full_name" name="full_name" placeholder="Full Name" required>
+                <input type="text" class="form-control form-control-custom w-100" id="full_name" name="full_name" placeholder="Full Name">
             </div>
 
             <div class="mb-3 custom-input-group d-flex align-items-center">
                 <span class="input-icon"><i class="bi bi-telephone"></i></span>
-                <input type="tel" class="form-control form-control-custom w-100" id="phone" name="phone" placeholder="Phone Number" required>
+                <input type="tel" class="form-control form-control-custom w-100" id="phone" name="phone" placeholder="Phone Number">
             </div>
 
             <div class="mb-3 custom-input-group d-flex align-items-center">
                 <span class="input-icon"><i class="bi bi-lock"></i></span>
-                <input type="password" class="form-control form-control-custom w-100" id="password" name="password" placeholder="Password" required>
+                <input type="password" class="form-control form-control-custom w-100" id="password" name="password" placeholder="Password">
             </div>
 
             <div class="mb-4 custom-input-group d-flex align-items-center">
                 <span class="input-icon"><i class="bi bi-shield-check"></i></span>
-                <input type="password" class="form-control form-control-custom w-100" id="confirmpassword" name="confirmPassword" placeholder="Confirm Password" required>
+                <input type="password" class="form-control form-control-custom w-100" id="confirmpassword" name="confirmPassword" placeholder="Confirm Password">
             </div>
             
             <button type="submit" class="btn btn-gradient rounded-pill w-100 py-3 fw-bold shadow-sm mb-3 fs-6 text-uppercase">
@@ -147,112 +147,95 @@
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    document.getElementById('frmSignup').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const password = formData.get('password');
-        const confirmPassword = formData.get('confirmPassword');
-        
-        if (password !== confirmPassword) {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Passwords do not match.',
-                icon: 'error',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
-        
-        Swal.fire({
-            title: 'Success!',
-            text: 'Account created successfully.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        }).then(() => {
-            e.target.submit();
-        });
+    {{#if err_message}}
+    Swal.fire({
+        title: 'Signup Failed!',
+        text: '{{err_message}}',
+        icon: 'error',
+        confirmButtonText: 'Try Again',
+        confirmButtonColor: '#2d5bff'
     });
-</script>
-{{/section}}
-
-{{#section 'js'}}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    // Đợi trang web tải xong hoàn toàn mới thực thi code
+    {{/if}}
+    {{#if success_message}}
+    Swal.fire({
+        title: 'Success!',
+        text: '{{success_message}}',
+        icon: 'success',
+        confirmButtonText: 'Go to Sign In',
+        confirmButtonColor: '#2d5bff'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = '/signin';
+        }
+    });
+    {{/if}}
+    // Wait for the page to fully load before executing code
     document.addEventListener('DOMContentLoaded', function () {
         const registrationForm = document.querySelector('#frmSignup');
 
         if (registrationForm) {
             registrationForm.addEventListener('submit', function (e) {
-                // 1. Ngăn chặn form gửi đi ngay lập tức
+                // 1. Prevent form from submitting immediately
                 e.preventDefault();
 
-                // 2. Lấy dữ liệu và loại bỏ khoảng trắng
+                // 2. Get data and trim whitespace
                 const email = document.querySelector('#email').value.trim();
                 const fullName = document.querySelector('#full_name').value.trim();
                 const phone = document.querySelector('#phone').value.trim();
                 const password = document.querySelector('#password').value;
                 const confirmPassword = document.querySelector('#confirmpassword').value;
 
-                // --- BƯỚC 3: KIỂM TRA RỖNG ---
+                // --- STEP 3: CHECK EMPTY FIELDS ---
                 if (!email || !fullName || !phone || !password || !confirmPassword) {
                     Swal.fire({
-                        title: 'Thông báo',
-                        text: 'Vui lòng điền đầy đủ tất cả các trường thông tin!',
+                        title: 'Notification',
+                        text: 'Please fill in all required fields!',
                         icon: 'warning',
                         confirmButtonColor: '#2d5bff'
                     });
-                    return; // Dừng lại tại đây
+                    return; // Stop here
                 }
 
-                // --- BƯỚC 4: KIỂM TRA ĐỊNH DẠNG ---
+                // --- STEP 4: VALIDATE FORMAT ---
                 
                 // Validate Email
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(email)) {
-                    Swal.fire({ title: 'Lỗi Email', text: 'Email không đúng định dạng (VD: abc@gmail.com)', icon: 'error' });
+                    Swal.fire({ title: 'Email Error', text: 'Invalid email format (e.g., abc@gmail.com)', icon: 'error' });
                     return;
                 }
 
                 // Validate Full Name
                 if (fullName.length < 2) {
-                    Swal.fire({ title: 'Lỗi Họ Tên', text: 'Họ tên phải có ít nhất 2 ký tự', icon: 'error' });
+                    Swal.fire({ title: 'Name Error', text: 'Full name must be at least 2 characters', icon: 'error' });
                     return;
                 }
 
                 // Validate Phone
                 const phoneRegex = /^[0-9]{10,11}$/;
                 if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
-                    Swal.fire({ title: 'Lỗi SĐT', text: 'Số điện thoại phải có 10-11 chữ số', icon: 'error' });
+                    Swal.fire({ title: 'Phone Error', text: 'Phone number must be 10-11 digits', icon: 'error' });
                     return;
                 }
 
                 // Validate Password
                 if (password.length < 6) {
-                    Swal.fire({ title: 'Lỗi Mật khẩu', text: 'Mật khẩu phải từ 6 ký tự trở lên', icon: 'error' });
+                    Swal.fire({ title: 'Password Error', text: 'Password must be at least 6 characters', icon: 'error' });
                     return;
                 }
 
                 // Validate Confirm Password
                 if (password !== confirmPassword) {
-                    Swal.fire({ title: 'Lỗi xác nhận', text: 'Mật khẩu nhập lại không khớp!', icon: 'error' });
+                    Swal.fire({ title: 'Confirmation Error', text: 'Passwords do not match!', icon: 'error' });
                     return;
                 }
 
-                // --- BƯỚC 5: GỬI FORM NẾU TẤT CẢ HỢP LỆ ---
-                Swal.fire({
-                    title: 'Thành công!',
-                    text: 'Dữ liệu hợp lệ, đang tiến hành đăng ký...',
-                    icon: 'success',
-                    timer: 1500,
-                    showConfirmButton: false
-                }).then(() => {
-                    // Sau khi hiện thông báo thành công thì mới thực sự submit lên server
-                    registrationForm.submit();
-                });
+                // --- STEP 5: SUBMIT FORM IF ALL VALID ---
+                // Submit to server after validation passes
+                registrationForm.submit();
             });
         } else {
-            console.error("Không tìm thấy form với ID 'frmSignup'. Hãy kiểm tra lại HTML.");
+            console.error("Form with ID 'frmSignup' not found. Please check the HTML.");
         }
     });
 </script>

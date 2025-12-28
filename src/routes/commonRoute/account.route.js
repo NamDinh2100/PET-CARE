@@ -29,6 +29,14 @@ router.get('/signup', function (req, res) {
 
 router.post('/signup', async function (req, res) {
     const hashPassword = bcrypt.hashSync(req.body.password);
+
+    const check = await userService.getUserByEmail(req.body.email);
+    if (check) {
+        return res.render('vwAccounts/signup', {
+            err_message: 'Email already in use'
+        });
+    }
+
     const user = {
         full_name: req.body.full_name,
         password: hashPassword,
@@ -39,7 +47,9 @@ router.post('/signup', async function (req, res) {
     }
     
     await userService.addUser(user);
-    res.redirect('/');
+    res.render('vwAccounts/signup', {
+        success_message: 'Account created successfully!'
+    });
 });
 
 router.get('/signin', function (req, res) {
@@ -127,9 +137,8 @@ router.post('/forgot-password', async function (req, res) {
     const genPassword = emailService.generatePassword();
     console.log('Generated password:', genPassword);
     try {
-        const emailText = `Dear, ${req.body.full_name}!
+        const emailText = `Dear, ${user.full_name}!
             \nThis is your new password: ${genPassword}
-
             \nPlease change your password after your first login.`;
         await emailService.sendEmail(req.body.email, 'Welcome to WEDSITE', emailText);
     } catch (error) {
@@ -142,10 +151,5 @@ router.post('/forgot-password', async function (req, res) {
         success_message: 'A new password has been sent to your email.'
     });
 });
-
-
-
-    
-
 
 export default router;

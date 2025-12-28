@@ -85,7 +85,7 @@
             <div class="input-group">
                 <div class="input-group-prepend">
                     <select name="field" class="form-select border-dark" style="min-width: 180px; max-width: 180px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
-                        <option value="all" {{#if (eq searchField 'all')}}selected{{/if}}>All Fields</option>
+                        <option value="" {{#unless searchField}}selected{{/unless}}>Select Field</option>
                         <option value="id" {{#if (eq searchField 'id')}}selected{{/if}}>ID</option>
                         <option value="name" {{#if (eq searchField 'name')}}selected{{/if}}>Name</option>
                         <option value="email" {{#if (eq searchField 'email')}}selected{{/if}}>Email</option>
@@ -103,7 +103,6 @@
                 <span class="badge bg-info me-2">
                     <i class="bi bi-search me-1"></i>
                     Search: "{{searchQuery}}" in 
-                    {{#if (eq searchField 'all')}}All Fields{{/if}}
                     {{#if (eq searchField 'id')}}ID{{/if}}
                     {{#if (eq searchField 'name')}}Name{{/if}}
                     {{#if (eq searchField 'email')}}Email{{/if}}
@@ -127,9 +126,9 @@
                 {{#if isSearchMode}}
                 <small class="text-muted">
                     {{customers.length}} result(s) found for "{{searchQuery}}"
-                    {{#unless (eq searchField 'all')}}
+                    {{#if searchField}}
                         in {{#if (eq searchField 'name')}}Name{{/if}}{{#if (eq searchField 'email')}}Email{{/if}}{{#if (eq searchField 'id')}}ID{{/if}}{{#if (eq searchField 'phone')}}Phone{{/if}}
-                    {{/unless}}
+                    {{/if}}
                 </small>
                 {{/if}}
             </div>
@@ -175,58 +174,6 @@
     </div>
 </div>
 
-{{!-- 2. MODAL THÊM KHÁCH HÀNG --}}
-{{#if isAddMode}}
-<div class="modal fade" id="addCustomerModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content shadow-lg">
-
-            <div class="modal-header justify-content-center position-relative py-3">
-                <h4 class="modal-title brand-font fw-bold text-uppercase">New Customer</h4>
-                <a href="/admin/customers"
-                    class="position-absolute end-0 top-50 translate-middle-y me-3 text-danger fs-3 text-decoration-none">
-                    <i class="bi bi-x-circle-fill"></i>
-                </a>
-            </div>
-
-            <div class="modal-body p-5">
-                <form method="POST">
-                    <div class="mb-4">
-                        <input type="email" name="email" class="form-control form-control-lg rounded-pill border-2 fs-6"
-                            placeholder="EMAIL" required style="border-color: #ccc;">
-                    </div>
-
-                    <div class="mb-4">
-                        <input type="text" name="full_name"
-                            class="form-control form-control-lg rounded-pill border-2 fs-6" placeholder="NAME" required
-                            style="border-color: #ccc;">
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <input type="tel" name="phone"
-                                class="form-control form-control-lg rounded-pill border-2 fs-6" placeholder="PHONE"
-                                style="border-color: #ccc;">
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <input type="text" name="address"
-                                class="form-control form-control-lg rounded-pill border-2 fs-6" placeholder="ADDRESS"
-                                style="border-color: #ccc;">
-                        </div>
-                    </div>
-
-                    <div class="text-center mt-4">
-                        <button type="submit"
-                            class="btn btn-outline-primary rounded-pill px-5 py-2 fw-bold text-uppercase border-2">
-                            Submit
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
@@ -252,17 +199,15 @@
             const searchField = document.querySelector('select[name="field"]').value;
             const searchQuery = document.querySelector('input[name="q"]').value.trim();
             
-            // Check if trying to search with "All Fields"
-            if (searchField === 'all' && searchQuery !== '') {
+            // Check if field is not selected
+            if (!searchField || searchField === '') {
                 e.preventDefault();
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Invalid Search',
-                    text: 'Please select a specific field to search. Search with "All Fields" is not allowed.',
+                    title: 'Field Required',
+                    text: 'Please select a field before searching.',
                     confirmButtonText: 'OK',
-                    customClass: {
-                        confirmButton: 'btn btn-primary'
-                    }
+                    confirmButtonColor: '#2d5bff'
                 });
                 return false;
             }
@@ -275,9 +220,7 @@
                     title: 'Empty Search',
                     text: 'Please enter a search term.',
                     confirmButtonText: 'OK',
-                    customClass: {
-                        confirmButton: 'btn btn-primary'
-                    }
+                    confirmButtonColor: '#2d5bff'
                 });
                 return false;
             }
@@ -304,5 +247,3 @@
     }
 </script>
 {{/section}}
-</div>
-{{/if}}
