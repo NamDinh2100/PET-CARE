@@ -96,7 +96,7 @@
                     labels: data.pieData.labels,
                     datasets: [{
                         data: data.pieData.data,
-                        backgroundColor: ['#7b83eb', '#fc85ae', '#9b59b6', '#4a90e2', '#e0e0e0'],
+                        backgroundColor: ['#7b83eb', '#fc85ae', '#9b59b6', '#1e40af', '#e0e0e0'],
                         borderWidth: 0,
                         hoverOffset: 10
                     }]
@@ -163,7 +163,12 @@
                 const fullList = data.exportData;
 
                 if (!fullList || fullList.length === 0) {
-                    alert("No data to export!");
+                    Swal.fire({
+                        title: 'No Data',
+                        text: 'No data to export!',
+                        icon: 'info',
+                        confirmButtonText: 'OK'
+                    });
                     return;
                 }
 

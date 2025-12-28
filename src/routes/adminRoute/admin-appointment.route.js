@@ -7,27 +7,71 @@ import * as employeeService from '../../models/employee.model.js';
 const router = express.Router();
 
 router.get('/', async function (req, res) {
+    const status = req.query.status;
+    const searchQuery = req.query.q;
+    const searchField = req.query.field || 'all';
     const page = parseInt(req.query.page) || 1;
     const limit = 8;
     const offset = (page - 1) * limit;
 
-    const total = await appointmentService.countByAppointment();
+    let total;
+    let list;
+    let isSearchMode = false;
+
+    if (searchQuery && searchQuery.trim()) {
+        // Search mode
+        isSearchMode = true;
+        
+        // Block search with 'all' fields
+        if (searchField === 'all') {
+            return res.redirect('back');
+        }
+        
+        // Validate ID search - must be a number
+        if (searchField === 'id' && isNaN(searchQuery)) {
+            // If searching by ID but query is not a number, return no results
+            total = { count: 0 };
+            list = [];
+        } else {
+            total = await appointmentService.countSearchAppointments(searchField, searchQuery);
+            list = await appointmentService.searchAppointments(searchField, searchQuery, limit, offset);
+        }
+    } else if (status) {
+        // Filter by status
+        total = await appointmentService.countByStatus(status);
+        list = await appointmentService.findPageByStatus(status, limit, offset);
+    } else {
+        // Show all appointments
+        total = await appointmentService.countByAppointment();
+        list = await appointmentService.findPageByAppointment(limit, offset);
+    }
 
     const nPages = Math.ceil(+total.count / limit);
     const pageNumbers = [];
 
     for (let i = 1; i <= nPages; i++) {
+        let href = `?page=${i}`;
+        if (isSearchMode) {
+            href = `?q=${encodeURIComponent(searchQuery)}&field=${searchField}&page=${i}`;
+        } else if (status) {
+            href = `?status=${status}&page=${i}`;
+        }
+        
         pageNumbers.push({
             value: i,
             isCurrent: i === +page,
+            href: href
         });
     }
-
-    const list = await appointmentService.findPageByAppointment(limit, offset);
 
     res.render('vwAdmin/vwAppointment/list', { 
         appointments: list,
         pageNumbers: pageNumbers,
+        currentStatus: status,
+        searchQuery: searchQuery,
+        searchField: searchField,
+        isSearchMode: isSearchMode,
+        success: req.query.success,
         layout: 'admin-layout'
     });
 });
@@ -54,7 +98,7 @@ router.post('/edit', async function (req, res) {
     };
 
     await appointmentService.updateAppointment(id, updatedAppointment);
-    res.redirect('/admin/appointments');
+    res.redirect('/admin/appointments?success=edit');
 });
 
 router.get('/view', async function (req, res) {

@@ -11,13 +11,13 @@
         z-index: 1050;
     }
     .modal-content {
-        border: 3px solid #a58f8f;
+        border: 3px solid #2600ff;
         border-radius: 25px;
     }
 
     .modal-header {
-        background-color: #d9d9d9;
-        border-bottom: 3px solid #a58f8f;
+        background-color: #0900b8;
+        border-radius: 20px 0 20px 0;
         border-radius: 22px 22px 0 0;
     }
 </style>
@@ -29,7 +29,7 @@
         <div class="modal-content shadow-lg">
 
             <div class="modal-header justify-content-center position-relative py-3">
-                <h4 class="modal-title brand-font fw-bold text-uppercase">New Employee</h4>
+                <h4 class="modal-title brand-font fw-bold text-uppercase text-white">New Employee</h4>
                 <a href="/admin/employees"
                     class="position-absolute end-0 top-50 translate-middle-y me-3 text-danger fs-3 text-decoration-none">
                     <i class="bi bi-x-circle-fill"></i>
@@ -84,13 +84,88 @@
 <script>
     document.querySelector('form').addEventListener('submit', function(e) {
         e.preventDefault();
+        const form = e.target;
+        const email = form.querySelector('[name="email"]').value.trim();
+        const fullName = form.querySelector('[name="full_name"]').value.trim();
+        const phone = form.querySelector('[name="phone"]').value.trim();
+        const role = form.querySelector('[name="role"]').value;
+        
+        // Email validation regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^[0-9]{10,11}$/;
+        
+        // Validation checks
+        if (!email) {
+            Swal.fire({
+                title: 'Validation Error!',
+                text: 'Email is required.',
+                icon: 'error',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        if (!emailRegex.test(email)) {
+            Swal.fire({
+                title: 'Validation Error!',
+                text: 'Please enter a valid email address.',
+                icon: 'error',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        if (!fullName) {
+            Swal.fire({
+                title: 'Validation Error!',
+                text: 'Full name is required.',
+                icon: 'error',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        if (phone && !phoneRegex.test(phone)) {
+            Swal.fire({
+                title: 'Validation Error!',
+                text: 'Phone number must be 10-11 digits.',
+                icon: 'error',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        if (!role || role === 'ROLE') {
+            Swal.fire({
+                title: 'Validation Error!',
+                text: 'Please select a role.',
+                icon: 'error',
+                confirmButtonColor: '#dc3545'
+            });
+            return;
+        }
+        
+        // Confirmation before submit
         Swal.fire({
-            title: 'Success!',
-            text: 'Employee added successfully.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        }).then(() => {
-            e.target.submit();
+            title: 'Confirm Add',
+            text: 'Are you sure you want to add this employee?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, Add!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Employee added successfully.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    form.submit();
+                });
+            }
         });
     });
 </script>

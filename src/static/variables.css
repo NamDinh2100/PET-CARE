@@ -1,0 +1,123 @@
+/* ========================================
+   VARIABLES & DESIGN TOKENS
+   ======================================== */
+
+:root {
+    /* --- PRIMARY COLORS --- */
+    --primary-blue: #2d5bff;
+    --primary-blue-light: #2d6bfd;
+    --primary-blue-dark: #2d5bff;
+    --secondary-blue: #1e40af;
+    --accent-red: #ff0033;
+    
+    /* --- NEUTRAL COLORS --- */
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-dark-bg: #1a1a1a;
+    --color-dark-bg-deep: #111111;
+    --color-light-bg: #f8f9fa;
+    --color-light-bg-hero: #eef7f9;
+    --color-gray-light: #b0b0b0;
+    --color-gray-medium: #6c757d;
+    --color-gray-dark: #495057;
+    --color-gray-text: #333333;
+    --color-gray-border: #a58f8f;
+    --color-border-dark: #333333;
+    
+    /* --- ALERT/STATUS COLORS --- */
+    --status-success: #0f5132;
+    --status-success-bg: #d1e7dd;
+    --status-success-border: #badbcc;
+    --status-info: #3eaac0;
+    --status-info-bg: #cff4fc;
+    --status-info-border: #b6effb;
+    --status-danger: #a33333;
+    --status-danger-bg: #f8d7da;
+    --status-warning: #ff6b6b;
+    --status-success-green: #28a745;
+    
+    /* --- TYPOGRAPHY --- */
+    --font-primary: 'Abhaya Libre', serif;
+    --font-display: 'Abhaya Libre', serif;
+    --font-sans: 'Abhaya Libre', serif;
+    
+    --font-size-h1: 3.5rem;
+    --font-size-h2: 2.5rem;
+    --font-size-h3: 2rem;
+    --font-size-h4: 1.5rem;
+    --font-size-base: 1rem;
+    --font-size-sm: 0.95rem;
+    --font-size-xs: 0.85rem;
+    
+    --font-weight-light: 400;
+    --font-weight-normal: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+    --font-weight-black: 900;
+    
+    /* --- SPACING --- */
+    --spacing-xs: 5px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 15px;
+    --spacing-xl: 20px;
+    --spacing-2xl: 25px;
+    --spacing-3xl: 30px;
+    --spacing-4xl: 50px;
+    --spacing-5xl: 60px;
+    --spacing-6xl: 80px;
+    
+    /* --- BORDER RADIUS --- */
+    --radius-sm: 6px;
+    --radius-md: 15px;
+    --radius-lg: 20px;
+    --radius-xl: 25px;
+    --radius-2xl: 30px;
+    --radius-full: 50px;
+    
+    /* --- SHADOWS --- */
+    --shadow-sm: 0 4px 8px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 15px 35px rgba(0, 0, 0, 0.1);
+    --shadow-modal: 0 10px 30px rgba(0, 0, 0, 0.2);
+    --shadow-blue: 20px 20px 0px rgba(45, 91, 255, 0.1);
+    
+    /* --- TRANSITIONS --- */
+    --transition-default: 0.3s ease;
+    --transition-fast: 0.15s ease;
+    --transition-slow: 0.5s ease;
+    
+    /* --- Z-INDEX --- */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+}
+
+/* Reset & Defaults */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 85px;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--color-light-bg);
+    color: var(--color-gray-text);
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}

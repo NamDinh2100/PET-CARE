@@ -2,8 +2,58 @@ import express from 'express';
 import * as appointmentService from '../models/appointment.model.js';
 import * as prescriptionService from '../models/prescription.model.js';
 import * as petService from '../models/pet.model.js';
+import * as invoiceService from '../models/invoice.model.js';
+import * as userService from '../models/user.model.js';
 
 const router = express.Router();
+
+router.get('/profile', async function (req, res) {
+    res.render('vwVeterinarian/profile', {
+        user: req.session.authUser,
+        layout: 'vet-layout',
+        activeTab: 'profile'
+    });
+});
+
+router.post('/profile/update', async function (req, res) {
+    try {
+        const updatedUser = {
+            full_name: req.body.full_name,
+            phone: req.body.phone
+        };
+        
+        await userService.updateUserInfo(req.session.authUser.user_id, updatedUser);
+        req.session.authUser.full_name = updatedUser.full_name;
+        req.session.authUser.phone = updatedUser.phone;
+        
+        res.redirect('/vet/profile?success=updated');
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        res.redirect('/vet/profile?error=update_failed');
+    }
+});
+
+router.post('/profile/password', async function (req, res) {
+    try {
+        const currentPassword = req.body.current_password;
+        const newPassword = req.body.new_password;
+        const confirmPassword = req.body.confirm_password;
+
+        if (newPassword !== confirmPassword) {
+            return res.redirect('/vet/profile?error=password_mismatch');
+        }
+
+        if (newPassword.length < 6) {
+            return res.redirect('/vet/profile?error=password_short');
+        }
+
+        await userService.changePassword(req.session.authUser.user_id, currentPassword, newPassword);
+        res.redirect('/vet/profile?success=password_changed');
+    } catch (error) {
+        console.error('Error changing password:', error);
+        res.redirect('/vet/profile?error=wrong_password');
+    }
+});
 
 router.get('/schedule', async function (req, res) {
     res.render('vwVeterinarian/schedule',
@@ -19,6 +69,7 @@ router.get('/appointment', async function (req, res) {
 
 router.post('/appointment/prescription', async function (req, res) {
     
+    try {
     const medicines = req.body.medicine_id;
     
     const record = {
@@ -28,10 +79,10 @@ router.post('/appointment/prescription', async function (req, res) {
         symptoms: req.body.symptoms,
         treatment: req.body.treatment,
         diagnosis: req.body.diagnosis,
-        instruction: req.body.instruction
+        instruction: req.body.instruction,
+        visit_date: new Date()
     };
 
-    console.log(record);
     const record_id = await prescriptionService.addMedicalRecord(record);
     const prescription_id = await prescriptionService.addPrescription(record_id);
 
@@ -44,7 +95,32 @@ router.post('/appointment/prescription', async function (req, res) {
 
     await appointmentService.updateAppointmentStatus(req.body.appointment_id, 'completed');
 
+    const serviceList = await appointmentService.getServicesForAppointment(req.body.appointment_id);
+    let totalCost = 0;
+    
+    console.log('Service list for appointment', req.body.appointment_id, ':', serviceList);
+    
+    for (const service of serviceList) {
+        const price = parseFloat(service.base_price) || 0;
+        console.log('Service:', service.service_name || 'Unknown', 'Price:', service.base_price, 'Parsed:', price);
+        totalCost += price;
+    }
+
+    console.log('Total cost for appointment', req.body.appointment_id, ':', totalCost);
+
+    await invoiceService.addInvoice({
+        appointment_id: req.body.appointment_id,
+        total_price: totalCost,
+        payment_status: 'unpaid',
+        payment_method: null,                                           
+        discount: 0,
+    });
+
     res.redirect('/vet/appointment');
+    } catch (error) {
+        console.error('Error processing prescription:', error);
+        res.status(500).send('An error occurred while processing the prescription.');
+    }
 });
 
 router.get('/appointment/pet-info', async function (req, res) {

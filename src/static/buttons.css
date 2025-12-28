@@ -1,0 +1,179 @@
+/* ========================================
+   BUTTON & LINK STYLES
+   ======================================== */
+
+/* --- 1. BUTTON STYLES --- */
+.btn {
+    transition: var(--transition-default);
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-semibold);
+    border-radius: var(--radius-md);
+    padding: 10px 20px;
+}
+
+.btn-primary {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: var(--color-white);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-blue);
+    border-color: var(--secondary-blue);
+}
+
+.btn-primary:active, .btn-primary.active {
+    background-color: var(--primary-blue-dark);
+    border-color: var(--primary-blue-dark);
+}
+
+.btn-primary:active:hover, .btn-primary.active:hover {
+    background-color: #1d4ed8;
+    border-color: #1d4ed8;
+}
+
+.btn-outline-primary {
+    border-width: 2px;
+    border-color: var(--primary-blue);
+    color: var(--primary-blue);
+    background-color: transparent;
+    border-radius: var(--radius-md);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-blue);
+    color: var(--color-white);
+}
+
+.btn-outline-primary:active, .btn-outline-primary.active {
+    background-color: var(--primary-blue-dark);
+    color: var(--color-white);
+    border-color: var(--primary-blue-dark);
+}
+
+.btn-outline-primary:active:hover, .btn-outline-primary.active:hover {
+    background-color: var(--secondary-blue);
+    border-color: var(--secondary-blue);
+}
+
+.btn-outline-success {
+    border-width: 2px;
+    border-color: var(--status-success-green);
+}
+
+.btn-outline-success:hover {
+    background-color: var(--status-success-green);
+    color: var(--color-white);
+}
+
+.pill-button {
+    border-radius: var(--radius-full);
+    border-width: 2px;
+    padding: 10px 40px;
+    transition: all var(--transition-default);
+}
+
+.pill-button:hover {
+    background-color: var(--primary-blue);
+    color: var(--color-white);
+}
+
+.btn-action-custom {
+    margin-top: 10px;
+    margin-right: 10px;
+    border-radius: var(--radius-md);
+    padding: 8px 16px;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    transition: var(--transition-default);
+}
+
+.btn-action-custom:hover {
+}
+
+.btn-edit {
+    background-color: #007bff;
+    color: var(--color-white);
+}
+
+.btn-edit:hover {
+    background-color: #1e40af;
+}
+
+.btn-delete {
+    background-color: var(--status-danger);
+    color: var(--color-white);
+}
+
+.btn-delete:hover {
+    background-color: #8b2a2a;
+}
+
+.btn-close-custom {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23a33'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+    border: 3px solid var(--status-danger);
+    border-radius: 50%;
+    opacity: 1;
+    padding: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+}
+
+.btn-close-custom:hover {
+    opacity: 0.7;
+}
+
+/* --- 2. LINK STYLES --- */
+a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    transition: var(--transition-default);
+}
+
+a:hover {
+    color: var(--secondary-blue);
+    text-decoration: none;
+}
+
+.nav-link {
+    color: var(--color-gray-text) !important;
+    transition: var(--transition-default);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.nav-link:hover {
+    color: var(--primary-blue) !important;
+}
+
+.nav-link.active {
+    color: var(--primary-blue) !important;
+    font-weight: var(--font-weight-bold);
+    border-bottom: 2px solid var(--primary-blue);
+}
+
+.list-group-item {
+    border-color: var(--color-border-dark);
+}
+
+.list-group-item.active {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: var(--color-white) !important;
+}
+
+.list-group-item.active:hover {
+    background-color: var(--secondary-blue);
+    border-color: var(--secondary-blue);
+    color: var(--color-white) !important;
+}
+
+.list-group-item:hover {
+    background-color: #f5f5f5;
+}

@@ -17,5 +17,80 @@ export function findPageByCustomer(limit, offset) {
         .offset(offset);
 }
 
+export function searchCustomers(field, query, limit, offset) {
+    const baseQuery = db('users').where('role', 'customer');
+
+    switch (field) {
+        case 'id':
+            return baseQuery
+                .where('user_id', '=', query)
+                .limit(limit)
+                .offset(offset)
+                .orderBy('user_id', 'asc');
+        case 'name':
+            return baseQuery
+                .where('full_name', 'ilike', `%${query}%`)
+                .limit(limit)
+                .offset(offset)
+                .orderBy('user_id', 'asc');
+        case 'email':
+            return baseQuery
+                .where('email', 'ilike', `%${query}%`)
+                .limit(limit)
+                .offset(offset)
+                .orderBy('user_id', 'asc');
+        case 'phone':
+            return baseQuery
+                .where('phone', 'ilike', `%${query}%`)
+                .limit(limit)
+                .offset(offset)
+                .orderBy('user_id', 'asc');
+        default:
+            // Search all fields
+            return baseQuery
+                .where(function() {
+                    this.where('user_id', '=', query)
+                        .orWhere('full_name', 'ilike', `%${query}%`)
+                        .orWhere('email', 'ilike', `%${query}%`)
+                        .orWhere('phone', 'ilike', `%${query}%`);
+                })
+                .limit(limit)
+                .offset(offset)
+                .orderBy('user_id', 'asc');
+    }
+}
+
+export function countSearchCustomers(field, query) {
+    const baseQuery = db('users').where('role', 'customer');
+
+    switch (field) {
+        case 'id':
+            return baseQuery
+                .where('user_id', '=', query)
+                .count('user_id as count').first();
+        case 'name':
+            return baseQuery
+                .where('full_name', 'ilike', `%${query}%`)
+                .count('user_id as count').first();
+        case 'email':
+            return baseQuery
+                .where('email', 'ilike', `%${query}%`)
+                .count('user_id as count').first();
+        case 'phone':
+            return baseQuery
+                .where('phone', 'ilike', `%${query}%`)
+                .count('user_id as count').first();
+        default:
+            return baseQuery
+                .where(function() {
+                    this.where('user_id', '=', query)
+                        .orWhere('full_name', 'ilike', `%${query}%`)
+                        .orWhere('email', 'ilike', `%${query}%`)
+                        .orWhere('phone', 'ilike', `%${query}%`);
+                })
+                .count('user_id as count').first();
+    }
+}
+
 
 
