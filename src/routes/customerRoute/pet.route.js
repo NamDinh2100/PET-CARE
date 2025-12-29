@@ -15,7 +15,6 @@ router.get('/', async function (req, res) {
     });
 });
 
-// GET /customer/pets/add - Show add pet modal
 router.get('/add', async function (req, res) {
     const pets = await petService.getPetByOwnerID(req.session.authUser.user_id);
     res.render('vwCustomer/pet-list', {

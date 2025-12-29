@@ -4,7 +4,6 @@ import * as appointmentService from '../../models/appointment.model.js';
 
 const router = express.Router();
 
-// List invoices
 router.get('/', async function (req, res) {
     const status = req.query.status;
     const searchQuery = req.query.q;

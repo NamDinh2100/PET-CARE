@@ -705,6 +705,17 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // --- 1. SET MINIMUM DATE FOR BOOKING ---
+            const dateInput = document.querySelector('input[name="date_start"]');
+            if (dateInput) {
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = String(today.getMonth() + 1).padStart(2, '0');
+                const day = String(today.getDate()).padStart(2, '0');
+                const todayString = `${year}-${month}-${day}`;
+                dateInput.setAttribute('min', todayString);
+            }
+
             // --- 1. SCROLLSPY LOGIC ---
             const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
             window.addEventListener("scroll", () => {

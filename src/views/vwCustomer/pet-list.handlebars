@@ -166,6 +166,37 @@
         position: absolute;
     }
 
+    /* Success Message Close Button */
+    .alert-close-btn {
+        background: transparent;
+        border: none;
+        color: #155724;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 0;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .alert-close-btn:hover {
+        opacity: 1;
+        background: transparent;
+    }
+
+    .alert.alert-dismissible {
+        position: relative;
+        padding-right: 50px;
+    }
+
     .custom-input {
         border: 2px solid #dee2e6;
         border-radius: 20px;
@@ -217,7 +248,7 @@
         {{#if (eq success 'deleted')}}
         <i class="bi bi-check-circle me-2"></i> Pet deleted successfully!
         {{/if}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <button type="button" class="alert-close-btn" data-bs-dismiss="alert">×</button>
     </div>
     {{/if}}
 

@@ -4,9 +4,9 @@ export function getAppointmentByID(appointment_id) {
     return db('appointments as ap')
         .join('users as cus', 'ap.customer_id', 'cus.user_id')
         .leftJoin('users as vet', 'ap.veterinarian_id', 'vet.user_id')
-        .join('pets as p', 'ap.pet_id', 'p.pet_id')
+        .leftJoin('pets as p', 'ap.pet_id', 'p.pet_id')
         .select('ap.*', 'cus.full_name as customer_name', 'vet.full_name as veterinarian_name', 'p.name as pet_name')
-        .where('appointment_id', appointment_id).first();
+        .where('ap.appointment_id', appointment_id).first();
 }
 
 export function updateAppointmentStatus(appointment_id, status) {
