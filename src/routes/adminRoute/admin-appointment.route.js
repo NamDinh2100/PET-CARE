@@ -19,12 +19,9 @@ router.get('/', async function (req, res) {
     let isSearchMode = false;
 
     if (searchQuery && searchQuery.trim() && searchField && searchField !== '') {
-        // Search mode - only if both query and field are provided
         isSearchMode = true;
         
-        // Validate ID search - must be a number
         if (searchField === 'id' && isNaN(searchQuery)) {
-            // If searching by ID but query is not a number, return no results
             total = { count: 0 };
             list = [];
         } else {
@@ -32,11 +29,9 @@ router.get('/', async function (req, res) {
             list = await appointmentService.searchAppointments(searchField, searchQuery, limit, offset);
         }
     } else if (status) {
-        // Filter by status
         total = await appointmentService.countByStatus(status);
         list = await appointmentService.findPageByStatus(status, limit, offset);
     } else {
-        // Show all appointments
         total = await appointmentService.countByAppointment();
         list = await appointmentService.findPageByAppointment(limit, offset);
     }

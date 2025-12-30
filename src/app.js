@@ -16,7 +16,8 @@ import petCustomerRouter from './routes/customerRoute/pet.route.js'
 import appointmentCustomerRouter from './routes/customerRoute/appointment.route.js'
 
 // VERTERINARIAN ROUTER
-import veterinarianRouter from './routes/veterinarian.route.js'
+import vetScheduleRouter from './routes/vetRoute/schedule.route.js';
+import vetAppointmentRouter from './routes/vetRoute/appointment.route.js';
 
 // ADMIN ROUTER
 import employeeRouter from './routes/adminRoute/admin-employee.route.js';
@@ -29,31 +30,20 @@ import invoiceRouter from './routes/adminRoute/admin-invoice.route.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Lấy __dirname trong ES module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Static
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
-// Body parser
 app.use(express.urlencoded({
     extended: true,
 }));
 
 app.use(express.json());
 
-// Handlebars engine
 app.engine('handlebars', engine({
     defaultLayout: 'share-layout',
     layoutsDir: path.join(__dirname, 'views/layouts'),
-
-    partialsDir: [
-        path.join(__dirname, 'views/vwAdmin'),
-        path.join(__dirname, 'views/vwCustomer'),
-        path.join(__dirname, 'views/vwVeterinarian/vwAppointment')
-    ],
 
     helpers: {
         formatDate(date) {
@@ -113,7 +103,6 @@ app.engine('handlebars', engine({
         lt (a, b) {
             return a < b;
         },
-        // Helper section (viết trực tiếp, không cần thư viện express-handlebars-sections)
         section: expressHandlebarsSections()
     }
 }));
@@ -149,8 +138,11 @@ app.use('/profile', isAuth, profileRouter);
 app.use('/pets', isAuth, isCustomer, petCustomerRouter);
 app.use('/appointments', isAuth, isCustomer, appointmentCustomerRouter);
 
+// Veterinarian Routers
+app.use('/vet/schedule', isAuth, isVeterinarian, vetScheduleRouter);
+app.use('/vet/appointment', isAuth, isVeterinarian, vetAppointmentRouter);
+
 // Admin Routers  
-//app.use('/admin/profile', isAuth, isAdmin, adminProfileRouter);
 app.use('/admin/customers', isAuth, isAdmin, customerRouter);
 app.use('/admin/employees', isAuth, isAdmin, employeeRouter);
 app.use('/admin/medicines', isAuth, isAdmin, medicineRouter);
@@ -159,12 +151,6 @@ app.use('/admin/services', isAuth, isAdmin, serviceRouter);
 app.use('/admin/invoices', isAuth, isAdmin, invoiceRouter);
 app.use('/admin/statistics', isAuth, isAdmin, statisticRouter);
 
-// Veterinarian Routers
-app.use('/vet', isAuth, isVeterinarian, veterinarianRouter);
-
-//app.use('/customer', hopCustomerRouter);
-
-// Route xử lý lỗi 403
 app.use((req, res) => {
     res.status(403).render('403');
 });

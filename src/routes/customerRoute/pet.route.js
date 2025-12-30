@@ -24,7 +24,6 @@ router.get('/add', async function (req, res) {
     });
 });
 
-// POST /customer/pets/add - Add new pet
 router.post('/add', async function (req, res) {
     const pet = {
         owner_id: req.session.authUser.user_id,
@@ -38,19 +37,16 @@ router.post('/add', async function (req, res) {
 
     await petService.addPet(pet);
 
-    // Update session pets
     const pets = await petService.getPetByOwnerID(req.session.authUser.user_id);
     req.session.pets = pets;
 
     res.redirect('/pets?success=added');
 });
 
-// GET /customer/pets/edit - Show edit pet modal
 router.get('/edit', async function (req, res) {
     const petId = req.query.id;
     const pet = await petService.getPetByID(petId);
 
-    // Check if pet belongs to this customer
     if (!pet || pet.owner_id !== req.session.authUser.user_id) {
         return res.status(404).render('404');
     }
@@ -64,12 +60,10 @@ router.get('/edit', async function (req, res) {
     });
 });
 
-// POST /customer/pets/edit - Update pet
 router.post('/edit', async function (req, res) {
     const petId = req.query.id;
     const pet = await petService.getPetByID(petId);
 
-    // Check if pet belongs to this customer
     if (!pet || pet.owner_id !== req.session.authUser.user_id) {
         return res.status(404).render('404');
     }
@@ -85,7 +79,6 @@ router.post('/edit', async function (req, res) {
 
     await petService.updatePetInfo(petId, updatedPet);
 
-    // Update session pets
     const pets = await petService.getPetByOwnerID(req.session.authUser.user_id);
     req.session.pets = pets;
 

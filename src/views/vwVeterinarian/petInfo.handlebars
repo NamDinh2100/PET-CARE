@@ -191,16 +191,16 @@
             margin: 10px;
             border-radius: 15px;
         }
-        
+
         .pet-header {
             padding: 20px 15px;
             border-radius: 12px 12px 0 0;
         }
-        
+
         .pet-title {
             font-size: 1.5rem;
         }
-        
+
         .close-button {
             position: absolute;
             right: 15px;
@@ -210,17 +210,18 @@
             height: 40px;
             padding: 8px;
         }
-        
+
         .pet-content {
             padding: 20px;
         }
-        
+
         .action-buttons {
             flex-direction: column;
             gap: 15px;
         }
-        
-        .btn-primary-custom, .btn-success-custom {
+
+        .btn-primary-custom,
+        .btn-success-custom {
             width: 100%;
             padding: 12px 20px;
         }
@@ -234,276 +235,271 @@
         <!-- Header Section -->
         <div class="pet-header">
             <h1 class="pet-title">Pet Information</h1>
-            
+
         </div>
 
-            <!-- Content Section -->
-            <div class="pet-content">
-                {{#if pet}}
-                    <!-- Pet Information Display -->
-                    <form id="petEditForm" action="/vet/appointment/pet-info?pet_id={{pet.pet_id}}" method="POST">
-                        <div class="row g-4">
-                            <div class="col-md-6">
-                                <label class="pet-label">Pet Name:</label>
-                                <input type="text" name="name" class="form-control pet-input mt-2" value="{{pet.name}}" required>
-                            </div>
-                            
-                            <div class="col-md-2">
-                                <label class="pet-label">Sex:</label>
-                                <select name="sex" class="form-control pet-input mt-2" required>
-                                    <option value="Male" {{#if (eq pet.sex 'Male')}}selected{{/if}}>Male</option>
-                                    <option value="Female" {{#if (eq pet.sex 'Female')}}selected{{/if}}>Female</option>
-                                </select>
-                            </div>
-                            
-                            <div class="col-md-4">
-                                <label class="pet-label">Birth Date:</label>
-                                <input type="text" name="day_born" class="form-control pet-input mt-2" value="{{formatDate pet.day_born}}" readonly>
-                            </div>
-                            
-                            <div class="col-md-3">
-                                <label class="pet-label">Weight:</label>
-                                <input type="number" name="weight" class="form-control pet-input mt-2" value="{{pet.weight}}" step="0.1" min="0.1" required>
-                            </div>
-                            
-                            <div class="col-md-3">
-                                <label class="pet-label">Species:</label>
-                                <input type="text" name="species" class="form-control pet-input mt-2" value="{{pet.species}}" required>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <label class="pet-label">Note:</label>
-                                <textarea name="notes" class="form-control pet-input mt-2" rows="1" placeholder="Add notes about your pet...">{{pet.notes}}</textarea>
-                            </div>
+        <!-- Content Section -->
+        <div class="pet-content">
+            {{#if pet}}
+            <!-- Pet Information Display -->
+            <form id="petEditForm" action="/vet/appointment/pet-info?pet_id={{pet.pet_id}}" method="POST">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="pet-label">Pet Name:</label>
+                        <input type="text" name="name" class="form-control pet-input mt-2" value="{{pet.name}}"
+                            required>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="pet-label">Sex:</label>
+                        <select name="sex" class="form-control pet-input mt-2" required>
+                            <option value="MALE" {{#if (eq pet.sex 'MALE' )}}selected{{/if}}>Male</option>
+                            <option value="FEMALE" {{#if (eq pet.sex 'FEMALE' )}}selected{{/if}}>Female</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="pet-label">Birth Date:</label>
+                        <input type="text" name="day_born" class="form-control pet-input mt-2"
+                            value="{{formatDate pet.day_born}}" readonly>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="pet-label">Weight:</label>
+                        <input type="number" name="weight" class="form-control pet-input mt-2" value="{{pet.weight}}"
+                            step="0.1" min="0.1" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="pet-label">Species:</label>
+                        <input type="text" name="species" class="form-control pet-input mt-2" value="{{pet.species}}"
+                            required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="pet-label">Note:</label>
+                        <textarea name="notes" class="form-control pet-input mt-2" rows="1"
+                            placeholder="Add notes about your pet...">{{pet.notes}}</textarea>
+                    </div>
+                </div>
+            </form>
+
+            <div class="action-buttons">
+                <a href="/vet/appointment/pet-info/medical-history?pet_id={{pet.pet_id}}"
+                    class="btn btn-outline-primary">
+                    <i class="bi bi-clock-history me-2"></i>View History
+                </a>
+                <button type="submit" form="petEditForm" class="btn btn-outline-success" id="saveBtn">
+                    <i class="bi bi-check-circle me-2"></i>Save Changes
+                </button>
+            </div>
+
+            {{else}}
+            <!-- No Pet Information -->
+            <div class="no-pet-section">
+                <i class="bi bi-emoji-frown no-pet-icon"></i>
+                <h2 class="no-pet-title">No Pet Information Found!</h2>
+                <p class="no-pet-description">
+                    This user hasn't added any pet details yet. You can create a new pet profile below.
+                </p>
+
+                <button class="btn btn-primary-custom" onclick="toggleCreateForm()">
+                    <i class="bi bi-plus-circle me-2"></i>Create New Pet
+                </button>
+            </div>
+            {{/if}}
+
+            <!-- Create Pet Form (Hidden by default) -->
+            <div class="create-pet-section d-none" id="createPetSection">
+                <h3 class="create-pet-title">Create New Pet</h3>
+
+                <form action="/vet/appointment/pet-info/add" method="POST">
+                    <input type="hidden" name="owner_id" value="{{customer_id}}">
+                    <input type="hidden" name="appointment_id" value="{{appointment_id}}">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <label class="pet-label">Pet Name:</label>
+                            <input type="text" name="name" class="form-control pet-input mt-2" required>
                         </div>
-                    </form>
+
+                        <div class="col-md-4">
+                            <label class="pet-label">Sex:</label>
+                            <select name="sex" class="form-control pet-input mt-2" required>
+                                <option value="">Select Gender</option>
+                                <option value="MALE">Male</option>
+                                <option value="FEMALE">Female</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="pet-label">Date of Birth:</label>
+                            <input type="date" name="dob" class="form-control pet-input mt-2" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="pet-label">Weight:</label>
+                            <input type="number" name="weight" class="form-control pet-input mt-2"
+                                placeholder="e.g., 5.5" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="pet-label">Species:</label>
+                            <input type="text" name="species" class="form-control pet-input mt-2"
+                                placeholder="e.g., Dog, Cat, Bird" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="pet-label">Note:</label>
+                            <textarea name="notes" class="form-control pet-input mt-2" rows="1"
+                                placeholder="Add notes about your pet..."></textarea>
+                        </div>
+                    </div>
 
                     <div class="action-buttons">
-                        <a href="/vet/appointment/pet-info/medical-history?pet_id={{pet.pet_id}}" class="btn btn-outline-primary">
-                            <i class="bi bi-clock-history me-2"></i>View History
-                        </a>
-                        <button type="submit" form="petEditForm" class="btn btn-outline-success" id="saveBtn">
-                            <i class="bi bi-check-circle me-2"></i>Save Changes
+                        <button type="submit" class="btn btn-success-custom">
+                            <i class="bi bi-check-circle me-2"></i>Submit
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="toggleCreateForm()"
+                            style="border-radius: 50px; padding: 15px 40px; font-weight: 700;">
+                            <i class="bi bi-x-circle me-2"></i>Cancel
                         </button>
                     </div>
-
-                {{else}}
-                    <!-- No Pet Information -->
-                    <div class="no-pet-section">
-                        <i class="bi bi-emoji-frown no-pet-icon"></i>
-                        <h2 class="no-pet-title">No Pet Information Found!</h2>
-                        <p class="no-pet-description">
-                            This user hasn't added any pet details yet. You can create a new pet profile below.
-                        </p>
-                        
-                        <button class="btn btn-primary-custom" onclick="toggleCreateForm()">
-                            <i class="bi bi-plus-circle me-2"></i>Create New Pet
-                        </button>
-                    </div>
-                {{/if}}
-
-                <!-- Create Pet Form (Hidden by default) -->
-                <div class="create-pet-section d-none" id="createPetSection">
-                    <h3 class="create-pet-title">Create New Pet</h3>
-                    
-                    <form action="/vet/appointment/pet-info/add" method="POST">
-                        <input type="hidden" name="owner_id" value="{{customer_id}}">
-                        <input type="hidden" name="appointment_id" value="{{appointment_id}}">
-                        <div class="row g-4">
-                            <div class="col-md-4">
-                                <label class="pet-label">Pet Name:</label>
-                                <input type="text" name="name" class="form-control pet-input mt-2" required>
-                            </div>
-                            
-                            <div class="col-md-4">
-                                <label class="pet-label">Sex:</label>
-                                <select name="sex" class="form-control pet-input mt-2" required>
-                                    <option value="">Select Gender</option>
-                                    <option value="MALE">Male</option>
-                                    <option value="FEMALE">Female</option>
-                                </select>
-                            </div>
-                            
-                            <div class="col-md-4">
-                                <label class="pet-label">Date of Birth:</label>
-                                <input type="date" name="dob" class="form-control pet-input mt-2" required>
-                            </div>
-                            
-                            <div class="col-md-3">
-                                <label class="pet-label">Weight:</label>
-                                <input type="number" name="weight" class="form-control pet-input mt-2" 
-                                     placeholder="e.g., 5.5" required>
-                            </div>
-                            
-                            <div class="col-md-3">
-                                <label class="pet-label">Species:</label>
-                                <input type="text" name="species" class="form-control pet-input mt-2" 
-                                       placeholder="e.g., Dog, Cat, Bird" required>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="pet-label">Note:</label>
-                                <textarea name="notes" class="form-control pet-input mt-2" rows="1" 
-                                          placeholder="Add notes about your pet..."></textarea>
-                            </div>  
-                            
-                            
-                            
-                            
-                        </div>
-
-                        <div class="action-buttons">
-                            <button type="submit" class="btn btn-success-custom">
-                                <i class="bi bi-check-circle me-2"></i>Submit
-                            </button>
-                            <button type="button" class="btn btn-secondary" onclick="toggleCreateForm()" 
-                                    style="border-radius: 50px; padding: 15px 40px; font-weight: 700;">
-                                <i class="bi bi-x-circle me-2"></i>Cancel
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-// Store original values for reset functionality
-let originalValues = {};
+    let originalValues = {};
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Store original form values
-    const form = document.getElementById('petEditForm');
-    if (form) {
-        const formData = new FormData(form);
-        for (let [key, value] of formData.entries()) {
-            originalValues[key] = value;
-        }
-    }
-});
-
-function toggleCreateForm() {
-    const createSection = document.getElementById('createPetSection');
-    if (createSection.classList.contains('d-none')) {
-        createSection.classList.remove('d-none');
-        createSection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-        createSection.classList.add('d-none');
-    }
-}
-
-function resetForm() {
-    const form = document.getElementById('petEditForm');
-    if (form && originalValues) {
-        // Reset each input to original value
-        for (let [key, value] of Object.entries(originalValues)) {
-            const input = form.querySelector(`[name="${key}"]`);
-            if (input) {
-                input.value = value;
-                // Trigger change event for visual feedback
-                input.dispatchEvent(new Event('change'));
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('petEditForm');
+        if (form) {
+            const formData = new FormData(form);
+            for (let [key, value] of formData.entries()) {
+                originalValues[key] = value;
             }
         }
-        
-        // Show feedback
-        showNotification('Form reset to original values', 'info');
-    }
-}
-
-function showNotification(message, type = 'success') {
-    const iconMap = {
-        'success': 'check-circle',
-        'error': 'exclamation-circle',
-        'warning': 'exclamation-triangle',
-        'info': 'info-circle',
-        'danger': 'exclamation-circle'
-    };
-    
-    const typeMap = {
-        'success': 'success',
-        'error': 'error',
-        'warning': 'warning',
-        'info': 'info',
-        'danger': 'error'
-    };
-
-    Swal.fire({
-        title: type.charAt(0).toUpperCase() + type.slice(1),
-        text: message,
-        icon: typeMap[type],
-        confirmButtonText: 'OK'
     });
-}
 
-// Form submission handling
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('petEditForm');
-    const saveBtn = document.getElementById('saveBtn');
-    
-    if (form && saveBtn) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Show loading state
-            saveBtn.disabled = true;
-            saveBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Saving...';
-            
-            // Optional: Add client-side validation here
-            const name = form.querySelector('[name="name"]').value.trim();
-            if (!name) {
-                saveBtn.disabled = false;
-                saveBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Save Changes';
-                showNotification('Pet name is required', 'danger');
-                return;
-            }
-
-            Swal.fire({
-                title: 'Success!',
-                text: 'Pet information updated successfully.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                form.submit();
-            });
-        });
+    function toggleCreateForm() {
+        const createSection = document.getElementById('createPetSection');
+        if (createSection.classList.contains('d-none')) {
+            createSection.classList.remove('d-none');
+            createSection.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            createSection.classList.add('d-none');
+        }
     }
-    
-    // Auto-focus first input when create form is shown
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                const target = mutation.target;
-                if (target.id === 'createPetSection' && !target.classList.contains('d-none')) {
-                    const firstInput = target.querySelector('input[name="name"]');
-                    if (firstInput) {
-                        setTimeout(() => firstInput.focus(), 300);
-                    }
+
+    function resetForm() {
+        const form = document.getElementById('petEditForm');
+        if (form && originalValues) {
+            for (let [key, value] of Object.entries(originalValues)) {
+                const input = form.querySelector(`[name="${key}"]`);
+                if (input) {
+                    input.value = value;
+                    input.dispatchEvent(new Event('change'));
                 }
             }
-        });
-    });
-
-    const createSection = document.getElementById('createPetSection');
-    if (createSection) {
-        observer.observe(createSection, { attributes: true });
+            showNotification('Form reset to original values', 'info');
+        }
     }
-    
-    // Add visual feedback for form changes
-    const inputs = form ? form.querySelectorAll('input, select, textarea') : [];
-    inputs.forEach(input => {
-        input.addEventListener('input', function() {
-            // Add subtle border color change when value is modified
-            if (this.value !== originalValues[this.name]) {
-                this.style.borderColor = '#ffc107';
-                this.style.borderWidth = '2px';
-            } else {
-                this.style.borderColor = '#e9ecef';
-                this.style.borderWidth = '2px';
-            }
+
+    function showNotification(message, type = 'success') {
+        const iconMap = {
+            'success': 'check-circle',
+            'error': 'exclamation-circle',
+            'warning': 'exclamation-triangle',
+            'info': 'info-circle',
+            'danger': 'exclamation-circle'
+        };
+
+        const typeMap = {
+            'success': 'success',
+            'error': 'error',
+            'warning': 'warning',
+            'info': 'info',
+            'danger': 'error'
+        };
+
+        Swal.fire({
+            title: type.charAt(0).toUpperCase() + type.slice(1),
+            text: message,
+            icon: typeMap[type],
+            confirmButtonText: 'OK'
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('petEditForm');
+        const saveBtn = document.getElementById('saveBtn');
+
+        if (form && saveBtn) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                // Show loading state
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Saving...';
+
+                // Optional: Add client-side validation here
+                const name = form.querySelector('[name="name"]').value.trim();
+                if (!name) {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Save Changes';
+                    showNotification('Pet name is required', 'danger');
+                    return;
+                }
+
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Pet information updated successfully.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    form.submit();
+                });
+            });
+        }
+
+        // Auto-focus first input when create form is shown
+        const observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    const target = mutation.target;
+                    if (target.id === 'createPetSection' && !target.classList.contains('d-none')) {
+                        const firstInput = target.querySelector('input[name="name"]');
+                        if (firstInput) {
+                            setTimeout(() => firstInput.focus(), 300);
+                        }
+                    }
+                }
+            });
+        });
+
+        const createSection = document.getElementById('createPetSection');
+        if (createSection) {
+            observer.observe(createSection, { attributes: true });
+        }
+
+        // Add visual feedback for form changes
+        const inputs = form ? form.querySelectorAll('input, select, textarea') : [];
+        inputs.forEach(input => {
+            input.addEventListener('input', function () {
+                // Add subtle border color change when value is modified
+                if (this.value !== originalValues[this.name]) {
+                    this.style.borderColor = '#ffc107';
+                    this.style.borderWidth = '2px';
+                } else {
+                    this.style.borderColor = '#e9ecef';
+                    this.style.borderWidth = '2px';
+                }
+            });
         });
     });
-});
 </script>
 {{/section}}

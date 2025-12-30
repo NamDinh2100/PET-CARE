@@ -19,10 +19,8 @@ router.get('/', async function (req, res) {
     let isSearchMode = false;
 
     if (searchQuery && searchQuery.trim() && searchField && searchField !== '') {
-        // Search mode - only if both query and field are provided
         isSearchMode = true;
         
-        // Validate ID search - must be a number
         if (searchField === 'id' && isNaN(searchQuery)) {
             total = { count: 0 };
             list = [];
@@ -31,11 +29,9 @@ router.get('/', async function (req, res) {
             list = await employeeService.searchEmployees(searchField, searchQuery, limit, offset);
         }
     } else if (role) {
-        // Filter by role
         total = await employeeService.countByRole(role);
         list = await employeeService.findPageByRole(role, limit, offset);
     } else {
-        // Show all employees (except customers)
         total = await employeeService.countByEmpID();
         list = await employeeService.findPageByEmpID(limit, offset);
     }

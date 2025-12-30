@@ -10,25 +10,24 @@
     }
 
     .modal-content {
-        border: 2px solid #0000ff; /* Viền modal */
+        border: 2px solid #0000ff; 
         border-radius: 15px;
-        overflow: hidden; /* Để bo góc header không bị che */
+        overflow: hidden;
     }
 
     .modal-header {
-        background-color: #0a009d; /* Màu nền xám header */
+        background-color: #0a009d; 
         border-bottom: 2px solid #a58f8f;
         border-radius: 0px 0px 0 0;
         padding-top: 15px;
         padding-bottom: 15px;
     }
 
-    /* Style cho Label (ID, FULL NAME...) */
     .form-label {
         font-weight: bold;
         text-transform: uppercase;
         font-size: 0.85rem;
-        margin-left: 10px; /* Thụt vào một chút cho thẳng hàng với độ cong của input */
+        margin-left: 10px; 
         margin-bottom: 5px;
     }
 </style>
@@ -104,11 +103,9 @@
         const fullName = form.querySelector('[name="full_name"]').value.trim();
         const phone = form.querySelector('[name="phone"]').value.trim();
         
-        // Validation regex
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const phoneRegex = /^[0-9]{10,11}$/;
         
-        // Validation checks
         if (!email) {
             Swal.fire({
                 title: 'Validation Error!',
@@ -149,7 +146,6 @@
             return;
         }
         
-        // Confirmation before submit
         Swal.fire({
             title: 'Confirm Update',
             text: 'Are you sure you want to update this employee?',

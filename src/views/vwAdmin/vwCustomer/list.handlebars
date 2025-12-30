@@ -192,14 +192,12 @@
         });
     }
     
-    // Handle search form submission validation
     const searchForm = document.querySelector('.search-form');
     if (searchForm) {
         searchForm.addEventListener('submit', function(e) {
             const searchField = document.querySelector('select[name="field"]').value;
             const searchQuery = document.querySelector('input[name="q"]').value.trim();
-            
-            // Check if field is not selected
+
             if (!searchField || searchField === '') {
                 e.preventDefault();
                 Swal.fire({
@@ -212,7 +210,6 @@
                 return false;
             }
             
-            // Check if search query is empty
             if (searchQuery === '') {
                 e.preventDefault();
                 Swal.fire({
@@ -227,7 +224,6 @@
         });
     }
     
-    // Show success notifications
     const urlParams = new URLSearchParams(window.location.search);
     const success = urlParams.get('success');
     
@@ -242,7 +238,7 @@
                 popup: 'swal2-popup'
             }
         });
-        // Clean URL
+
         window.history.replaceState({}, '', '/admin/customers');
     }
 </script>

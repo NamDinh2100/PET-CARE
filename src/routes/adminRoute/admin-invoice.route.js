@@ -95,7 +95,6 @@ router.get('/:id', async function (req, res) {
     });
 });
 
-// Show edit invoice form
 router.get('/edit/:id', async function (req, res) {
     const invoice_id = req.params.id;
     const invoice = await invoiceService.getInvoiceByID(invoice_id);
@@ -110,7 +109,6 @@ router.get('/edit/:id', async function (req, res) {
     });
 });
 
-// Update invoice (only payment_method, discount, and payment_status)
 router.post('/edit/:id', async function (req, res) {
     const invoice_id = req.params.id;
     const invoice = {
@@ -127,7 +125,6 @@ router.post('/edit/:id', async function (req, res) {
     res.redirect('/admin/invoices');
 });
 
-// Update payment status
 router.post('/update-status/:id', async function (req, res) {
     const invoice_id = req.params.id;
     const status = req.body.status;

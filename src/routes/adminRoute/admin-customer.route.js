@@ -16,10 +16,8 @@ router.get('/', async function (req, res) {
     let isSearchMode = false;
 
     if (searchQuery && searchQuery.trim() && searchField && searchField !== '') {
-        // Search mode - only if both query and field are provided
         isSearchMode = true;
         
-        // Validate ID search - must be a number
         if (searchField === 'id' && isNaN(searchQuery)) {
             total = { count: 0 };
             list = [];
@@ -28,7 +26,6 @@ router.get('/', async function (req, res) {
             list = await customerService.searchCustomers(searchField, searchQuery, limit, offset);
         }
     } else {
-        // Show all customers
         total = await customerService.countByCustomer();
         list = await customerService.findPageByCustomer(limit, offset);
     }

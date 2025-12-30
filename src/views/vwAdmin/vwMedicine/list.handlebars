@@ -302,11 +302,10 @@
             });
         }
 
-        // --- 2. ADD SERVICE FORM HANDLING ---
         const serviceForm = document.querySelector('#frmService');
         if (serviceForm) {
             serviceForm.addEventListener('submit', function (e) {
-                e.preventDefault(); // Pause to show confirmation
+                e.preventDefault();
 
                 Swal.fire({
                     title: 'Confirm Submission',
@@ -319,7 +318,6 @@
                     cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Display success message then submit the form
                         Swal.fire({
                             title: 'Success!',
                             text: 'Processing your request...',
@@ -334,15 +332,12 @@
             });
         }
 
-        // --- 3. AUTOMATIC MODAL TRIGGER ---
-        // Automatically opens the modal if isAddMode is true
         const addModalElement = document.getElementById('addServiceModal');
         if (addModalElement) {
             const myModal = new bootstrap.Modal(addModalElement);
             myModal.show();
         }
 
-        // --- 4. URL SUCCESS NOTIFICATIONS ---
         const urlParams = new URLSearchParams(window.location.search);
         const successType = urlParams.get('success');
 
@@ -363,7 +358,6 @@
 
             Swal.fire(config);
 
-            // Clean URL (removes ?success=... so the alert doesn't reappear on refresh)
             window.history.replaceState({}, '', '/admin/services');
         }
     });

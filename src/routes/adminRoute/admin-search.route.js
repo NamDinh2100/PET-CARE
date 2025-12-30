@@ -5,7 +5,6 @@ import * as medicineService from '../../models/medicine.model.js';
 
 const router = express.Router();
 
-// GET /admin/search - Search across all modules
 router.get('/', async function (req, res) {
     const query = req.query.q || '';
     const type = req.query.type || 'all';
@@ -22,7 +21,6 @@ router.get('/', async function (req, res) {
     };
 
     try {
-        // Search employees
         if (type === 'all' || type === 'employees') {
             const employees = await userService.getAllEmployees();
             results.employees = employees.filter(emp =>
@@ -32,7 +30,6 @@ router.get('/', async function (req, res) {
             );
         }
 
-        // Search customers
         if (type === 'all' || type === 'customers') {
             const customers = await userService.getAllUsers();
             results.customers = customers.filter(cus =>
@@ -42,7 +39,6 @@ router.get('/', async function (req, res) {
             );
         }
 
-        // Search services
         if (type === 'all' || type === 'services') {
             try {
                 const services = await serviceService.getServiceByName(query);
@@ -52,7 +48,6 @@ router.get('/', async function (req, res) {
             }
         }
 
-        // Search medicines
         if (type === 'all' || type === 'medicines') {
             try {
                 const medicines = await medicineService.getMedicineByName(query);
@@ -62,7 +57,6 @@ router.get('/', async function (req, res) {
             }
         }
 
-        // Render search results page
         res.render('vwAdmin/search-results', {
             results,
             query,

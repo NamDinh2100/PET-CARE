@@ -72,10 +72,28 @@ router.post('/appointment/prescription', async function (req, res) {
     try {
     const medicines = req.body.medicine_id;
     
+    // Validation: Check for required integer fields
+    console.log('Validating data:');
+    console.log('appointment_id:', req.body.appointment_id, 'type:', typeof req.body.appointment_id);
+    console.log('pet_id:', req.body.pet_id, 'type:', typeof req.body.pet_id);
+    console.log('veterinarian_id:', req.session.authUser?.user_id, 'type:', typeof req.session.authUser?.user_id);
+    
+    if (!req.body.appointment_id || req.body.appointment_id === '') {
+        throw new Error('appointment_id is required and cannot be empty');
+    }
+    
+    if (!req.body.pet_id || req.body.pet_id === '') {
+        throw new Error('pet_id is required and cannot be empty');
+    }
+    
+    if (!req.session.authUser?.user_id || req.session.authUser.user_id === '') {
+        throw new Error('veterinarian_id is required and cannot be empty');
+    }
+    
     const record = {
-        appointment_id: req.body.appointment_id,
-        pet_id: req.body.pet_id,
-        veterinarian_id: req.session.authUser.user_id,
+        appointment_id: parseInt(req.body.appointment_id),
+        pet_id: parseInt(req.body.pet_id),
+        veterinarian_id: parseInt(req.session.authUser.user_id),
         symptoms: req.body.symptoms,
         treatment: req.body.treatment,
         diagnosis: req.body.diagnosis,

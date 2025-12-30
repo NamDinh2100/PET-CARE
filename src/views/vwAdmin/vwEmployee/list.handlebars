@@ -1,51 +1,51 @@
 {{#section 'css'}}
-    <style>
-        /* --- GIỮ LẠI STYLE RIÊNG CHO MODAL --- */
-        .modal-content {
-            border: 3px solid #a58f8f;
-            border-radius: 25px;
-        }
-        .modal-header {
-            background-color: #d9d9d9;
-            border-bottom: 3px solid #a58f8f;
-            border-radius: 22px 22px 0 0;
-        }
-        
-        /* Tùy chỉnh màu pagination */
-        .table-container {
-            min-height: 450px;
-        }
-        .pagination .page-link {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-            padding: 0;
-            border: 2px solid #2d5bff;
-            color: #2d5bff;
-            margin: 0 3px;
-            font-weight: 600;
-        }
-        .pagination .page-item.active .page-link {
-            background-color: #2d5bff;
-            color: white;
-            border-color: #2d5bff;
-        }
-        .pagination .page-link:hover {
-            background-color: #2d5bff;
-            color: white;
-            border-color: #2d5bff;
-        }
+<style>
+    .modal-content {
+        border: 3px solid #a58f8f;
+        border-radius: 25px;
+    }
 
-    /* Hiệu ứng làm mờ nền khi Modal hiện lên */
+    .modal-header {
+        background-color: #d9d9d9;
+        border-bottom: 3px solid #a58f8f;
+        border-radius: 22px 22px 0 0;
+    }
+
+    .table-container {
+        min-height: 450px;
+    }
+
+    .pagination .page-link {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        padding: 0;
+        border: 2px solid #2d5bff;
+        color: #2d5bff;
+        margin: 0 3px;
+        font-weight: 600;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #2d5bff;
+        color: white;
+        border-color: #2d5bff;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #2d5bff;
+        color: white;
+        border-color: #2d5bff;
+    }
+
     .modal-backdrop.show {
         backdrop-filter: blur(5px);
         opacity: 0.5;
     }
 
-    /* Tùy chỉnh màu pagination */
     .page-link {
         color: #333;
     }
@@ -57,40 +57,29 @@
 
     .role-badge {
         min-width: 100px;
-        /* Độ rộng cố định để thẳng hàng */
         padding: 8px 12px;
         font-weight: 600;
         letter-spacing: 0.5px;
     }
 
-    /* 1. ADMIN - Màu đỏ (Quyền lực/Cao nhất) */
     .role-admin {
         background-color: #ffe5e5;
-        /* Nền đỏ nhạt */
         color: #d63384;
-        /* Chữ đỏ đậm */
         border: 1px solid #d63384;
     }
 
-    /* 2. VETERINARIAN - Màu xanh lá (Y tế/Bác sĩ) */
     .role-veterinarian {
         background-color: #e8f5e9;
-        /* Nền xanh lá nhạt */
         color: #198754;
-        /* Chữ xanh lá đậm */
         border: 1px solid #198754;
     }
 
-    /* 3. STAFF - Màu xanh dương hoặc Xám (Nhân viên) */
     .role-staff {
         background-color: #e7f1ff;
-        /* Nền xanh dương nhạt */
         color: #0d6efd;
-        /* Chữ xanh dương đậm */
         border: 1px solid #0d6efd;
     }
 
-    /* Advanced Search Styling */
     .search-form .form-select {
         border-right: none;
         font-weight: 600;
@@ -112,24 +101,25 @@
 </style>
 {{/section}}
 
-{{!-- Advanced Search Section --}}
 <div class="row mb-4">
     <div class="col-md-10 mx-auto">
         <form action="/admin/employees" method="GET" class="search-form">
             <div class="input-group">
                 <div class="input-group-prepend">
-                    <select name="field" class="form-select border-dark" style="min-width: 180px; max-width: 180px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                    <select name="field" class="form-select border-dark"
+                        style="min-width: 180px; max-width: 180px; border-top-right-radius: 0; border-bottom-right-radius: 0;">
                         <option value="" {{#unless searchField}}selected{{/unless}}>Select Field</option>
-                        <option value="id" {{#if (eq searchField 'id')}}selected{{/if}}>ID</option>
-                        <option value="name" {{#if (eq searchField 'name')}}selected{{/if}}>Name</option>
-                        <option value="email" {{#if (eq searchField 'email')}}selected{{/if}}>Email</option>
-                        <option value="phone" {{#if (eq searchField 'phone')}}selected{{/if}}>Phone</option>
-                        <option value="role" {{#if (eq searchField 'role')}}selected{{/if}}>Role</option>
+                        <option value="id" {{#if (eq searchField 'id' )}}selected{{/if}}>ID</option>
+                        <option value="name" {{#if (eq searchField 'name' )}}selected{{/if}}>Name</option>
+                        <option value="email" {{#if (eq searchField 'email' )}}selected{{/if}}>Email</option>
+                        <option value="phone" {{#if (eq searchField 'phone' )}}selected{{/if}}>Phone</option>
+                        <option value="role" {{#if (eq searchField 'role' )}}selected{{/if}}>Role</option>
                     </select>
                 </div>
                 <input type="text" name="q" class="form-control border-dark search-input-rounded ps-4 bg-white"
                     placeholder="SEARCH EMPLOYEES..." aria-label="Search" value="{{searchQuery}}">
-                <button type="submit" class="position-absolute end-0 top-50 translate-middle-y me-3 z-1 cursor-pointer text-secondary btn btn-link p-0">
+                <button type="submit"
+                    class="position-absolute end-0 top-50 translate-middle-y me-3 z-1 cursor-pointer text-secondary btn btn-link p-0">
                     <i class="bi bi-search"></i>
                 </button>
             </div>
@@ -137,7 +127,7 @@
             <div class="mt-2">
                 <span class="badge bg-info me-2">
                     <i class="bi bi-search me-1"></i>
-                    Search: "{{searchQuery}}" in 
+                    Search: "{{searchQuery}}" in
                     {{#if (eq searchField 'id')}}ID{{/if}}
                     {{#if (eq searchField 'name')}}Name{{/if}}
                     {{#if (eq searchField 'email')}}Email{{/if}}
@@ -153,7 +143,6 @@
     </div>
 </div>
 
-{{!-- 1. DANH SÁCH NHÂN VIÊN (UNIFIED CONTAINER) --}}
 <div class="card shadow-sm border-0 rounded-4">
     <div class="card-body p-4">
 
@@ -164,32 +153,33 @@
                 <small class="text-muted">
                     {{employees.length}} result(s) found for "{{searchQuery}}"
                     {{#if searchField}}
-                        in {{#if (eq searchField 'name')}}Name{{/if}}{{#if (eq searchField 'email')}}Email{{/if}}{{#if (eq searchField 'id')}}ID{{/if}}{{#if (eq searchField 'phone')}}Phone{{/if}}{{#if (eq searchField 'role')}}Role{{/if}}
+                    in {{#if (eq searchField 'name')}}Name{{/if}}{{#if (eq searchField 'email')}}Email{{/if}}{{#if (eq
+                    searchField 'id')}}ID{{/if}}{{#if (eq searchField 'phone')}}Phone{{/if}}{{#if (eq searchField
+                    'role')}}Role{{/if}}
                     {{/if}}
                 </small>
                 {{/if}}
             </div>
 
             <div class="d-flex align-items-center gap-3">
-                {{!-- Filter Dropdown --}}
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                         <i class="bi bi-funnel me-1"></i>
                         {{#if currentRole}}
-                            {{#if (eq currentRole 'admin')}}Admin{{/if}}
-                            {{#if (eq currentRole 'veterinarian')}}Veterinarian{{/if}}
-                            {{#if (eq currentRole 'staff')}}Staff{{/if}}
+                        {{#if (eq currentRole 'admin')}}Admin{{/if}}
+                        {{#if (eq currentRole 'veterinarian')}}Veterinarian{{/if}}
+                        {{#if (eq currentRole 'staff')}}Staff{{/if}}
                         {{else}}All Roles{{/if}}
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item {{#unless currentRole}}active{{/unless}}"
                                 href="/admin/employees">All Roles</a></li>
-                            <a class="dropdown-item {{#if (eq 'admin' currentRole)}}active{{/if}}"
-                                href="/admin/employees?role=admin">Admin</a>
-                            <a class="dropdown-item {{#if (eq 'veterinarian' currentRole)}}active{{/if}}"
-                                href="/admin/employees?role=veterinarian">Veterinarian</a>
-                            <a class="dropdown-item {{#if (eq 'staff' currentRole)}}active{{/if}}"
-                                href="/admin/employees?role=staff">Staff</a>
+                        <a class="dropdown-item {{#if (eq 'admin' currentRole)}}active{{/if}}"
+                            href="/admin/employees?role=admin">Admin</a>
+                        <a class="dropdown-item {{#if (eq 'veterinarian' currentRole)}}active{{/if}}"
+                            href="/admin/employees?role=veterinarian">Veterinarian</a>
+                        <a class="dropdown-item {{#if (eq 'staff' currentRole)}}active{{/if}}"
+                            href="/admin/employees?role=staff">Staff</a>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -197,7 +187,7 @@
                         <li><a class="dropdown-item {{#if (eq this ../currentRole)}}active{{/if}}"
                                 href="/admin/employees?role={{this}}">{{this}}</a></li>
                         {{/each}}
-                    </ul> 
+                    </ul>
                 </div>
 
                 <a class="btn btn-outline-success" href="/admin/employees/add">
@@ -231,8 +221,7 @@
                             </span>
                         </td>
                         <td class="text-end pe-3">
-                            <a class="btn btn-sm btn-outline-primary"
-                                href="/admin/employees/edit?id={{user_id}}">
+                            <a class="btn btn-sm btn-outline-primary" href="/admin/employees/edit?id={{user_id}}">
                                 <i class="bi bi-pencil-square"></i> Edit
                             </a>
                         </td>
@@ -259,73 +248,68 @@
 
 {{#section 'js'}}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Handle search form submission validation
-    const searchForm = document.querySelector('.search-form');
-    if (searchForm) {
-        searchForm.addEventListener('submit', function(e) {
-            const searchField = document.querySelector('select[name="field"]').value;
-            const searchQuery = document.querySelector('input[name="q"]').value.trim();
-            
-            // Check if field is not selected
-            if (!searchField || searchField === '') {
-                e.preventDefault();
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Field Required',
-                    text: 'Please select a field before searching.',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#2d5bff'
-                });
-                return false;
-            }
-            
-            // Check if search query is empty
-            if (searchQuery === '') {
-                e.preventDefault();
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Empty Search',
-                    text: 'Please enter a search term.',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#2d5bff'
-                });
-                return false;
-            }
-        });
-    }
-    
-    // Show success notifications
-    const urlParams = new URLSearchParams(window.location.search);
-    const success = urlParams.get('success');
-    
-    if (success === 'add') {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: 'Employee added successfully.',
-            timer: 3000,
-            showConfirmButton: false,
-            customClass: {
-                popup: 'swal2-popup'
-            }
-        });
-        // Clean URL
-        window.history.replaceState({}, '', '/admin/employees');
-    } else if (success === 'edit') {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: 'Employee updated successfully.',
-            timer: 3000,
-            showConfirmButton: false,
-            customClass: {
-                popup: 'swal2-popup'
-            }
-        });
-        // Clean URL
-        window.history.replaceState({}, '', '/admin/employees');
-    }
-});
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchForm = document.querySelector('.search-form');
+        if (searchForm) {
+            searchForm.addEventListener('submit', function (e) {
+                const searchField = document.querySelector('select[name="field"]').value;
+                const searchQuery = document.querySelector('input[name="q"]').value.trim();
+
+                if (!searchField || searchField === '') {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Field Required',
+                        text: 'Please select a field before searching.',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#2d5bff'
+                    });
+                    return false;
+                }
+
+                if (searchQuery === '') {
+                    e.preventDefault();
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Empty Search',
+                        text: 'Please enter a search term.',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#2d5bff'
+                    });
+                    return false;
+                }
+            });
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const success = urlParams.get('success');
+
+        if (success === 'add') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Employee added successfully.',
+                timer: 3000,
+                showConfirmButton: false,
+                customClass: {
+                    popup: 'swal2-popup'
+                }
+            });
+            window.history.replaceState({}, '', '/admin/employees');
+        } else if (success === 'edit') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Employee updated successfully.',
+                timer: 3000,
+                showConfirmButton: false,
+                customClass: {
+                    popup: 'swal2-popup'
+                }
+            });
+
+            window.history.replaceState({}, '', '/admin/employees');
+        }
+    });
 </script>
 {{/section}}

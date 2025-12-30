@@ -147,9 +147,7 @@ router.post('/forgot-password', async function (req, res) {
 
     const hashPassword = bcrypt.hashSync(genPassword);
     await userService.updatePassword(user.user_id, hashPassword);
-    res.render('vwAccounts/signin', {
-        success_message: 'A new password has been sent to your email.'
-    });
+    res.redirect('/signin');
 });
 
 export default router;

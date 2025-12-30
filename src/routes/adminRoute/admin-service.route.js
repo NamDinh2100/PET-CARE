@@ -15,10 +15,8 @@ router.get('/', async function (req, res) {
     let isSearchMode = false;
 
     if (searchQuery && searchQuery.trim() && searchField && searchField !== '') {
-        // Search mode - only if both query and field are provided
         isSearchMode = true;
         
-        // Validate ID/price search - must be a number
         if ((searchField === 'id' || searchField === 'price') && isNaN(searchQuery)) {
             total = { count: 0 };
             list = [];
@@ -27,9 +25,8 @@ router.get('/', async function (req, res) {
             list = await serviceService.searchServices(searchField, searchQuery, limit, offset);
         }
     } else {
-        // Show all services
         total = await serviceService.countByService();
-        list = await serviceService.findPageByService(limit, offset);
+        list = await serviceService.findPageByService(limit, offset); 
     }
 
     const nPages = Math.ceil(+total.count / limit);

@@ -16,7 +16,6 @@ export function updatePetInfo(pet_id, pet) {
     return db('pets').where('pet_id', pet_id).update(pet);
 }
 
-// Delete pet
 export function deletePet(pet_id) {
     return db('pets').where('pet_id', pet_id).del();
 }

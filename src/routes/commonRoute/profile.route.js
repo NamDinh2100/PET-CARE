@@ -46,7 +46,6 @@ router.post('/update', async function (req, res) {
 
     await userService.updateUser(userId, updatedUser);
 
-    // Update session
     req.session.authUser.full_name = updatedUser.full_name;
     req.session.authUser.phone = updatedUser.phone;
     req.session.authUser.address = updatedUser.address;
