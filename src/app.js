@@ -30,8 +30,17 @@ import invoiceRouter from './routes/adminRoute/admin-invoice.route.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const isProduction = process.env.NODE_ENV === 'production';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+if (isProduction && !process.env.SESSION_SECRET) {
+    throw new Error('SESSION_SECRET is required in production.');
+}
+
+if (isProduction) {
+    app.set('trust proxy', 1);
+}
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
@@ -111,11 +120,14 @@ app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(session({
-    secret: 'pet-care-secret-key',
+    secret: process.env.SESSION_SECRET || 'pet-care-dev-secret',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
-        secure: false
+        secure: isProduction,
+        httpOnly: true,
+        sameSite: 'lax',
+        maxAge: 1000 * 60 * 60 * 24
     }
 }))
 
